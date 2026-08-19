@@ -1,0 +1,3674 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Gauss-Markov Set-up – Linear Models</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Linear Models</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Intro/syllabus.html"> 
+<span class="menu-text">Intro</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Core/01-linear-model.qmd"> 
+<span class="menu-text">Core</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../Prerequisites/Linear-Algebra/vectors.html"> 
+<span class="menu-text">Prerequisites</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Core/01-Gauss-Markov.html">Core</a></li><li class="breadcrumb-item"><a href="../Core/01-Gauss-Markov.html">Gauss-Markov Set-up</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Intro</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Intro/syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Intro/exam-map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">exam-map</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Intro/notation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">notation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Core</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Core/01-Gauss-Markov.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Gauss-Markov Set-up</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Prerequisites</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Linear Algebra</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Prerequisites/Linear-Algebra/vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Prerequisites/Linear-Algebra/matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matrices</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Statistics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Prerequisites/Statistics/expectation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">expectation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#gauss-markov-set-up" id="toc-gauss-markov-set-up" class="nav-link active" data-scroll-target="#gauss-markov-set-up"><span class="header-section-number">1</span> Gauss-Markov Set-up</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><span class="header-section-number">1.1</span> Overview</a></li>
+  <li><a href="#why-study-linear-models" id="toc-why-study-linear-models" class="nav-link" data-scroll-target="#why-study-linear-models"><span class="header-section-number">1.2</span> Why Study Linear Models?</a></li>
+  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link" data-scroll-target="#the-general-linear-model"><span class="header-section-number">1.3</span> The General Linear Model</a></li>
+  <li><a href="#components-of-the-linear-model" id="toc-components-of-the-linear-model" class="nav-link" data-scroll-target="#components-of-the-linear-model"><span class="header-section-number">1.4</span> Components of the Linear Model</a>
+  <ul class="collapse">
+  <li><a href="#the-response-vector" id="toc-the-response-vector" class="nav-link" data-scroll-target="#the-response-vector"><span class="header-section-number">1.4.1</span> The Response Vector</a></li>
+  <li><a href="#the-parameter-vector" id="toc-the-parameter-vector" class="nav-link" data-scroll-target="#the-parameter-vector"><span class="header-section-number">1.4.2</span> The Parameter Vector</a></li>
+  <li><a href="#the-model-matrix" id="toc-the-model-matrix" class="nav-link" data-scroll-target="#the-model-matrix"><span class="header-section-number">1.4.3</span> The Model Matrix</a></li>
+  <li><a href="#the-error-vector" id="toc-the-error-vector" class="nav-link" data-scroll-target="#the-error-vector"><span class="header-section-number">1.4.4</span> The Error Vector</a></li>
+  </ul></li>
+  <li><a href="#assumptions-of-the-gauss-markov-model" id="toc-assumptions-of-the-gauss-markov-model" class="nav-link" data-scroll-target="#assumptions-of-the-gauss-markov-model"><span class="header-section-number">1.5</span> Assumptions of the Gauss-Markov Model</a>
+  <ul class="collapse">
+  <li><a href="#zero-mean-errors" id="toc-zero-mean-errors" class="nav-link" data-scroll-target="#zero-mean-errors"><span class="header-section-number">1.5.1</span> Zero Mean Errors</a></li>
+  <li><a href="#constant-error-variance" id="toc-constant-error-variance" class="nav-link" data-scroll-target="#constant-error-variance"><span class="header-section-number">1.5.2</span> Constant Error Variance</a></li>
+  <li><a href="#normality-is-not-required-for-the-gauss-markov-theorem" id="toc-normality-is-not-required-for-the-gauss-markov-theorem" class="nav-link" data-scroll-target="#normality-is-not-required-for-the-gauss-markov-theorem"><span class="header-section-number">1.5.3</span> Normality Is Not Required for the Gauss-Markov Theorem</a></li>
+  </ul></li>
+  <li><a href="#mean-and-variance-of-the-response" id="toc-mean-and-variance-of-the-response" class="nav-link" data-scroll-target="#mean-and-variance-of-the-response"><span class="header-section-number">1.6</span> Mean and Variance of the Response</a></li>
+  <li><a href="#what-does-linear-mean" id="toc-what-does-linear-mean" class="nav-link" data-scroll-target="#what-does-linear-mean"><span class="header-section-number">1.7</span> What Does “Linear” Mean?</a></li>
+  <li><a href="#linear-parametric-functions" id="toc-linear-parametric-functions" class="nav-link" data-scroll-target="#linear-parametric-functions"><span class="header-section-number">1.8</span> Linear Parametric Functions</a></li>
+  <li><a href="#linear-estimators" id="toc-linear-estimators" class="nav-link" data-scroll-target="#linear-estimators"><span class="header-section-number">1.9</span> Linear Estimators</a>
+  <ul class="collapse">
+  <li><a href="#unbiasedness" id="toc-unbiasedness" class="nav-link" data-scroll-target="#unbiasedness"><span class="header-section-number">1.9.1</span> Unbiasedness</a></li>
+  </ul></li>
+  <li><a href="#why-variance-matters" id="toc-why-variance-matters" class="nav-link" data-scroll-target="#why-variance-matters"><span class="header-section-number">1.10</span> Why Variance Matters</a></li>
+  <li><a href="#the-road-ahead" id="toc-the-road-ahead" class="nav-link" data-scroll-target="#the-road-ahead"><span class="header-section-number">1.11</span> The Road Ahead</a></li>
+  </ul></li>
+  <li><a href="#estimability-and-the-method-of-least-squares" id="toc-estimability-and-the-method-of-least-squares" class="nav-link" data-scroll-target="#estimability-and-the-method-of-least-squares"><span class="header-section-number">2</span> Estimability and the Method of Least Squares</a>
+  <ul class="collapse">
+  <li><a href="#estimability" id="toc-estimability" class="nav-link" data-scroll-target="#estimability"><span class="header-section-number">2.1</span> Estimability</a>
+  <ul class="collapse">
+  <li><a href="#definition-of-estimability" id="toc-definition-of-estimability" class="nav-link" data-scroll-target="#definition-of-estimability"><span class="header-section-number">2.1.1</span> Definition of Estimability</a></li>
+  </ul></li>
+  <li><a href="#why-estimability-matters" id="toc-why-estimability-matters" class="nav-link" data-scroll-target="#why-estimability-matters"><span class="header-section-number">2.2</span> Why Estimability Matters</a></li>
+  <li><a href="#full-column-rank-and-estimability" id="toc-full-column-rank-and-estimability" class="nav-link" data-scroll-target="#full-column-rank-and-estimability"><span class="header-section-number">2.3</span> Full Column Rank and Estimability</a>
+  <ul class="collapse">
+  <li><a href="#rank-deficiency" id="toc-rank-deficiency" class="nav-link" data-scroll-target="#rank-deficiency"><span class="header-section-number">2.3.1</span> Rank Deficiency</a></li>
+  </ul></li>
+  <li><a href="#the-null-space-and-estimability" id="toc-the-null-space-and-estimability" class="nav-link" data-scroll-target="#the-null-space-and-estimability"><span class="header-section-number">2.4</span> The Null Space and Estimability</a></li>
+  <li><a href="#the-method-of-least-squares" id="toc-the-method-of-least-squares" class="nav-link" data-scroll-target="#the-method-of-least-squares"><span class="header-section-number">2.5</span> The Method of Least Squares</a>
+  <ul class="collapse">
+  <li><a href="#the-least-squares-criterion" id="toc-the-least-squares-criterion" class="nav-link" data-scroll-target="#the-least-squares-criterion"><span class="header-section-number">2.5.1</span> The Least Squares Criterion</a></li>
+  <li><a href="#scalar-form" id="toc-scalar-form" class="nav-link" data-scroll-target="#scalar-form"><span class="header-section-number">2.5.2</span> Scalar Form</a></li>
+  </ul></li>
+  <li><a href="#why-square-the-residuals" id="toc-why-square-the-residuals" class="nav-link" data-scroll-target="#why-square-the-residuals"><span class="header-section-number">2.6</span> Why Square the Residuals?</a></li>
+  <li><a href="#deriving-the-normal-equations" id="toc-deriving-the-normal-equations" class="nav-link" data-scroll-target="#deriving-the-normal-equations"><span class="header-section-number">2.7</span> Deriving the Normal Equations</a></li>
+  <li><a href="#the-least-squares-estimator" id="toc-the-least-squares-estimator" class="nav-link" data-scroll-target="#the-least-squares-estimator"><span class="header-section-number">2.8</span> The Least Squares Estimator</a></li>
+  <li><a href="#the-normal-equations-and-residuals" id="toc-the-normal-equations-and-residuals" class="nav-link" data-scroll-target="#the-normal-equations-and-residuals"><span class="header-section-number">2.9</span> The Normal Equations and Residuals</a></li>
+  <li><a href="#least-squares-as-an-orthogonal-projection" id="toc-least-squares-as-an-orthogonal-projection" class="nav-link" data-scroll-target="#least-squares-as-an-orthogonal-projection"><span class="header-section-number">2.10</span> Least Squares as an Orthogonal Projection</a></li>
+  <li><a href="#the-hat-matrix" id="toc-the-hat-matrix" class="nav-link" data-scroll-target="#the-hat-matrix"><span class="header-section-number">2.11</span> The Hat Matrix</a></li>
+  <li><a href="#properties-of-the-hat-matrix" id="toc-properties-of-the-hat-matrix" class="nav-link" data-scroll-target="#properties-of-the-hat-matrix"><span class="header-section-number">2.12</span> Properties of the Hat Matrix</a></li>
+  <li><a href="#unbiasedness-of-the-least-squares-estimator" id="toc-unbiasedness-of-the-least-squares-estimator" class="nav-link" data-scroll-target="#unbiasedness-of-the-least-squares-estimator"><span class="header-section-number">2.13</span> Unbiasedness of the Least Squares Estimator</a></li>
+  <li><a href="#variance-of-the-least-squares-estimator" id="toc-variance-of-the-least-squares-estimator" class="nav-link" data-scroll-target="#variance-of-the-least-squares-estimator"><span class="header-section-number">2.14</span> Variance of the Least Squares Estimator</a></li>
+  <li><a href="#estimating-a-linear-parametric-function" id="toc-estimating-a-linear-parametric-function" class="nav-link" data-scroll-target="#estimating-a-linear-parametric-function"><span class="header-section-number">2.15</span> Estimating a Linear Parametric Function</a></li>
+  <li><a href="#residual-sum-of-squares" id="toc-residual-sum-of-squares" class="nav-link" data-scroll-target="#residual-sum-of-squares"><span class="header-section-number">2.16</span> Residual Sum of Squares</a></li>
+  <li><a href="#a-useful-decomposition" id="toc-a-useful-decomposition" class="nav-link" data-scroll-target="#a-useful-decomposition"><span class="header-section-number">2.17</span> A Useful Decomposition</a></li>
+  <li><a href="#summary-of-part-2" id="toc-summary-of-part-2" class="nav-link" data-scroll-target="#summary-of-part-2"><span class="header-section-number">2.18</span> Summary of Part 2</a></li>
+  </ul></li>
+  <li><a href="#gauss-markov-theorem" id="toc-gauss-markov-theorem" class="nav-link" data-scroll-target="#gauss-markov-theorem"><span class="header-section-number">3</span> Gauss-Markov Theorem</a>
+  <ul class="collapse">
+  <li><a href="#from-least-squares-to-the-gauss-markov-theorem" id="toc-from-least-squares-to-the-gauss-markov-theorem" class="nav-link" data-scroll-target="#from-least-squares-to-the-gauss-markov-theorem"><span class="header-section-number">3.1</span> From Least Squares to the Gauss-Markov Theorem</a></li>
+  <li><a href="#the-gauss-markov-theorem" id="toc-the-gauss-markov-theorem" class="nav-link" data-scroll-target="#the-gauss-markov-theorem"><span class="header-section-number">3.2</span> The Gauss-Markov Theorem</a></li>
+  <li><a href="#what-does-blue-mean" id="toc-what-does-blue-mean" class="nav-link" data-scroll-target="#what-does-blue-mean"><span class="header-section-number">3.3</span> What Does BLUE Mean?</a>
+  <ul class="collapse">
+  <li><a href="#linear" id="toc-linear" class="nav-link" data-scroll-target="#linear"><span class="header-section-number">3.3.1</span> Linear</a></li>
+  <li><a href="#unbiased" id="toc-unbiased" class="nav-link" data-scroll-target="#unbiased"><span class="header-section-number">3.3.2</span> Unbiased</a></li>
+  <li><a href="#best" id="toc-best" class="nav-link" data-scroll-target="#best"><span class="header-section-number">3.3.3</span> Best</a></li>
+  </ul></li>
+  <li><a href="#comparing-linear-unbiased-estimators" id="toc-comparing-linear-unbiased-estimators" class="nav-link" data-scroll-target="#comparing-linear-unbiased-estimators"><span class="header-section-number">3.4</span> Comparing Linear Unbiased Estimators</a></li>
+  <li><a href="#variance-of-a-general-linear-unbiased-estimator" id="toc-variance-of-a-general-linear-unbiased-estimator" class="nav-link" data-scroll-target="#variance-of-a-general-linear-unbiased-estimator"><span class="header-section-number">3.5</span> Variance of a General Linear Unbiased Estimator</a></li>
+  <li><a href="#proof-of-the-gauss-markov-theorem" id="toc-proof-of-the-gauss-markov-theorem" class="nav-link" data-scroll-target="#proof-of-the-gauss-markov-theorem"><span class="header-section-number">3.6</span> Proof of the Gauss-Markov Theorem</a></li>
+  <li><a href="#interpretation-of-the-theorem" id="toc-interpretation-of-the-theorem" class="nav-link" data-scroll-target="#interpretation-of-the-theorem"><span class="header-section-number">3.7</span> Interpretation of the Theorem</a></li>
+  <li><a href="#blue-for-linear-parametric-functions" id="toc-blue-for-linear-parametric-functions" class="nav-link" data-scroll-target="#blue-for-linear-parametric-functions"><span class="header-section-number">3.8</span> BLUE for Linear Parametric Functions</a></li>
+  <li><a href="#estimation-of-error-variance" id="toc-estimation-of-error-variance" class="nav-link" data-scroll-target="#estimation-of-error-variance"><span class="header-section-number">3.9</span> Estimation of Error Variance</a>
+  <ul class="collapse">
+  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">3.9.1</span> Degrees of Freedom</a></li>
+  <li><a href="#expected-residual-sum-of-squares" id="toc-expected-residual-sum-of-squares" class="nav-link" data-scroll-target="#expected-residual-sum-of-squares"><span class="header-section-number">3.9.2</span> Expected Residual Sum of Squares</a></li>
+  <li><a href="#unbiased-estimator-of-sigma2" id="toc-unbiased-estimator-of-sigma2" class="nav-link" data-scroll-target="#unbiased-estimator-of-sigma2"><span class="header-section-number">3.9.3</span> Unbiased Estimator of <span class="math inline">\(\sigma^2\)</span></a></li>
+  </ul></li>
+  <li><a href="#residual-mean-square" id="toc-residual-mean-square" class="nav-link" data-scroll-target="#residual-mean-square"><span class="header-section-number">3.10</span> Residual Mean Square</a></li>
+  <li><a href="#the-role-of-normality" id="toc-the-role-of-normality" class="nav-link" data-scroll-target="#the-role-of-normality"><span class="header-section-number">3.11</span> The Role of Normality</a></li>
+  <li><a href="#the-complete-gauss-markov-framework" id="toc-the-complete-gauss-markov-framework" class="nav-link" data-scroll-target="#the-complete-gauss-markov-framework"><span class="header-section-number">3.12</span> The Complete Gauss-Markov Framework</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">4</span> Summary</a></li>
+  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference"><span class="header-section-number">5</span> Quick Reference</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Core/01-Gauss-Markov.html">Core</a></li><li class="breadcrumb-item"><a href="../Core/01-Gauss-Markov.html">Gauss-Markov Set-up</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Gauss-Markov Set-up</h1>
+<p class="subtitle lead">The Linear Model, Estimation, and the Gauss-Markov Framework</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="gauss-markov-set-up" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Gauss-Markov Set-up</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Course Status
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Status:</strong> 🟢 <strong>Core</strong></p>
+<p>This module is explicitly included in the Linear Models syllabus and forms the theoretical foundation for the subsequent modules on regression, analysis of variance, and model checking.</p>
+<p><strong>Required depth:</strong> <strong>4 · Prove</strong></p>
+<p>The course requires understanding the theory of linear estimation, estimability, least squares, the Gauss-Markov theorem, and estimation of error variance. Important results should therefore be understood mathematically, including their derivations or proofs where appropriate.</p>
+</div>
+</div>
+<section id="overview" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">1.1</span> Overview</h2>
+<p>The Gauss-Markov set-up provides the mathematical foundation for the theory of linear models.</p>
+<p>At its heart, a linear model describes a response variable in terms of systematic effects represented by unknown parameters and a random component representing unexplained variation.</p>
+<p>The general form of the linear model is</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+\]</span></p>
+<p>This compact equation contains almost the entire framework:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{Y}\)</span> represents the observed responses.</li>
+<li><span class="math inline">\(\mathbf{X}\)</span> is the model matrix, which describes how the explanatory variables enter the model.</li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> is the vector of unknown parameters.</li>
+<li><span class="math inline">\(\boldsymbol{\varepsilon}\)</span> is the vector of random errors.</li>
+</ul>
+<p>The purpose of linear model theory is to use the observed data <span class="math inline">\(\mathbf{Y}\)</span> to learn about the unknown parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> while accounting for the random variation represented by <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>.</p>
+<p>The Gauss-Markov framework then provides a rigorous way of answering questions such as:</p>
+<ul>
+<li>How should the unknown parameters be estimated?</li>
+<li>Which functions of the parameters can actually be estimated?</li>
+<li>What does it mean for an estimator to be unbiased?</li>
+<li>Among linear unbiased estimators, which one is best?</li>
+<li>How can the unknown error variance be estimated?</li>
+</ul>
+<p>These questions form the theoretical basis for ordinary least squares and much of classical linear model inference.</p>
+<hr>
+</section>
+<section id="why-study-linear-models" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="why-study-linear-models"><span class="header-section-number">1.2</span> Why Study Linear Models?</h2>
+<p>Linear models are important because a surprisingly large collection of statistical methods can be expressed within a single mathematical framework.</p>
+<p>Simple linear regression, multiple regression, analysis of variance, and analysis of covariance can all be represented using the general linear model</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+\]</span></p>
+<p>The apparent differences between these methods often arise from differences in the structure of the model matrix <span class="math inline">\(\mathbf{X}\)</span>, the interpretation of the parameters in <span class="math inline">\(\boldsymbol{\beta}\)</span>, and the assumptions made about the errors.</p>
+<p>This is one of the central ideas of the subject:</p>
+<blockquote class="blockquote">
+<p>Different statistical models can be treated using the same underlying linear model machinery.</p>
+</blockquote>
+<p>For example, the simple regression model</p>
+<p><span class="math display">\[
+Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+\]</span></p>
+<p>can be written in matrix form as</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+\]</span></p>
+<p>The same structure extends naturally to multiple regression and to many experimental designs used in analysis of variance.</p>
+<p>The matrix formulation therefore gives us a common language for a broad range of statistical models.</p>
+<hr>
+</section>
+<section id="the-general-linear-model" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="the-general-linear-model"><span class="header-section-number">1.3</span> The General Linear Model</h2>
+<p>Suppose we observe <span class="math inline">\(n\)</span> responses</p>
+<p><span class="math display">\[
+Y_1,Y_2,\ldots,Y_n.
+\]</span></p>
+<p>The general linear model represents these observations collectively as</p>
+<p><span class="math display">\[
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+\]</span></p>
+<p>The dimensions of the objects are important.</p>
+<p>Suppose there are <span class="math inline">\(n\)</span> observations and <span class="math inline">\(p\)</span> unknown parameters. Then</p>
+<p><span class="math display">\[
+\mathbf{Y}_{n\times 1},
+\qquad
+\mathbf{X}_{n\times p},
+\qquad
+\boldsymbol{\beta}_{p\times 1},
+\qquad
+\boldsymbol{\varepsilon}_{n\times 1}.
+\]</span></p>
+<p>The matrix multiplication</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta}
+\]</span></p>
+<p>therefore produces an <span class="math inline">\(n\times 1\)</span> vector, matching the dimension of <span class="math inline">\(\mathbf{Y}\)</span>.</p>
+<p>The model can also be written observation by observation:</p>
+<p><span class="math display">\[
+Y_i = \sum_{j=1}^{p} x_{ij}\beta_j + \varepsilon_i,
+\qquad i=1,\ldots,n.
+\]</span></p>
+<p>Here, <span class="math inline">\(x_{ij}\)</span> denotes the element of the model matrix in row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span>.</p>
+<p>This representation makes the meaning of “linear” particularly clear. The model is linear in the unknown parameters <span class="math inline">\(\beta_1,\ldots,\beta_p\)</span>.</p>
+<hr>
+</section>
+<section id="components-of-the-linear-model" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="components-of-the-linear-model"><span class="header-section-number">1.4</span> Components of the Linear Model</h2>
+<section id="the-response-vector" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="the-response-vector"><span class="header-section-number">1.4.1</span> The Response Vector</h3>
+<p>The vector</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}
+\]</span></p>
+<p>contains the random response variables.</p>
+<p>After observing the data, we obtain the observed vector</p>
+<p><span class="math display">\[
+\mathbf{y}
+=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+\]</span></p>
+<p>It is useful to distinguish between the random variable <span class="math inline">\(\mathbf{Y}\)</span> and its observed value <span class="math inline">\(\mathbf{y}\)</span>.</p>
+<p>Before the data are observed, <span class="math inline">\(\mathbf{Y}\)</span> is random.</p>
+<p>After the data are observed, <span class="math inline">\(\mathbf{y}\)</span> is the particular realization that we have obtained.</p>
+<hr>
+</section>
+<section id="the-parameter-vector" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="the-parameter-vector"><span class="header-section-number">1.4.2</span> The Parameter Vector</h3>
+<p>The unknown parameters are collected into</p>
+<p><span class="math display">\[
+\boldsymbol{\beta}
+=
+\begin{pmatrix}
+\beta_1\\
+\beta_2\\
+\vdots\\
+\beta_p
+\end{pmatrix}.
+\]</span></p>
+<p>These parameters describe the systematic component of the model.</p>
+<p>Depending on the model, they may represent quantities such as:</p>
+<ul>
+<li>an intercept,</li>
+<li>regression coefficients,</li>
+<li>treatment effects,</li>
+<li>group effects,</li>
+<li>interaction effects,</li>
+<li>or other linear combinations of scientifically meaningful quantities.</li>
+</ul>
+<p>The parameter vector is generally unknown and is therefore the main object we want to estimate.</p>
+<hr>
+</section>
+<section id="the-model-matrix" class="level3" data-number="1.4.3">
+<h3 data-number="1.4.3" class="anchored" data-anchor-id="the-model-matrix"><span class="header-section-number">1.4.3</span> The Model Matrix</h3>
+<p>The matrix</p>
+<p><span class="math display">\[
+\mathbf{X}
+=
+\begin{pmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1p}\\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2p}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{np}
+\end{pmatrix}
+\]</span></p>
+<p>is called the <strong>model matrix</strong> or <strong>design matrix</strong>.</p>
+<p>Its rows correspond to observations, while its columns correspond to parameters.</p>
+<p>The model matrix determines how the parameters enter the model.</p>
+<p>For example, consider simple linear regression:</p>
+<p><span class="math display">\[
+Y_i = \beta_0+\beta_1x_i+\varepsilon_i.
+\]</span></p>
+<p>The model matrix is</p>
+<p><span class="math display">\[
+\mathbf{X}
+=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}.
+\]</span></p>
+<p>The first column represents the intercept and the second column represents the explanatory variable.</p>
+<p>The model matrix will become particularly important when we study least squares estimation, because the geometry and algebra of the model are largely determined by the column space of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<hr>
+</section>
+<section id="the-error-vector" class="level3" data-number="1.4.4">
+<h3 data-number="1.4.4" class="anchored" data-anchor-id="the-error-vector"><span class="header-section-number">1.4.4</span> The Error Vector</h3>
+<p>The random errors are collected into</p>
+<p><span class="math display">\[
+\boldsymbol{\varepsilon}
+=
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+\]</span></p>
+<p>The errors represent the part of the observations that is not explained by the systematic component <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\underbrace{\mathbf{X}\boldsymbol{\beta}}_{\text{systematic component}}
++
+\underbrace{\boldsymbol{\varepsilon}}_{\text{random component}}.
+\]</span></p>
+<p>This decomposition is fundamental.</p>
+<p>The systematic component describes what the model says about the mean structure of the observations, while the random component accounts for unexplained variation.</p>
+<hr>
+</section>
+</section>
+<section id="assumptions-of-the-gauss-markov-model" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="assumptions-of-the-gauss-markov-model"><span class="header-section-number">1.5</span> Assumptions of the Gauss-Markov Model</h2>
+<p>The classical Gauss-Markov framework is based on assumptions about the error vector.</p>
+<p>The central assumptions are</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n,
+\]</span></p>
+<p>where <span class="math inline">\(\sigma^2&gt;0\)</span> is the common error variance and <span class="math inline">\(\mathbf{I}_n\)</span> is the <span class="math inline">\(n\times n\)</span> identity matrix.</p>
+<p>These assumptions can be unpacked into simpler statements.</p>
+<hr>
+<section id="zero-mean-errors" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="zero-mean-errors"><span class="header-section-number">1.5.1</span> Zero Mean Errors</h3>
+<p>The condition</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+\]</span></p>
+<p>means that</p>
+<p><span class="math display">\[
+E(\varepsilon_i)=0
+\]</span></p>
+<p>for every observation.</p>
+<p>The errors therefore have no systematic tendency to be positive or negative.</p>
+<p>Taking expectations in the model</p>
+<p><span class="math display">\[
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
+\]</span></p>
+<p>and assuming that <span class="math inline">\(\mathbf{X}\)</span> is fixed, gives</p>
+<p><span class="math display">\[
+E(\mathbf{Y})
+=
+\mathbf{X}\boldsymbol{\beta}
++
+E(\boldsymbol{\varepsilon}).
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+E(\mathbf{Y})
+=
+\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>Thus the systematic component of the model is the expected response:</p>
+<p><span class="math display">\[
+\boxed{
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}
+}
+\]</span></p>
+<p>This is one of the most important interpretations of the linear model.</p>
+<hr>
+</section>
+<section id="constant-error-variance" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="constant-error-variance"><span class="header-section-number">1.5.2</span> Constant Error Variance</h3>
+<p>The assumption</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n
+\]</span></p>
+<p>implies that every error has the same variance:</p>
+<p><span class="math display">\[
+\operatorname{Var}(\varepsilon_i)=\sigma^2.
+\]</span></p>
+<p>This property is called <strong>homoscedasticity</strong>.</p>
+<p>It also implies that the errors are uncorrelated:</p>
+<p><span class="math display">\[
+\operatorname{Cov}(\varepsilon_i,\varepsilon_j)=0,
+\qquad i\neq j.
+\]</span></p>
+<p>Therefore, the errors have a covariance matrix of the form</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\begin{pmatrix}
+\sigma^2 &amp; 0 &amp; \cdots &amp; 0\\
+0 &amp; \sigma^2 &amp; \cdots &amp; 0\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+0 &amp; 0 &amp; \cdots &amp; \sigma^2
+\end{pmatrix}
+=
+\sigma^2\mathbf{I}_n.
+\]</span></p>
+<p>This assumption is central to the Gauss-Markov theorem.</p>
+<hr>
+</section>
+<section id="normality-is-not-required-for-the-gauss-markov-theorem" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="normality-is-not-required-for-the-gauss-markov-theorem"><span class="header-section-number">1.5.3</span> Normality Is Not Required for the Gauss-Markov Theorem</h3>
+<p>An important distinction should be made here.</p>
+<p>The basic Gauss-Markov theorem does <strong>not</strong> require the errors to be normally distributed.</p>
+<p>The essential assumptions are the mean and covariance conditions</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+\]</span></p>
+<p>Normality,</p>
+<p><span class="math display">\[
+\boldsymbol{\varepsilon}\sim N(\mathbf{0},\sigma^2\mathbf{I}_n),
+\]</span></p>
+<p>is an additional assumption that is useful for obtaining exact finite-sample distributions and carrying out classical hypothesis tests and confidence procedures.</p>
+<p>This distinction will become important later when we discuss inference and model checking.</p>
+<hr>
+</section>
+</section>
+<section id="mean-and-variance-of-the-response" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="mean-and-variance-of-the-response"><span class="header-section-number">1.6</span> Mean and Variance of the Response</h2>
+<p>Since</p>
+<p><span class="math display">\[
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0},
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>Similarly, because <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span> is treated as fixed,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\mathbf{Y})
+=
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+\]</span></p>
+<p>Therefore, the basic Gauss-Markov model can be summarized as</p>
+<p><span class="math display">\[
+\boxed{
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\mathbf{Y})=\sigma^2\mathbf{I}_n.
+}
+\]</span></p>
+<p>These two equations describe the mean structure and covariance structure of the observations.</p>
+<hr>
+</section>
+<section id="what-does-linear-mean" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="what-does-linear-mean"><span class="header-section-number">1.7</span> What Does “Linear” Mean?</h2>
+<p>The word <strong>linear</strong> in linear model refers to linearity in the unknown parameters.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+Y_i=\beta_0+\beta_1x_i+\varepsilon_i
+\]</span></p>
+<p>is a linear model.</p>
+<p>So is</p>
+<p><span class="math display">\[
+Y_i=\beta_0+\beta_1x_i+\beta_2x_i^2+\varepsilon_i.
+\]</span></p>
+<p>Although <span class="math inline">\(x_i^2\)</span> appears in the second model, the model is still linear in the parameters <span class="math inline">\(\beta_0,\beta_1,\beta_2\)</span>.</p>
+<p>It can be written as</p>
+<p><span class="math display">\[
+Y_i
+=
+\beta_0(1)
++
+\beta_1(x_i)
++
+\beta_2(x_i^2)
++
+\varepsilon_i.
+\]</span></p>
+<p>In matrix form,</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\begin{pmatrix}
+1 &amp; x_1 &amp; x_1^2\\
+1 &amp; x_2 &amp; x_2^2\\
+\vdots &amp; \vdots &amp; \vdots\\
+1 &amp; x_n &amp; x_n^2
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1\\
+\beta_2
+\end{pmatrix}
++
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>The parameters still appear only to the first power and are not multiplied by one another.</p>
+<p>By contrast, a model such as</p>
+<p><span class="math display">\[
+Y_i=\beta_0+\beta_1^{\,2}x_i+\varepsilon_i
+\]</span></p>
+<p>is not linear in the parameter <span class="math inline">\(\beta_1\)</span>.</p>
+<p>Thus, linearity concerns the <strong>parameters</strong>, not necessarily the explanatory variables.</p>
+<hr>
+</section>
+<section id="linear-parametric-functions" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="linear-parametric-functions"><span class="header-section-number">1.8</span> Linear Parametric Functions</h2>
+<p>The goal of estimation is not always to estimate the individual parameters <span class="math inline">\(\beta_1,\ldots,\beta_p\)</span>.</p>
+<p>Often, the quantity of interest is a linear combination of the parameters.</p>
+<p>A general linear parametric function has the form</p>
+<p><span class="math display">\[
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{a}\)</span> is a known vector of constants.</p>
+<p>For example, if</p>
+<p><span class="math display">\[
+\boldsymbol{\beta}
+=
+\begin{pmatrix}
+\beta_0\\
+\beta_1\\
+\beta_2
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\mathbf{a}
+=
+\begin{pmatrix}
+1\\
+2\\
+-1
+\end{pmatrix}
+\]</span></p>
+<p>gives</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+=
+\beta_0+2\beta_1-\beta_2.
+\]</span></p>
+<p>Such quantities are called <strong>linear parametric functions</strong>.</p>
+<p>Estimability asks whether a particular linear parametric function can be estimated from the available observations under the model.</p>
+<p>This question becomes especially important when the model matrix does not have full column rank.</p>
+<hr>
+</section>
+<section id="linear-estimators" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="linear-estimators"><span class="header-section-number">1.9</span> Linear Estimators</h2>
+<p>An estimator is a function of the observed data used to estimate an unknown quantity.</p>
+<p>In the Gauss-Markov framework, we are particularly interested in <strong>linear estimators</strong>.</p>
+<p>A general linear estimator of a scalar quantity can be written as</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y},
+\]</span></p>
+<p>where <span class="math inline">\(\mathbf{c}\)</span> is a vector of known constants.</p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\sum_{i=1}^{n}c_iY_i.
+\]</span></p>
+<p>Thus, a linear estimator is a weighted sum of the observations.</p>
+<p>The weights <span class="math inline">\(c_1,\ldots,c_n\)</span> are chosen so that the estimator has desirable statistical properties.</p>
+<hr>
+<section id="unbiasedness" class="level3" data-number="1.9.1">
+<h3 data-number="1.9.1" class="anchored" data-anchor-id="unbiasedness"><span class="header-section-number">1.9.1</span> Unbiasedness</h3>
+<p>Suppose we want to estimate the linear parametric function</p>
+<p><span class="math display">\[
+\lambda=\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+\]</span></p>
+<p>A linear estimator</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y}
+\]</span></p>
+<p>is <strong>unbiased</strong> if</p>
+<p><span class="math display">\[
+E(\widehat{\lambda})=\lambda.
+\]</span></p>
+<p>Using</p>
+<p><span class="math display">\[
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta},
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+E(\widehat{\lambda})
+=
+E(\mathbf{c}^{\mathsf T}\mathbf{Y})
+=
+\mathbf{c}^{\mathsf T}E(\mathbf{Y})
+=
+\mathbf{c}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>For this to equal</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\]</span></p>
+<p>for every possible <span class="math inline">\(\boldsymbol{\beta}\)</span>, we require</p>
+<p><span class="math display">\[
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}.
+\]</span></p>
+<p>Therefore, the condition for <span class="math inline">\(\mathbf{c}^{\mathsf T}\mathbf{Y}\)</span> to be an unbiased estimator of <span class="math inline">\(\mathbf{a}^{\mathsf T}\boldsymbol{\beta}\)</span> is</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}
+}
+\]</span></p>
+<p>This condition provides the bridge between <strong>estimability</strong> and <strong>linear estimation</strong>.</p>
+<hr>
+</section>
+</section>
+<section id="why-variance-matters" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="why-variance-matters"><span class="header-section-number">1.10</span> Why Variance Matters</h2>
+<p>Unbiasedness alone is not enough to choose an estimator.</p>
+<p>Suppose several unbiased estimators of the same quantity are available. We would generally prefer an estimator that has smaller variance because it tends to fluctuate less from sample to sample.</p>
+<p>For the linear estimator</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y},
+\]</span></p>
+<p>its variance is</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\lambda})
+=
+\operatorname{Var}(\mathbf{c}^{\mathsf T}\mathbf{Y}).
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+\operatorname{Var}(\mathbf{Y})
+=
+\sigma^2\mathbf{I}_n,
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\lambda})
+=
+\mathbf{c}^{\mathsf T}
+\operatorname{Var}(\mathbf{Y})
+\mathbf{c}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2\mathbf{c}^{\mathsf T}\mathbf{c}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2\mathbf{c}^{\mathsf T}\mathbf{c}
+}
+\]</span></p>
+<p>under the Gauss-Markov assumptions.</p>
+<p>This leads to the central optimization problem of linear estimation:</p>
+<blockquote class="blockquote">
+<p>Among all linear unbiased estimators of a given estimable quantity, which estimator has the smallest variance?</p>
+</blockquote>
+<p>The answer to this question is the <strong>best linear unbiased estimator</strong>, or <strong>BLUE</strong>.</p>
+<p>The Gauss-Markov theorem will establish why the least squares estimator has this optimality property.</p>
+<hr>
+</section>
+<section id="the-road-ahead" class="level2" data-number="1.11">
+<h2 data-number="1.11" class="anchored" data-anchor-id="the-road-ahead"><span class="header-section-number">1.11</span> The Road Ahead</h2>
+<p>The theory developed so far gives us the basic ingredients:</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0},
+\qquad
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+\]</span></p>
+<p>From this set-up we have introduced:</p>
+<ul>
+<li>the response vector <span class="math inline">\(\mathbf{Y}\)</span>,</li>
+<li>the model matrix <span class="math inline">\(\mathbf{X}\)</span>,</li>
+<li>the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span>,</li>
+<li>the error vector <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>,</li>
+<li>linear parametric functions <span class="math inline">\(\mathbf{a}^{\mathsf T}\boldsymbol{\beta}\)</span>,</li>
+<li>linear estimators <span class="math inline">\(\mathbf{c}^{\mathsf T}\mathbf{Y}\)</span>,</li>
+<li>unbiasedness,</li>
+<li>and the role of estimator variance.</li>
+</ul>
+<p>The next question is unavoidable:</p>
+<blockquote class="blockquote">
+<p>Which linear parametric functions can actually be estimated, and how should we construct an estimator with the smallest possible variance?</p>
+</blockquote>
+<p>This leads to the theory of <strong>estimability</strong> and then to the <strong>method of least squares</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key Idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Gauss-Markov framework is built around three objects:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Model}
+\quad\longrightarrow\quad
+\text{Estimator}
+\quad\longrightarrow\quad
+\text{Optimality}
+}
+\]</span></p>
+<p>The model describes the data through</p>
+<p><span class="math display">\[
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
+\]</span></p>
+<p>the estimator uses <span class="math inline">\(\mathbf{Y}\)</span> to estimate a quantity involving <span class="math inline">\(\boldsymbol{\beta}\)</span>, and the Gauss-Markov theorem tells us which linear unbiased estimator is best.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="estimability-and-the-method-of-least-squares" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Estimability and the Method of Least Squares</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Course Status
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Status:</strong> 🟢 <strong>Core</strong></p>
+<p><strong>Required depth:</strong> <strong>4 · Prove</strong></p>
+<p>This section covers the syllabus topics <strong>estimability of linear parametric functions</strong> and the <strong>method of least squares</strong>. The main results should be understood mathematically, including the connection between the model matrix, estimability, normal equations, and least squares estimation.</p>
+</div>
+</div>
+<section id="estimability" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="estimability"><span class="header-section-number">2.1</span> Estimability</h2>
+<p>In the previous section, we introduced a linear parametric function</p>
+<p><span class="math display">\[
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
+\]</span></p>
+<p>and a linear estimator</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>For <span class="math inline">\(\widehat{\lambda}\)</span> to be an unbiased estimator of <span class="math inline">\(\lambda\)</span>, we established the condition</p>
+<p><span class="math display">\[
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}.
+\]</span></p>
+<p>This immediately raises an important question:</p>
+<blockquote class="blockquote">
+<p>Does such a vector <span class="math inline">\(\mathbf{c}\)</span> exist?</p>
+</blockquote>
+<p>If it does, the linear parametric function is <strong>estimable</strong>.</p>
+<p>Thus, estimability is fundamentally a question about the model matrix <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<hr>
+<section id="definition-of-estimability" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="definition-of-estimability"><span class="header-section-number">2.1.1</span> Definition of Estimability</h3>
+<p>A linear parametric function</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\]</span></p>
+<p>is said to be <strong>estimable</strong> if there exists a vector <span class="math inline">\(\mathbf{c}\)</span> such that</p>
+<p><span class="math display">\[
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{c}
+=
+\mathbf{a}.
+\]</span></p>
+<p>When this condition holds, the quantity</p>
+<p><span class="math display">\[
+\mathbf{c}^{\mathsf T}\mathbf{Y}
+\]</span></p>
+<p>is a linear unbiased estimator of</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\text{ is estimable}
+\iff
+\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T})
+}
+\]</span></p>
+<p>where <span class="math inline">\(\mathcal{C}(\mathbf{X}^{\mathsf T})\)</span> denotes the column space of <span class="math inline">\(\mathbf{X}^{\mathsf T}\)</span>.</p>
+<p>Since</p>
+<p><span class="math display">\[
+\mathcal{C}(\mathbf{X}^{\mathsf T})
+\]</span></p>
+<p>is the row space of <span class="math inline">\(\mathbf{X}\)</span>, we can also state that a linear parametric function is estimable precisely when its coefficient vector belongs to the row space of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<hr>
+</section>
+</section>
+<section id="why-estimability-matters" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="why-estimability-matters"><span class="header-section-number">2.2</span> Why Estimability Matters</h2>
+<p>It is tempting to assume that every individual parameter in <span class="math inline">\(\boldsymbol{\beta}\)</span> can automatically be estimated.</p>
+<p>That is not always true.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+\mathbf{X}
+=
+\begin{pmatrix}
+1 &amp; 1\\
+1 &amp; 1\\
+1 &amp; 1
+\end{pmatrix}.
+\]</span></p>
+<p>The two columns of <span class="math inline">\(\mathbf{X}\)</span> are identical.</p>
+<p>The model</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\mathbf{X}
+\begin{pmatrix}
+\beta_1\\
+\beta_2
+\end{pmatrix}
++
+\boldsymbol{\varepsilon}
+\]</span></p>
+<p>therefore becomes</p>
+<p><span class="math display">\[
+Y_i
+=
+\beta_1+\beta_2+\varepsilon_i.
+\]</span></p>
+<p>The data contain information about</p>
+<p><span class="math display">\[
+\beta_1+\beta_2,
+\]</span></p>
+<p>but there is no way to distinguish <span class="math inline">\(\beta_1\)</span> from <span class="math inline">\(\beta_2\)</span> individually.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\beta_1+\beta_2
+\]</span></p>
+<p>is estimable, while <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> individually are not uniquely determined by the model.</p>
+<p>This illustrates an important principle:</p>
+<blockquote class="blockquote">
+<p>The data determine certain combinations of parameters, rather than necessarily determining every parameter separately.</p>
+</blockquote>
+<hr>
+</section>
+<section id="full-column-rank-and-estimability" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="full-column-rank-and-estimability"><span class="header-section-number">2.3</span> Full Column Rank and Estimability</h2>
+<p>The simplest situation occurs when <span class="math inline">\(\mathbf{X}\)</span> has full column rank.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+\operatorname{rank}(\mathbf{X})=p.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\]</span></p>
+<p>is nonsingular.</p>
+<p>In this case, every linear parametric function</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\]</span></p>
+<p>is estimable.</p>
+<p>In particular, each individual parameter <span class="math inline">\(\beta_j\)</span> is estimable.</p>
+<p>The full-rank case is therefore especially convenient because the parameter vector itself is uniquely identifiable from the systematic part of the model.</p>
+<hr>
+<section id="rank-deficiency" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="rank-deficiency"><span class="header-section-number">2.3.1</span> Rank Deficiency</h3>
+<p>If</p>
+<p><span class="math display">\[
+\operatorname{rank}(\mathbf{X})&lt;p,
+\]</span></p>
+<p>then the columns of <span class="math inline">\(\mathbf{X}\)</span> are linearly dependent.</p>
+<p>In this situation, the parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span> is not uniquely determined by <span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>.</p>
+<p>There may be multiple vectors <span class="math inline">\(\boldsymbol{\beta}\)</span> that produce exactly the same mean vector:</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta}_1
+=
+\mathbf{X}\boldsymbol{\beta}_2.
+\]</span></p>
+<p>Therefore, individual parameters may fail to be estimable.</p>
+<p>However, certain linear combinations of the parameters can still be estimable.</p>
+<p>This distinction is important:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Non-estimability of individual parameters}
+\neq
+\text{non-estimability of every parameter function}
+}
+\]</span></p>
+<p>Even when <span class="math inline">\(\mathbf{X}\)</span> is rank deficient, meaningful contrasts and other linear functions of the parameters may remain estimable.</p>
+<hr>
+</section>
+</section>
+<section id="the-null-space-and-estimability" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="the-null-space-and-estimability"><span class="header-section-number">2.4</span> The Null Space and Estimability</h2>
+<p>The relationship between estimability and the null space of <span class="math inline">\(\mathbf{X}\)</span> provides another useful characterization.</p>
+<p>The null space of <span class="math inline">\(\mathbf{X}\)</span> is</p>
+<p><span class="math display">\[
+\mathcal{N}(\mathbf{X})
+=
+\left\{
+\mathbf{v}:
+\mathbf{X}\mathbf{v}=\mathbf{0}
+\right\}.
+\]</span></p>
+<p>Suppose two parameter vectors <span class="math inline">\(\boldsymbol{\beta}_1\)</span> and <span class="math inline">\(\boldsymbol{\beta}_2\)</span> produce the same mean response:</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta}_1
+=
+\mathbf{X}\boldsymbol{\beta}_2.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathbf{X}(\boldsymbol{\beta}_1-\boldsymbol{\beta}_2)
+=
+\mathbf{0}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\boldsymbol{\beta}_1-\boldsymbol{\beta}_2
+\in
+\mathcal{N}(\mathbf{X}).
+\]</span></p>
+<p>A linear function</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\]</span></p>
+<p>is estimable if it has the same value for every parameter vector that produces the same mean response.</p>
+<p>Therefore, we require</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\mathbf{v}=0
+\]</span></p>
+<p>for every</p>
+<p><span class="math display">\[
+\mathbf{v}\in\mathcal{N}(\mathbf{X}).
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\mathbf{a}
+\perp
+\mathcal{N}(\mathbf{X}).
+\]</span></p>
+<p>Using the fundamental theorem of linear algebra,</p>
+<p><span class="math display">\[
+\mathcal{N}(\mathbf{X})^\perp
+=
+\mathcal{C}(\mathbf{X}^{\mathsf T}),
+\]</span></p>
+<p>so we recover the earlier condition</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\text{ is estimable}
+\iff
+\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T})
+}
+\]</span></p>
+<p>This connects estimability directly to the geometry of the model matrix.</p>
+<hr>
+</section>
+<section id="the-method-of-least-squares" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="the-method-of-least-squares"><span class="header-section-number">2.5</span> The Method of Least Squares</h2>
+<p>Once we have established the model and considered which quantities are estimable, we need a method for constructing estimators.</p>
+<p>The most important method is <strong>least squares</strong>.</p>
+<p>Recall the linear model</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>For a candidate parameter vector <span class="math inline">\(\boldsymbol{\beta}\)</span>, the corresponding fitted mean vector is</p>
+<p><span class="math display">\[
+\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>The difference between the observed response vector and this fitted vector is</p>
+<p><span class="math display">\[
+\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>This difference is the vector of residuals associated with <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>Least squares chooses the parameter vector that makes these residuals collectively as small as possible.</p>
+<hr>
+<section id="the-least-squares-criterion" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="the-least-squares-criterion"><span class="header-section-number">2.5.1</span> The Least Squares Criterion</h3>
+<p>The residual vector is</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>A natural measure of its size is its squared Euclidean length:</p>
+<p><span class="math display">\[
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+\]</span></p>
+<p>Therefore, the least squares estimator is obtained by minimizing</p>
+<p><span class="math display">\[
+S(\boldsymbol{\beta})
+=
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+\underset{\boldsymbol{\beta}}{\operatorname{arg\,min}}
+\;
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})
+}
+\]</span></p>
+<p>This is the <strong>least squares estimator</strong>.</p>
+<hr>
+</section>
+<section id="scalar-form" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="scalar-form"><span class="header-section-number">2.5.2</span> Scalar Form</h3>
+<p>The same criterion can be written in terms of the individual observations.</p>
+<p>Since</p>
+<p><span class="math display">\[
+\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}
+=
+\begin{pmatrix}
+Y_1-\sum_{j=1}^{p}x_{1j}\beta_j\\
+Y_2-\sum_{j=1}^{p}x_{2j}\beta_j\\
+\vdots\\
+Y_n-\sum_{j=1}^{p}x_{nj}\beta_j
+\end{pmatrix},
+\]</span></p>
+<p>the least squares criterion is</p>
+<p><span class="math display">\[
+S(\boldsymbol{\beta})
+=
+\sum_{i=1}^{n}
+\left(
+Y_i-\sum_{j=1}^{p}x_{ij}\beta_j
+\right)^2.
+\]</span></p>
+<p>The least squares estimator minimizes the sum of squared deviations between the observed responses and the values predicted by the model.</p>
+<hr>
+</section>
+</section>
+<section id="why-square-the-residuals" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="why-square-the-residuals"><span class="header-section-number">2.6</span> Why Square the Residuals?</h2>
+<p>There are several reasons for using squared residuals.</p>
+<p>First, positive and negative residuals should not cancel each other.</p>
+<p>For example, if two residuals are <span class="math inline">\(5\)</span> and <span class="math inline">\(-5\)</span>, their ordinary sum is</p>
+<p><span class="math display">\[
+5+(-5)=0,
+\]</span></p>
+<p>even though both represent substantial deviations.</p>
+<p>Squaring gives</p>
+<p><span class="math display">\[
+5^2+(-5)^2=50,
+\]</span></p>
+<p>so both deviations contribute positively.</p>
+<p>Second, the squared-error criterion has convenient mathematical properties. It is differentiable and, under the usual conditions, leads to a unique minimum.</p>
+<p>Third, the squared Euclidean distance has a natural geometric interpretation, which will become particularly important when we connect least squares to orthogonal projections.</p>
+<hr>
+</section>
+<section id="deriving-the-normal-equations" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="deriving-the-normal-equations"><span class="header-section-number">2.7</span> Deriving the Normal Equations</h2>
+<p>Consider the least squares criterion</p>
+<p><span class="math display">\[
+S(\boldsymbol{\beta})
+=
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).
+\]</span></p>
+<p>Expanding the expression gives</p>
+<p><span class="math display">\[
+S(\boldsymbol{\beta})
+=
+\mathbf{Y}^{\mathsf T}\mathbf{Y}
+-
+2\boldsymbol{\beta}^{\mathsf T}\mathbf{X}^{\mathsf T}\mathbf{Y}
++
+\boldsymbol{\beta}^{\mathsf T}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\boldsymbol{\beta}.
+\]</span></p>
+<p>To minimize this function with respect to <span class="math inline">\(\boldsymbol{\beta}\)</span>, differentiate with respect to <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>Using the standard matrix derivative results,</p>
+<p><span class="math display">\[
+\frac{\partial}{\partial\boldsymbol{\beta}}
+\left(
+\mathbf{Y}^{\mathsf T}\mathbf{Y}
+\right)
+=
+\mathbf{0},
+\]</span></p>
+<p><span class="math display">\[
+\frac{\partial}{\partial\boldsymbol{\beta}}
+\left(
+-2\boldsymbol{\beta}^{\mathsf T}\mathbf{X}^{\mathsf T}\mathbf{Y}
+\right)
+=
+-2\mathbf{X}^{\mathsf T}\mathbf{Y},
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\frac{\partial}{\partial\boldsymbol{\beta}}
+\left(
+\boldsymbol{\beta}^{\mathsf T}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\boldsymbol{\beta}
+\right)
+=
+2\mathbf{X}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\frac{\partial S(\boldsymbol{\beta})}
+{\partial\boldsymbol{\beta}}
+=
+-2\mathbf{X}^{\mathsf T}\mathbf{Y}
++
+2\mathbf{X}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
+\]</span></p>
+<p>At the minimum, the derivative must equal zero:</p>
+<p><span class="math display">\[
+-2\mathbf{X}^{\mathsf T}\mathbf{Y}
++
+2\mathbf{X}^{\mathsf T}\mathbf{X}\widehat{\boldsymbol{\beta}}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Dividing by <span class="math inline">\(2\)</span> gives</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>These are the <strong>normal equations</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+\]</span></p>
+<p>The normal equations are one of the central results of least squares theory.</p>
+<hr>
+</section>
+<section id="the-least-squares-estimator" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="the-least-squares-estimator"><span class="header-section-number">2.8</span> The Least Squares Estimator</h2>
+<p>If <span class="math inline">\(\mathbf{X}\)</span> has full column rank, then</p>
+<p><span class="math display">\[
+\operatorname{rank}(\mathbf{X})=p,
+\]</span></p>
+<p>and therefore</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\]</span></p>
+<p>is nonsingular.</p>
+<p>We can then multiply the normal equations by</p>
+<p><span class="math display">\[
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\]</span></p>
+<p>to obtain</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+\]</span></p>
+<p>This is the familiar matrix expression for the ordinary least squares estimator.</p>
+<p>The corresponding observed estimator is</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{y}.
+\]</span></p>
+<p>The distinction between <span class="math inline">\(\mathbf{Y}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> is important:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{Y}\)</span> is the random response vector.</li>
+<li><span class="math inline">\(\mathbf{y}\)</span> is the observed realization.</li>
+<li><span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span> is therefore itself a random vector before the data are observed.</li>
+</ul>
+<hr>
+</section>
+<section id="the-normal-equations-and-residuals" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="the-normal-equations-and-residuals"><span class="header-section-number">2.9</span> The Normal Equations and Residuals</h2>
+<p>Define the fitted response vector as</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}
+=
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>The residual vector is</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{Y}-\widehat{\mathbf{Y}}.
+\]</span></p>
+<p>Substituting the fitted values gives</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>The normal equations state that</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>Rearranging,</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}
+\left(
+\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}
+\right)
+=
+\mathbf{0}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}
+}
+\]</span></p>
+<p>This means that the residual vector is orthogonal to every column of the model matrix.</p>
+<p>In other words,</p>
+<p><span class="math display">\[
+\mathbf{e}
+\perp
+\mathcal{C}(\mathbf{X}).
+\]</span></p>
+<p>This is the geometric heart of least squares.</p>
+<hr>
+</section>
+<section id="least-squares-as-an-orthogonal-projection" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="least-squares-as-an-orthogonal-projection"><span class="header-section-number">2.10</span> Least Squares as an Orthogonal Projection</h2>
+<p>The fitted vector is</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}
+=
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>Because it is a linear combination of the columns of <span class="math inline">\(\mathbf{X}\)</span>,</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}
+\in
+\mathcal{C}(\mathbf{X}).
+\]</span></p>
+<p>At the same time,</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{Y}-\widehat{\mathbf{Y}}
+\]</span></p>
+<p>is orthogonal to <span class="math inline">\(\mathcal{C}(\mathbf{X})\)</span>.</p>
+<p>Therefore, the observed vector <span class="math inline">\(\mathbf{Y}\)</span> can be decomposed as</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\widehat{\mathbf{Y}}
++
+\mathbf{e},
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}\in\mathcal{C}(\mathbf{X})
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathbf{e}\perp\mathcal{C}(\mathbf{X}).
+\]</span></p>
+<p>Thus, <span class="math inline">\(\widehat{\mathbf{Y}}\)</span> is the orthogonal projection of <span class="math inline">\(\mathbf{Y}\)</span> onto the column space of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p>We can visualize the decomposition conceptually as</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{Y}
+=
+\underbrace{\widehat{\mathbf{Y}}}_{\text{projection onto }\mathcal{C}(\mathbf{X})}
++
+\underbrace{\mathbf{e}}_{\text{orthogonal residual}}
+}
+\]</span></p>
+<p>This geometric interpretation will become especially useful when studying projections and the matrix form of the linear model.</p>
+<hr>
+</section>
+<section id="the-hat-matrix" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="the-hat-matrix"><span class="header-section-number">2.11</span> The Hat Matrix</h2>
+<p>When <span class="math inline">\(\mathbf{X}\)</span> has full column rank,</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>Define</p>
+<p><span class="math display">\[
+\mathbf{H}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\mathbf{Y}}
+=
+\mathbf{H}\mathbf{Y}
+}
+\]</span></p>
+<p>The matrix <span class="math inline">\(\mathbf{H}\)</span> is called the <strong>hat matrix</strong> because it maps <span class="math inline">\(\mathbf{Y}\)</span> to <span class="math inline">\(\widehat{\mathbf{Y}}\)</span>:</p>
+<p><span class="math display">\[
+\mathbf{Y}
+\longmapsto
+\widehat{\mathbf{Y}}.
+\]</span></p>
+<p>The residual vector can therefore be written as</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{Y}-\mathbf{H}\mathbf{Y}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}
+}
+\]</span></p>
+<p>The matrices <span class="math inline">\(\mathbf{H}\)</span> and <span class="math inline">\(\mathbf{I}-\mathbf{H}\)</span> will play an important role in the analysis of fitted values and residuals.</p>
+<hr>
+</section>
+<section id="properties-of-the-hat-matrix" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="properties-of-the-hat-matrix"><span class="header-section-number">2.12</span> Properties of the Hat Matrix</h2>
+<p>The hat matrix has two important algebraic properties.</p>
+<p>First,</p>
+<p><span class="math display">\[
+\mathbf{H}^{\mathsf T}
+=
+\mathbf{H}.
+\]</span></p>
+<p>Thus, <span class="math inline">\(\mathbf{H}\)</span> is symmetric.</p>
+<p>Second,</p>
+<p><span class="math display">\[
+\mathbf{H}^2
+=
+\mathbf{H}.
+\]</span></p>
+<p>A matrix satisfying</p>
+<p><span class="math display">\[
+\mathbf{H}^2=\mathbf{H}
+\]</span></p>
+<p>is called <strong>idempotent</strong>.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{H}^{\mathsf T}=\mathbf{H},
+\qquad
+\mathbf{H}^2=\mathbf{H}
+}
+\]</span></p>
+<p>These properties are exactly what we expect from an orthogonal projection matrix.</p>
+<p>Similarly, define the residual-maker matrix</p>
+<p><span class="math display">\[
+\mathbf{M}
+=
+\mathbf{I}-\mathbf{H}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{M}\mathbf{Y}.
+\]</span></p>
+<p>Since <span class="math inline">\(\mathbf{H}\)</span> is symmetric and idempotent,</p>
+<p><span class="math display">\[
+\mathbf{M}^{\mathsf T}
+=
+\mathbf{M}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathbf{M}^2
+=
+\mathbf{M}.
+\]</span></p>
+<p>Thus, <span class="math inline">\(\mathbf{M}\)</span> is also a symmetric idempotent matrix.</p>
+<p>It projects vectors onto the orthogonal complement of <span class="math inline">\(\mathcal{C}(\mathbf{X})\)</span>.</p>
+<hr>
+</section>
+<section id="unbiasedness-of-the-least-squares-estimator" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="unbiasedness-of-the-least-squares-estimator"><span class="header-section-number">2.13</span> Unbiasedness of the Least Squares Estimator</h2>
+<p>We now return to the statistical properties of the least squares estimator.</p>
+<p>Under the full-rank assumption,</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>Substitute the linear model</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\left(
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+\right).
+\]</span></p>
+<p>Expanding,</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\boldsymbol{\beta}
++
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+\boldsymbol{\beta}
++
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Taking expectations,</p>
+<p><span class="math display">\[
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
++
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+E(\boldsymbol{\varepsilon}).
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0},
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+\boxed{
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+}
+\]</span></p>
+<p>Therefore, the least squares estimator is unbiased.</p>
+<hr>
+</section>
+<section id="variance-of-the-least-squares-estimator" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="variance-of-the-least-squares-estimator"><span class="header-section-number">2.14</span> Variance of the Least Squares Estimator</h2>
+<p>From the previous derivation,</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+-
+\boldsymbol{\beta}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\operatorname{Var}
+\left[
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}
+\right].
+\]</span></p>
+<p>Using</p>
+<p><span class="math display">\[
+\operatorname{Var}(\mathbf{A}\mathbf{Y})
+=
+\mathbf{A}
+\operatorname{Var}(\mathbf{Y})
+\mathbf{A}^{\mathsf T},
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\operatorname{Var}(\boldsymbol{\varepsilon})
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+\]</span></p>
+<p>Under the Gauss-Markov assumption,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+\]</span></p>
+<p>Simplifying,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+}
+\]</span></p>
+<p>This covariance matrix is fundamental for inference about the parameters.</p>
+<p>The diagonal entries give the individual variances:</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\beta}_j)
+=
+\sigma^2
+\left[
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\right]_{jj}.
+\]</span></p>
+<p>The off-diagonal entries give covariances between parameter estimators.</p>
+<hr>
+</section>
+<section id="estimating-a-linear-parametric-function" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="estimating-a-linear-parametric-function"><span class="header-section-number">2.15</span> Estimating a Linear Parametric Function</h2>
+<p>Suppose the quantity of interest is</p>
+<p><span class="math display">\[
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+\]</span></p>
+<p>Once <span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span> has been obtained, a natural estimator is</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>Because <span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span> is unbiased,</p>
+<p><span class="math display">\[
+E(\widehat{\lambda})
+=
+E
+\left(
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+\right)
+=
+\mathbf{a}^{\mathsf T}
+E(\widehat{\boldsymbol{\beta}})
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\lambda}
+=
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+}
+\]</span></p>
+<p>is an unbiased estimator of</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+\]</span></p>
+<p>Its variance is</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\lambda})
+=
+\mathbf{a}^{\mathsf T}
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+\mathbf{a}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2
+\mathbf{a}^{\mathsf T}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{a}
+}
+\]</span></p>
+<p>in the full-rank case.</p>
+<p>This formula will later provide the standard error needed for hypothesis testing and confidence intervals.</p>
+<hr>
+</section>
+<section id="residual-sum-of-squares" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="residual-sum-of-squares"><span class="header-section-number">2.16</span> Residual Sum of Squares</h2>
+<p>The least squares criterion evaluated at the least squares estimator is called the <strong>residual sum of squares</strong>.</p>
+<p>The residual vector is</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{SSE}
+=
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\operatorname{SSE}
+=
+(\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}})^{\mathsf T}
+(\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}).
+\]</span></p>
+<p>In scalar notation,</p>
+<p><span class="math display">\[
+\operatorname{SSE}
+=
+\sum_{i=1}^{n}
+(Y_i-\widehat{Y}_i)^2.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{SSE}
+=
+\sum_{i=1}^{n}
+e_i^2
+}
+\]</span></p>
+<p>The least squares estimator is precisely the parameter vector that minimizes this quantity.</p>
+<hr>
+</section>
+<section id="a-useful-decomposition" class="level2" data-number="2.17">
+<h2 data-number="2.17" class="anchored" data-anchor-id="a-useful-decomposition"><span class="header-section-number">2.17</span> A Useful Decomposition</h2>
+<p>Because</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\widehat{\mathbf{Y}}
++
+\mathbf{e}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}
+\perp
+\mathbf{e},
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+\mathbf{Y}^{\mathsf T}\mathbf{Y}
+=
+\widehat{\mathbf{Y}}^{\mathsf T}
+\widehat{\mathbf{Y}}
++
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\|\mathbf{Y}\|^2
+=
+\|\widehat{\mathbf{Y}}\|^2
++
+\|\mathbf{e}\|^2
+}
+\]</span></p>
+<p>This is a direct consequence of the Pythagorean theorem in Euclidean space.</p>
+<p>In linear model terminology, it expresses the decomposition of the observed vector into a fitted component and a residual component.</p>
+<p>This geometric viewpoint will become particularly useful when we study analysis of variance.</p>
+<hr>
+</section>
+<section id="summary-of-part-2" class="level2" data-number="2.18">
+<h2 data-number="2.18" class="anchored" data-anchor-id="summary-of-part-2"><span class="header-section-number">2.18</span> Summary of Part 2</h2>
+<p>The main ideas developed in this section can be summarized as follows.</p>
+<p>A linear parametric function</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\]</span></p>
+<p>is estimable if and only if</p>
+<p><span class="math display">\[
+\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T}).
+\]</span></p>
+<p>The least squares estimator minimizes</p>
+<p><span class="math display">\[
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).
+\]</span></p>
+<p>This leads to the normal equations</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+\]</span></p>
+<p>and, when <span class="math inline">\(\mathbf{X}\)</span> has full column rank,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+}
+\]</span></p>
+<p>The fitted values are</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\mathbf{Y}}
+=
+\mathbf{H}\mathbf{Y}
+}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbf{H}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+\]</span></p>
+<p>The residuals are</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}
+}
+\]</span></p>
+<p>and satisfy</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}.
+}
+\]</span></p>
+<p>Under the Gauss-Markov assumptions,</p>
+<p><span class="math display">\[
+\boxed{
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+}
+\]</span></p>
+<p>The least squares estimator is therefore linear and unbiased.</p>
+<p>The remaining question is the crucial one:</p>
+<blockquote class="blockquote">
+<p>Is least squares merely an unbiased estimator, or is it the <strong>best</strong> linear unbiased estimator?</p>
+</blockquote>
+<p>That is exactly what the <strong>Gauss-Markov theorem</strong> answers.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key Idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Least squares can be understood in two equivalent ways.</p>
+<p><strong>Algebraically</strong>, it chooses <span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span> to minimize</p>
+<p><span class="math display">\[
+\|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|^2.
+\]</span></p>
+<p><strong>Geometrically</strong>, it projects <span class="math inline">\(\mathbf{Y}\)</span> orthogonally onto the column space of <span class="math inline">\(\mathbf{X}\)</span>:</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\widehat{\mathbf{Y}}
++
+\mathbf{e},
+\qquad
+\widehat{\mathbf{Y}}\in\mathcal{C}(\mathbf{X}),
+\qquad
+\mathbf{e}\perp\mathcal{C}(\mathbf{X}).
+\]</span></p>
+<p>These are not two different methods. They are two views of the same least squares procedure.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="gauss-markov-theorem" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Gauss-Markov Theorem</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Course Status
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Status:</strong> 🟢 <strong>Core</strong></p>
+<p><strong>Required depth:</strong> <strong>4 · Prove</strong></p>
+<p>This section covers the <strong>Gauss-Markov theorem</strong> and the <strong>estimation of error variance</strong>, completing the theoretical foundation of the Gauss-Markov set-up.</p>
+<p>The central result establishes the optimality of the least squares estimator among all linear unbiased estimators.</p>
+</div>
+</div>
+<section id="from-least-squares-to-the-gauss-markov-theorem" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="from-least-squares-to-the-gauss-markov-theorem"><span class="header-section-number">3.1</span> From Least Squares to the Gauss-Markov Theorem</h2>
+<p>In the previous section, we obtained the least squares estimator</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y},
+\]</span></p>
+<p>under the assumption that <span class="math inline">\(\mathbf{X}\)</span> has full column rank.</p>
+<p>We also established that</p>
+<p><span class="math display">\[
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+\]</span></p>
+<p>Thus, the least squares estimator is unbiased.</p>
+<p>But unbiasedness alone does not make an estimator optimal.</p>
+<p>There may be many different linear unbiased estimators of the same parameter or parametric function. The natural question is therefore:</p>
+<blockquote class="blockquote">
+<p>Among all linear unbiased estimators, does least squares have the smallest variance?</p>
+</blockquote>
+<p>The Gauss-Markov theorem answers this question.</p>
+<hr>
+</section>
+<section id="the-gauss-markov-theorem" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="the-gauss-markov-theorem"><span class="header-section-number">3.2</span> The Gauss-Markov Theorem</h2>
+<p>Suppose the linear model</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+\]</span></p>
+<p>satisfies</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+\]</span></p>
+<p>Assume also that <span class="math inline">\(\mathbf{X}\)</span> has full column rank.</p>
+<p>Then the ordinary least squares estimator</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+\]</span></p>
+<p>is the <strong>Best Linear Unbiased Estimator</strong>, or <strong>BLUE</strong>, of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>More generally, for any estimable linear parametric function</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
+\]</span></p>
+<p>the least squares estimator</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+\]</span></p>
+<p>is the best linear unbiased estimator of that function.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE}
+}
+\]</span></p>
+<p>under the Gauss-Markov assumptions.</p>
+<hr>
+</section>
+<section id="what-does-blue-mean" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="what-does-blue-mean"><span class="header-section-number">3.3</span> What Does BLUE Mean?</h2>
+<p>The acronym <strong>BLUE</strong> stands for:</p>
+<ul>
+<li><strong>B</strong>est</li>
+<li><strong>L</strong>inear</li>
+<li><strong>U</strong>nbiased</li>
+<li><strong>E</strong>stimator</li>
+</ul>
+<p>Each word has a precise meaning.</p>
+<section id="linear" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="linear"><span class="header-section-number">3.3.1</span> Linear</h3>
+<p>The estimator is linear in the observations.</p>
+<p>The least squares estimator can be written as</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y},
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbf{A}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+\]</span></p>
+<p>Thus, each component of <span class="math inline">\(\widehat{\boldsymbol{\beta}}\)</span> is a linear combination of the observations.</p>
+</section>
+<section id="unbiased" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="unbiased"><span class="header-section-number">3.3.2</span> Unbiased</h3>
+<p>The estimator satisfies</p>
+<p><span class="math display">\[
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}.
+\]</span></p>
+<p>Thus, on average, the estimator equals the true parameter vector.</p>
+</section>
+<section id="best" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="best"><span class="header-section-number">3.3.3</span> Best</h3>
+<p>Among all linear unbiased estimators, the least squares estimator has the smallest variance.</p>
+<p>The word “best” therefore refers to <strong>minimum variance</strong>, not to some vague notion of being generally superior.</p>
+<hr>
+</section>
+</section>
+<section id="comparing-linear-unbiased-estimators" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="comparing-linear-unbiased-estimators"><span class="header-section-number">3.4</span> Comparing Linear Unbiased Estimators</h2>
+<p>To understand the theorem, consider another linear unbiased estimator of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>Write this estimator as</p>
+<p><span class="math display">\[
+\widetilde{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y}.
+\]</span></p>
+<p>For <span class="math inline">\(\widetilde{\boldsymbol{\beta}}\)</span> to be unbiased,</p>
+<p><span class="math display">\[
+E(\widetilde{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+E(\mathbf{Y})
+=
+\mathbf{X}\boldsymbol{\beta},
+\]</span></p>
+<p>we require</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{X}\boldsymbol{\beta}
+=
+\boldsymbol{\beta}
+\]</span></p>
+<p>for every <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{A}\mathbf{X}
+=
+\mathbf{I}_p
+}
+\]</span></p>
+<p>is the condition for <span class="math inline">\(\mathbf{A}\mathbf{Y}\)</span> to be an unbiased linear estimator of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>For the least squares estimator,</p>
+<p><span class="math display">\[
+\mathbf{A}_0
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T},
+\]</span></p>
+<p>and indeed</p>
+<p><span class="math display">\[
+\mathbf{A}_0\mathbf{X}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+=
+\mathbf{I}_p.
+\]</span></p>
+<p>Thus, least squares satisfies the unbiasedness condition.</p>
+<hr>
+</section>
+<section id="variance-of-a-general-linear-unbiased-estimator" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="variance-of-a-general-linear-unbiased-estimator"><span class="header-section-number">3.5</span> Variance of a General Linear Unbiased Estimator</h2>
+<p>For</p>
+<p><span class="math display">\[
+\widetilde{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y},
+\]</span></p>
+<p>the covariance matrix is</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\mathbf{A}
+\operatorname{Var}(\mathbf{Y})
+\mathbf{A}^{\mathsf T}.
+\]</span></p>
+<p>Under the Gauss-Markov assumption,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\mathbf{Y})
+=
+\sigma^2\mathbf{I}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\sigma^2\mathbf{A}\mathbf{A}^{\mathsf T}
+}
+\]</span></p>
+<p>The goal is therefore to show that the covariance matrix of any linear unbiased estimator is at least as large as the covariance matrix of the least squares estimator in the positive semidefinite sense.</p>
+<hr>
+</section>
+<section id="proof-of-the-gauss-markov-theorem" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="proof-of-the-gauss-markov-theorem"><span class="header-section-number">3.6</span> Proof of the Gauss-Markov Theorem</h2>
+<p>Let</p>
+<p><span class="math display">\[
+\mathbf{A}_0
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\]</span></p>
+<p>be the matrix defining the least squares estimator.</p>
+<p>Then</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{A}_0\mathbf{Y}.
+\]</span></p>
+<p>Consider any other linear unbiased estimator</p>
+<p><span class="math display">\[
+\widetilde{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y}
+\]</span></p>
+<p>such that</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{X}
+=
+\mathbf{I}_p.
+\]</span></p>
+<p>Define</p>
+<p><span class="math display">\[
+\mathbf{D}
+=
+\mathbf{A}-\mathbf{A}_0.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathbf{A}
+=
+\mathbf{A}_0+\mathbf{D}.
+\]</span></p>
+<p>Since both <span class="math inline">\(\mathbf{A}\)</span> and <span class="math inline">\(\mathbf{A}_0\)</span> satisfy the unbiasedness condition,</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{X}
+=
+\mathbf{I}_p
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathbf{A}_0\mathbf{X}
+=
+\mathbf{I}_p.
+\]</span></p>
+<p>Subtracting,</p>
+<p><span class="math display">\[
+(\mathbf{A}-\mathbf{A}_0)\mathbf{X}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{D}\mathbf{X}
+=
+\mathbf{0}
+}
+\]</span></p>
+<p>Now consider the covariance matrix of <span class="math inline">\(\widetilde{\boldsymbol{\beta}}\)</span>:</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\sigma^2\mathbf{A}\mathbf{A}^{\mathsf T}.
+\]</span></p>
+<p>Substitute</p>
+<p><span class="math display">\[
+\mathbf{A}
+=
+\mathbf{A}_0+\mathbf{D}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{A}^{\mathsf T}
+=
+(\mathbf{A}_0+\mathbf{D})
+(\mathbf{A}_0+\mathbf{D})^{\mathsf T}.
+\]</span></p>
+<p>Expanding,</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{A}^{\mathsf T}
+=
+\mathbf{A}_0\mathbf{A}_0^{\mathsf T}
++
+\mathbf{A}_0\mathbf{D}^{\mathsf T}
++
+\mathbf{D}\mathbf{A}_0^{\mathsf T}
++
+\mathbf{D}\mathbf{D}^{\mathsf T}.
+\]</span></p>
+<p>We now examine the cross terms.</p>
+<p>Since</p>
+<p><span class="math display">\[
+\mathbf{A}_0
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T},
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+\mathbf{A}_0\mathbf{D}^{\mathsf T}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\mathbf{D}^{\mathsf T}.
+\]</span></p>
+<p>But</p>
+<p><span class="math display">\[
+\mathbf{D}\mathbf{X}
+=
+\mathbf{0},
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{D}^{\mathsf T}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\mathbf{A}_0\mathbf{D}^{\mathsf T}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Similarly,</p>
+<p><span class="math display">\[
+\mathbf{D}\mathbf{A}_0^{\mathsf T}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{A}^{\mathsf T}
+=
+\mathbf{A}_0\mathbf{A}_0^{\mathsf T}
++
+\mathbf{D}\mathbf{D}^{\mathsf T}.
+\]</span></p>
+<p>Multiplying by <span class="math inline">\(\sigma^2\)</span> gives</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
++
+\sigma^2\mathbf{D}\mathbf{D}^{\mathsf T}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+-
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2\mathbf{D}\mathbf{D}^{\mathsf T}
+}
+\]</span></p>
+<p>The matrix</p>
+<p><span class="math display">\[
+\mathbf{D}\mathbf{D}^{\mathsf T}
+\]</span></p>
+<p>is positive semidefinite because, for any vector <span class="math inline">\(\mathbf{v}\)</span>,</p>
+<p><span class="math display">\[
+\mathbf{v}^{\mathsf T}
+\mathbf{D}\mathbf{D}^{\mathsf T}
+\mathbf{v}
+=
+\left\|
+\mathbf{D}^{\mathsf T}\mathbf{v}
+\right\|^2
+\geq 0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+\geq
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+\]</span></p>
+<p>in the positive semidefinite ordering.</p>
+<p>Hence the least squares estimator has no larger variance than any other linear unbiased estimator.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE.}
+}
+\]</span></p>
+<p>This is the <strong>Gauss-Markov theorem</strong>.</p>
+<hr>
+</section>
+<section id="interpretation-of-the-theorem" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="interpretation-of-the-theorem"><span class="header-section-number">3.7</span> Interpretation of the Theorem</h2>
+<p>The Gauss-Markov theorem does not say that least squares is the best estimator among every possible estimator.</p>
+<p>It says something more specific:</p>
+<blockquote class="blockquote">
+<p>Among estimators that are both <strong>linear in the observations</strong> and <strong>unbiased</strong>, the least squares estimator has minimum variance.</p>
+</blockquote>
+<p>The restrictions matter.</p>
+<p>The theorem compares estimators within the class</p>
+<p><span class="math display">\[
+\left\{
+\text{linear unbiased estimators}
+\right\}.
+\]</span></p>
+<p>It does not claim that no nonlinear or biased estimator could ever have a smaller mean squared error.</p>
+<p>The precise conclusion is therefore</p>
+<p><span class="math display">\[
+\boxed{
+\text{OLS is the BLUE under the Gauss-Markov assumptions.}
+}
+\]</span></p>
+<hr>
+</section>
+<section id="blue-for-linear-parametric-functions" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="blue-for-linear-parametric-functions"><span class="header-section-number">3.8</span> BLUE for Linear Parametric Functions</h2>
+<p>The theorem also applies to an estimable linear parametric function</p>
+<p><span class="math display">\[
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+\]</span></p>
+<p>The least squares estimator is</p>
+<p><span class="math display">\[
+\widehat{\lambda}
+=
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>Its variance is</p>
+<p><span class="math display">\[
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2
+\mathbf{a}^{\mathsf T}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{a}.
+\]</span></p>
+<p>The Gauss-Markov theorem implies that no other linear unbiased estimator of the same quantity has smaller variance.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE for }
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+}
+\]</span></p>
+<p>This is especially important in applications because hypotheses and scientific questions are often expressed in terms of contrasts or other linear combinations rather than individual parameters.</p>
+<hr>
+</section>
+<section id="estimation-of-error-variance" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="estimation-of-error-variance"><span class="header-section-number">3.9</span> Estimation of Error Variance</h2>
+<p>The Gauss-Markov model contains another unknown quantity:</p>
+<p><span class="math display">\[
+\sigma^2.
+\]</span></p>
+<p>Recall that</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+\]</span></p>
+<p>Although the least squares estimator provides an estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span>, we also need an estimator of <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>The residual sum of squares is</p>
+<p><span class="math display">\[
+\operatorname{SSE}
+=
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+\]</span></p>
+<p>A natural estimator of <span class="math inline">\(\sigma^2\)</span> is obtained by dividing the residual sum of squares by the appropriate number of degrees of freedom.</p>
+<hr>
+<section id="degrees-of-freedom" class="level3" data-number="3.9.1">
+<h3 data-number="3.9.1" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">3.9.1</span> Degrees of Freedom</h3>
+<p>Suppose <span class="math inline">\(\mathbf{X}\)</span> has rank <span class="math inline">\(r\)</span>.</p>
+<p>The fitted values belong to the column space</p>
+<p><span class="math display">\[
+\mathcal{C}(\mathbf{X}),
+\]</span></p>
+<p>which has dimension <span class="math inline">\(r\)</span>.</p>
+<p>The residual vector belongs to the orthogonal complement of this space.</p>
+<p>Therefore, the residual space has dimension</p>
+<p><span class="math display">\[
+n-r.
+\]</span></p>
+<p>This gives the residual degrees of freedom:</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{df}_{\text{error}}
+=
+n-r
+}
+\]</span></p>
+<p>In the full-rank case, where</p>
+<p><span class="math display">\[
+r=p,
+\]</span></p>
+<p>this becomes</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{df}_{\text{error}}
+=
+n-p.
+}
+\]</span></p>
+<p>The degrees of freedom are reduced because <span class="math inline">\(r\)</span> independent pieces of information have been used to estimate the systematic component of the model.</p>
+<hr>
+</section>
+<section id="expected-residual-sum-of-squares" class="level3" data-number="3.9.2">
+<h3 data-number="3.9.2" class="anchored" data-anchor-id="expected-residual-sum-of-squares"><span class="header-section-number">3.9.2</span> Expected Residual Sum of Squares</h3>
+<p>Recall that</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}.
+\]</span></p>
+<p>Under the model,</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})
+\mathbf{X}\boldsymbol{\beta}
++
+(\mathbf{I}-\mathbf{H})
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+\mathbf{H}\mathbf{X}
+=
+\mathbf{X},
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+(\mathbf{I}-\mathbf{H})\mathbf{X}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})
+\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>The residuals therefore contain only the component of the error vector orthogonal to the model space.</p>
+<p>The expected residual sum of squares is</p>
+<p><span class="math display">\[
+E(\mathbf{e}^{\mathsf T}\mathbf{e})
+=
+(n-r)\sigma^2.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+E(\operatorname{SSE})
+=
+(n-r)\sigma^2
+}
+\]</span></p>
+<p>This explains why the residual sum of squares must be divided by <span class="math inline">\(n-r\)</span> rather than by <span class="math inline">\(n\)</span>.</p>
+<hr>
+</section>
+<section id="unbiased-estimator-of-sigma2" class="level3" data-number="3.9.3">
+<h3 data-number="3.9.3" class="anchored" data-anchor-id="unbiased-estimator-of-sigma2"><span class="header-section-number">3.9.3</span> Unbiased Estimator of <span class="math inline">\(\sigma^2\)</span></h3>
+<p>Define</p>
+<p><span class="math display">\[
+s^2
+=
+\frac{\operatorname{SSE}}{n-r}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+E(s^2)
+=
+E
+\left(
+\frac{\operatorname{SSE}}{n-r}
+\right).
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+E(s^2)
+=
+\frac{1}{n-r}
+E(\operatorname{SSE}).
+\]</span></p>
+<p>Using</p>
+<p><span class="math display">\[
+E(\operatorname{SSE})
+=
+(n-r)\sigma^2,
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+E(s^2)
+=
+\sigma^2.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-r}
+}
+\]</span></p>
+<p>is an unbiased estimator of the error variance.</p>
+<p>When <span class="math inline">\(\mathbf{X}\)</span> has full column rank,</p>
+<p><span class="math display">\[
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-p}.
+}
+\]</span></p>
+<p>This is the usual residual mean square.</p>
+<hr>
+</section>
+</section>
+<section id="residual-mean-square" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="residual-mean-square"><span class="header-section-number">3.10</span> Residual Mean Square</h2>
+<p>The quantity</p>
+<p><span class="math display">\[
+\frac{\operatorname{SSE}}{n-p}
+\]</span></p>
+<p>is commonly called the <strong>residual mean square</strong> or <strong>mean squared error</strong>:</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{MSE}
+=
+\frac{\operatorname{SSE}}{n-p}
+}
+\]</span></p>
+<p>in the full-rank case.</p>
+<p>It provides an estimate of the common error variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>The estimated standard deviation of the errors is therefore</p>
+<p><span class="math display">\[
+s
+=
+\sqrt{\operatorname{MSE}}.
+\]</span></p>
+<p>This quantity plays an important role in the standard errors of estimated regression coefficients and in subsequent inference.</p>
+<hr>
+</section>
+<section id="the-role-of-normality" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="the-role-of-normality"><span class="header-section-number">3.11</span> The Role of Normality</h2>
+<p>The Gauss-Markov theorem itself does not require normality.</p>
+<p>Recall that the theorem only assumes</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+\]</span></p>
+<p>However, if we additionally assume</p>
+<p><span class="math display">\[
+\boldsymbol{\varepsilon}
+\sim
+N(\mathbf{0},\sigma^2\mathbf{I}),
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\mathbf{Y}
+\sim
+N(\mathbf{X}\boldsymbol{\beta},
+\sigma^2\mathbf{I}).
+\]</span></p>
+<p>Under this stronger assumption, the least squares estimator has the exact distribution</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+\sim
+N
+\left(
+\boldsymbol{\beta},
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\right).
+\]</span></p>
+<p>Normality therefore provides additional distributional results that are useful for exact small-sample inference.</p>
+<p>This distinction can be summarized as follows:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Assumption</th>
+<th>Main consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(E(\boldsymbol{\varepsilon})=\mathbf{0}\)</span></td>
+<td>Unbiasedness</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\operatorname{Var}(\boldsymbol{\varepsilon})=\sigma^2\mathbf{I}\)</span></td>
+<td>Gauss-Markov optimality</td>
+</tr>
+<tr class="odd">
+<td>Normal errors</td>
+<td>Exact finite-sample distributions and classical inference</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, normality is <strong>not</strong> part of the minimum assumptions required for the Gauss-Markov theorem.</p>
+<hr>
+</section>
+<section id="the-complete-gauss-markov-framework" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="the-complete-gauss-markov-framework"><span class="header-section-number">3.12</span> The Complete Gauss-Markov Framework</h2>
+<p>We can now assemble the pieces developed throughout this module.</p>
+<p>The model is</p>
+<p><span class="math display">\[
+\boxed{
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\boxed{
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+}
+\]</span></p>
+<p>The least squares estimator is</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+\]</span></p>
+<p>when <span class="math inline">\(\mathbf{X}\)</span> has full column rank.</p>
+<p>It is unbiased:</p>
+<p><span class="math display">\[
+\boxed{
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+}
+\]</span></p>
+<p>and has covariance matrix</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+}
+\]</span></p>
+<p>The Gauss-Markov theorem then tells us that</p>
+<p><span class="math display">\[
+\boxed{
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE}.
+}
+\]</span></p>
+<p>Finally, the error variance can be estimated using</p>
+<p><span class="math display">\[
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-r}.
+}
+\]</span></p>
+<p>For a full-rank model,</p>
+<p><span class="math display">\[
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-p}.
+}
+\]</span></p>
+<hr>
+</section>
+</section>
+<section id="summary" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Summary</h1>
+<p>The Gauss-Markov framework provides the theoretical foundation for ordinary least squares and much of classical linear model theory.</p>
+<p>The complete logical progression is</p>
+<p><span class="math display">\[
+\text{Linear Model}
+\longrightarrow
+\text{Estimability}
+\longrightarrow
+\text{Least Squares}
+\longrightarrow
+\text{Unbiasedness}
+\longrightarrow
+\text{Minimum Variance}
+\longrightarrow
+\text{BLUE}.
+\]</span></p>
+<p>The fundamental model is</p>
+<p><span class="math display">\[
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon},
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+\]</span></p>
+<p>A linear parametric function</p>
+<p><span class="math display">\[
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\]</span></p>
+<p>is estimable when</p>
+<p><span class="math display">\[
+\mathbf{a}
+\in
+\mathcal{C}(\mathbf{X}^{\mathsf T}).
+\]</span></p>
+<p>Least squares minimizes</p>
+<p><span class="math display">\[
+\|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|^2
+\]</span></p>
+<p>and produces the normal equations</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>For full column rank,</p>
+<p><span class="math display">\[
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+\]</span></p>
+<p>The fitted values are the orthogonal projection of <span class="math inline">\(\mathbf{Y}\)</span> onto <span class="math inline">\(\mathcal{C}(\mathbf{X})\)</span>:</p>
+<p><span class="math display">\[
+\widehat{\mathbf{Y}}
+=
+\mathbf{H}\mathbf{Y},
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\mathbf{H}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+\]</span></p>
+<p>The residuals satisfy</p>
+<p><span class="math display">\[
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}.
+\]</span></p>
+<p>Under the Gauss-Markov assumptions, least squares is BLUE:</p>
+<p><span class="math display">\[
+\boxed{
+\text{OLS}
+=
+\text{Best Linear Unbiased Estimator}.
+}
+\]</span></p>
+<p>Finally, the error variance is estimated by</p>
+<p><span class="math display">\[
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-r},
+}
+\]</span></p>
+<p>or, when <span class="math inline">\(\mathbf{X}\)</span> has full column rank,</p>
+<p><span class="math display">\[
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-p}.
+}
+\]</span></p>
+<hr>
+</section>
+<section id="quick-reference" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Quick Reference</h1>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linear model</td>
+<td><span class="math inline">\(\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}\)</span></td>
+</tr>
+<tr class="even">
+<td>Error mean</td>
+<td><span class="math inline">\(E(\boldsymbol{\varepsilon})=\mathbf{0}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Error covariance</td>
+<td><span class="math inline">\(\operatorname{Var}(\boldsymbol{\varepsilon})=\sigma^2\mathbf{I}\)</span></td>
+</tr>
+<tr class="even">
+<td>Estimability</td>
+<td><span class="math inline">\(\mathbf{a}^{\mathsf T}\boldsymbol{\beta}\)</span> is estimable iff <span class="math inline">\(\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T})\)</span></td>
+</tr>
+<tr class="odd">
+<td>Least squares criterion</td>
+<td><span class="math inline">\((\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})\)</span></td>
+</tr>
+<tr class="even">
+<td>Normal equations</td>
+<td><span class="math inline">\(\mathbf{X}^{\mathsf T}\mathbf{X}\widehat{\boldsymbol{\beta}}=\mathbf{X}^{\mathsf T}\mathbf{Y}\)</span></td>
+</tr>
+<tr class="odd">
+<td>OLS estimator</td>
+<td><span class="math inline">\((\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}\mathbf{X}^{\mathsf T}\mathbf{Y}\)</span></td>
+</tr>
+<tr class="even">
+<td>Fitted values</td>
+<td><span class="math inline">\(\widehat{\mathbf{Y}}=\mathbf{H}\mathbf{Y}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Hat matrix</td>
+<td><span class="math inline">\(\mathbf{H}=\mathbf{X}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}\mathbf{X}^{\mathsf T}\)</span></td>
+</tr>
+<tr class="even">
+<td>Residuals</td>
+<td><span class="math inline">\(\mathbf{e}=(\mathbf{I}-\mathbf{H})\mathbf{Y}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Residual orthogonality</td>
+<td><span class="math inline">\(\mathbf{X}^{\mathsf T}\mathbf{e}=\mathbf{0}\)</span></td>
+</tr>
+<tr class="even">
+<td>OLS expectation</td>
+<td><span class="math inline">\(E(\widehat{\boldsymbol{\beta}})=\boldsymbol{\beta}\)</span></td>
+</tr>
+<tr class="odd">
+<td>OLS covariance</td>
+<td><span class="math inline">\(\operatorname{Var}(\widehat{\boldsymbol{\beta}})=\sigma^2(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td>Gauss-Markov theorem</td>
+<td>OLS is BLUE</td>
+</tr>
+<tr class="odd">
+<td>Error variance estimator</td>
+<td><span class="math inline">\(s^2=\operatorname{SSE}/(n-r)\)</span></td>
+</tr>
+<tr class="even">
+<td>Full-rank error variance estimator</td>
+<td><span class="math inline">\(s^2=\operatorname{SSE}/(n-p)\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The Big Picture
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Gauss-Markov theorem is the bridge between the <strong>algebra of least squares</strong> and the <strong>statistical optimality of the estimator</strong>.</p>
+<p>Least squares gives us an estimator by solving</p>
+<p><span class="math display">\[
+\min_{\boldsymbol{\beta}}
+\|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|^2.
+\]</span></p>
+<p>The Gauss-Markov theorem then tells us why this particular estimator matters:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Among all linear unbiased estimators, OLS has minimum variance.}
+}
+\]</span></p>
+<p>This result is the theoretical backbone on which the later modules build regression, analysis of variance, analysis of covariance, and inference.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

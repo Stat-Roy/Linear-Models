@@ -1,0 +1,5013 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Matrices, matrix operations, matrix-vector multiplication, and the fundamental matrix structures used in Linear Models.">
+
+<title>Matrices – Linear Models</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Linear Models</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Intro/syllabus.html"> 
+<span class="menu-text">Intro</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Core/01-linear-model.qmd"> 
+<span class="menu-text">Core</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Prerequisites/Linear-Algebra/vectors.html"> 
+<span class="menu-text">Prerequisites</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Prerequisites</li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/vectors.html">Linear Algebra</a></li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/matrices.html">Matrices</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Intro</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Intro/syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Intro/exam-map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">exam-map</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Intro/notation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">notation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Core</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Core/01-Gauss-Markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gauss-Markov Set-up</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Prerequisites</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Linear Algebra</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Prerequisites/Linear-Algebra/vectors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Prerequisites/Linear-Algebra/matrices.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Matrices</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Statistics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Prerequisites/Statistics/expectation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">expectation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#topic-status" id="toc-topic-status" class="nav-link active" data-scroll-target="#topic-status"><span class="header-section-number">1</span> Topic status</a></li>
+  <li><a href="#what-is-a-matrix" id="toc-what-is-a-matrix" class="nav-link" data-scroll-target="#what-is-a-matrix"><span class="header-section-number">2</span> What is a matrix?</a></li>
+  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">3</span> Matrix notation</a></li>
+  <li><a href="#dimensions-of-a-matrix" id="toc-dimensions-of-a-matrix" class="nav-link" data-scroll-target="#dimensions-of-a-matrix"><span class="header-section-number">4</span> Dimensions of a matrix</a></li>
+  <li><a href="#rows-and-columns" id="toc-rows-and-columns" class="nav-link" data-scroll-target="#rows-and-columns"><span class="header-section-number">5</span> Rows and columns</a></li>
+  <li><a href="#matrix-entries" id="toc-matrix-entries" class="nav-link" data-scroll-target="#matrix-entries"><span class="header-section-number">6</span> Matrix entries</a></li>
+  <li><a href="#matrix-dimensions-and-indexing" id="toc-matrix-dimensions-and-indexing" class="nav-link" data-scroll-target="#matrix-dimensions-and-indexing"><span class="header-section-number">7</span> Matrix dimensions and indexing</a></li>
+  <li><a href="#column-vectors-as-matrices" id="toc-column-vectors-as-matrices" class="nav-link" data-scroll-target="#column-vectors-as-matrices"><span class="header-section-number">8</span> Column vectors as matrices</a></li>
+  <li><a href="#row-vectors" id="toc-row-vectors" class="nav-link" data-scroll-target="#row-vectors"><span class="header-section-number">9</span> Row vectors</a></li>
+  <li><a href="#matrix-equality" id="toc-matrix-equality" class="nav-link" data-scroll-target="#matrix-equality"><span class="header-section-number">10</span> Matrix equality</a></li>
+  <li><a href="#the-zero-matrix" id="toc-the-zero-matrix" class="nav-link" data-scroll-target="#the-zero-matrix"><span class="header-section-number">11</span> The zero matrix</a></li>
+  <li><a href="#matrix-addition" id="toc-matrix-addition" class="nav-link" data-scroll-target="#matrix-addition"><span class="header-section-number">12</span> Matrix addition</a></li>
+  <li><a href="#matrix-subtraction" id="toc-matrix-subtraction" class="nav-link" data-scroll-target="#matrix-subtraction"><span class="header-section-number">13</span> Matrix subtraction</a></li>
+  <li><a href="#scalar-multiplication-of-matrices" id="toc-scalar-multiplication-of-matrices" class="nav-link" data-scroll-target="#scalar-multiplication-of-matrices"><span class="header-section-number">14</span> Scalar multiplication of matrices</a></li>
+  <li><a href="#matrix-subtraction-and-scalar-multiplication" id="toc-matrix-subtraction-and-scalar-multiplication" class="nav-link" data-scroll-target="#matrix-subtraction-and-scalar-multiplication"><span class="header-section-number">15</span> Matrix subtraction and scalar multiplication</a></li>
+  <li><a href="#matrix-multiplication" id="toc-matrix-multiplication" class="nav-link" data-scroll-target="#matrix-multiplication"><span class="header-section-number">16</span> Matrix multiplication</a></li>
+  <li><a href="#the-dimension-rule" id="toc-the-dimension-rule" class="nav-link" data-scroll-target="#the-dimension-rule"><span class="header-section-number">17</span> The dimension rule</a></li>
+  <li><a href="#computing-a-matrix-product" id="toc-computing-a-matrix-product" class="nav-link" data-scroll-target="#computing-a-matrix-product"><span class="header-section-number">18</span> Computing a matrix product</a></li>
+  <li><a href="#matrix-multiplication-as-dot-products" id="toc-matrix-multiplication-as-dot-products" class="nav-link" data-scroll-target="#matrix-multiplication-as-dot-products"><span class="header-section-number">19</span> Matrix multiplication as dot products</a></li>
+  <li><a href="#a-numerical-matrix-multiplication-example" id="toc-a-numerical-matrix-multiplication-example" class="nav-link" data-scroll-target="#a-numerical-matrix-multiplication-example"><span class="header-section-number">20</span> A numerical matrix multiplication example</a></li>
+  <li><a href="#matrix-multiplication-is-not-commutative" id="toc-matrix-multiplication-is-not-commutative" class="nav-link" data-scroll-target="#matrix-multiplication-is-not-commutative"><span class="header-section-number">21</span> Matrix multiplication is not commutative</a></li>
+  <li><a href="#matrix-vector-multiplication" id="toc-matrix-vector-multiplication" class="nav-link" data-scroll-target="#matrix-vector-multiplication"><span class="header-section-number">22</span> Matrix-vector multiplication</a></li>
+  <li><a href="#matrix-vector-multiplication-as-linear-combinations" id="toc-matrix-vector-multiplication-as-linear-combinations" class="nav-link" data-scroll-target="#matrix-vector-multiplication-as-linear-combinations"><span class="header-section-number">23</span> Matrix-vector multiplication as linear combinations</a></li>
+  <li><a href="#matrix-multiplication-and-linear-models" id="toc-matrix-multiplication-and-linear-models" class="nav-link" data-scroll-target="#matrix-multiplication-and-linear-models"><span class="header-section-number">24</span> Matrix multiplication and Linear Models</a></li>
+  <li><a href="#matrix-multiplication-as-a-linear-transformation" id="toc-matrix-multiplication-as-a-linear-transformation" class="nav-link" data-scroll-target="#matrix-multiplication-as-a-linear-transformation"><span class="header-section-number">25</span> Matrix multiplication as a linear transformation</a></li>
+  <li><a href="#important-properties-of-matrix-multiplication" id="toc-important-properties-of-matrix-multiplication" class="nav-link" data-scroll-target="#important-properties-of-matrix-multiplication"><span class="header-section-number">26</span> Important properties of matrix multiplication</a>
+  <ul class="collapse">
+  <li><a href="#associativity" id="toc-associativity" class="nav-link" data-scroll-target="#associativity"><span class="header-section-number">26.0.1</span> Associativity</a></li>
+  <li><a href="#distributivity-over-addition" id="toc-distributivity-over-addition" class="nav-link" data-scroll-target="#distributivity-over-addition"><span class="header-section-number">26.0.2</span> Distributivity over addition</a></li>
+  <li><a href="#compatibility-with-scalar-multiplication" id="toc-compatibility-with-scalar-multiplication" class="nav-link" data-scroll-target="#compatibility-with-scalar-multiplication"><span class="header-section-number">26.0.3</span> Compatibility with scalar multiplication</a></li>
+  </ul></li>
+  <li><a href="#the-identity-matrix" id="toc-the-identity-matrix" class="nav-link" data-scroll-target="#the-identity-matrix"><span class="header-section-number">27</span> The identity matrix</a></li>
+  <li><a href="#identity-matrix-and-standard-basis-vectors" id="toc-identity-matrix-and-standard-basis-vectors" class="nav-link" data-scroll-target="#identity-matrix-and-standard-basis-vectors"><span class="header-section-number">28</span> Identity matrix and standard basis vectors</a></li>
+  <li><a href="#diagonal-matrices" id="toc-diagonal-matrices" class="nav-link" data-scroll-target="#diagonal-matrices"><span class="header-section-number">29</span> Diagonal matrices</a></li>
+  <li><a href="#scalar-matrices" id="toc-scalar-matrices" class="nav-link" data-scroll-target="#scalar-matrices"><span class="header-section-number">30</span> Scalar matrices</a></li>
+  <li><a href="#triangular-matrices" id="toc-triangular-matrices" class="nav-link" data-scroll-target="#triangular-matrices"><span class="header-section-number">31</span> Triangular matrices</a></li>
+  <li><a href="#symmetric-matrices" id="toc-symmetric-matrices" class="nav-link" data-scroll-target="#symmetric-matrices"><span class="header-section-number">32</span> Symmetric matrices</a></li>
+  <li><a href="#the-trace" id="toc-the-trace" class="nav-link" data-scroll-target="#the-trace"><span class="header-section-number">33</span> The trace</a></li>
+  <li><a href="#matrix-transpose" id="toc-matrix-transpose" class="nav-link" data-scroll-target="#matrix-transpose"><span class="header-section-number">34</span> Matrix transpose</a></li>
+  <li><a href="#transpose-of-an-entry" id="toc-transpose-of-an-entry" class="nav-link" data-scroll-target="#transpose-of-an-entry"><span class="header-section-number">35</span> Transpose of an entry</a></li>
+  <li><a href="#transpose-of-a-vector" id="toc-transpose-of-a-vector" class="nav-link" data-scroll-target="#transpose-of-a-vector"><span class="header-section-number">36</span> Transpose of a vector</a></li>
+  <li><a href="#transpose-of-a-sum" id="toc-transpose-of-a-sum" class="nav-link" data-scroll-target="#transpose-of-a-sum"><span class="header-section-number">37</span> Transpose of a sum</a></li>
+  <li><a href="#transpose-and-scalar-multiplication" id="toc-transpose-and-scalar-multiplication" class="nav-link" data-scroll-target="#transpose-and-scalar-multiplication"><span class="header-section-number">38</span> Transpose and scalar multiplication</a></li>
+  <li><a href="#transpose-of-a-matrix-product" id="toc-transpose-of-a-matrix-product" class="nav-link" data-scroll-target="#transpose-of-a-matrix-product"><span class="header-section-number">39</span> Transpose of a matrix product</a></li>
+  <li><a href="#transpose-of-multiple-matrix-products" id="toc-transpose-of-multiple-matrix-products" class="nav-link" data-scroll-target="#transpose-of-multiple-matrix-products"><span class="header-section-number">40</span> Transpose of multiple matrix products</a></li>
+  <li><a href="#transpose-and-the-dot-product" id="toc-transpose-and-the-dot-product" class="nav-link" data-scroll-target="#transpose-and-the-dot-product"><span class="header-section-number">41</span> Transpose and the dot product</a></li>
+  <li><a href="#symmetric-matrices-1" id="toc-symmetric-matrices-1" class="nav-link" data-scroll-target="#symmetric-matrices-1"><span class="header-section-number">42</span> Symmetric matrices</a></li>
+  <li><a href="#the-matrix-xtop-x" id="toc-the-matrix-xtop-x" class="nav-link" data-scroll-target="#the-matrix-xtop-x"><span class="header-section-number">43</span> The matrix <span class="math inline">\(X^\top X\)</span></a></li>
+  <li><a href="#the-gram-matrix" id="toc-the-gram-matrix" class="nav-link" data-scroll-target="#the-gram-matrix"><span class="header-section-number">44</span> The Gram matrix</a></li>
+  <li><a href="#positive-semidefinite-matrices" id="toc-positive-semidefinite-matrices" class="nav-link" data-scroll-target="#positive-semidefinite-matrices"><span class="header-section-number">45</span> Positive semidefinite matrices</a></li>
+  <li><a href="#quadratic-forms" id="toc-quadratic-forms" class="nav-link" data-scroll-target="#quadratic-forms"><span class="header-section-number">46</span> Quadratic forms</a></li>
+  <li><a href="#matrix-vector-multiplication-and-rows" id="toc-matrix-vector-multiplication-and-rows" class="nav-link" data-scroll-target="#matrix-vector-multiplication-and-rows"><span class="header-section-number">47</span> Matrix-vector multiplication and rows</a></li>
+  <li><a href="#column-interpretation-of-a-matrix" id="toc-column-interpretation-of-a-matrix" class="nav-link" data-scroll-target="#column-interpretation-of-a-matrix"><span class="header-section-number">48</span> Column interpretation of a matrix</a></li>
+  <li><a href="#column-space" id="toc-column-space" class="nav-link" data-scroll-target="#column-space"><span class="header-section-number">49</span> Column space</a></li>
+  <li><a href="#row-space" id="toc-row-space" class="nav-link" data-scroll-target="#row-space"><span class="header-section-number">50</span> Row space</a></li>
+  <li><a href="#rank" id="toc-rank" class="nav-link" data-scroll-target="#rank"><span class="header-section-number">51</span> Rank</a></li>
+  <li><a href="#full-rank" id="toc-full-rank" class="nav-link" data-scroll-target="#full-rank"><span class="header-section-number">52</span> Full rank</a></li>
+  <li><a href="#linear-dependence-of-matrix-columns" id="toc-linear-dependence-of-matrix-columns" class="nav-link" data-scroll-target="#linear-dependence-of-matrix-columns"><span class="header-section-number">53</span> Linear dependence of matrix columns</a></li>
+  <li><a href="#systems-of-linear-equations" id="toc-systems-of-linear-equations" class="nav-link" data-scroll-target="#systems-of-linear-equations"><span class="header-section-number">54</span> Systems of linear equations</a></li>
+  <li><a href="#the-augmented-matrix" id="toc-the-augmented-matrix" class="nav-link" data-scroll-target="#the-augmented-matrix"><span class="header-section-number">55</span> The augmented matrix</a></li>
+  <li><a href="#elementary-row-operations" id="toc-elementary-row-operations" class="nav-link" data-scroll-target="#elementary-row-operations"><span class="header-section-number">56</span> Elementary row operations</a></li>
+  <li><a href="#row-echelon-form" id="toc-row-echelon-form" class="nav-link" data-scroll-target="#row-echelon-form"><span class="header-section-number">57</span> Row echelon form</a></li>
+  <li><a href="#reduced-row-echelon-form" id="toc-reduced-row-echelon-form" class="nav-link" data-scroll-target="#reduced-row-echelon-form"><span class="header-section-number">58</span> Reduced row echelon form</a></li>
+  <li><a href="#gaussian-elimination" id="toc-gaussian-elimination" class="nav-link" data-scroll-target="#gaussian-elimination"><span class="header-section-number">59</span> Gaussian elimination</a></li>
+  <li><a href="#solving-a-system-using-row-reduction" id="toc-solving-a-system-using-row-reduction" class="nav-link" data-scroll-target="#solving-a-system-using-row-reduction"><span class="header-section-number">60</span> Solving a system using row reduction</a></li>
+  <li><a href="#homogeneous-systems" id="toc-homogeneous-systems" class="nav-link" data-scroll-target="#homogeneous-systems"><span class="header-section-number">61</span> Homogeneous systems</a></li>
+  <li><a href="#null-space" id="toc-null-space" class="nav-link" data-scroll-target="#null-space"><span class="header-section-number">62</span> Null space</a></li>
+  <li><a href="#rank-and-nullity" id="toc-rank-and-nullity" class="nav-link" data-scroll-target="#rank-and-nullity"><span class="header-section-number">63</span> Rank and nullity</a></li>
+  <li><a href="#invertible-matrices" id="toc-invertible-matrices" class="nav-link" data-scroll-target="#invertible-matrices"><span class="header-section-number">64</span> Invertible matrices</a></li>
+  <li><a href="#solving-axb-using-an-inverse" id="toc-solving-axb-using-an-inverse" class="nav-link" data-scroll-target="#solving-axb-using-an-inverse"><span class="header-section-number">65</span> Solving <span class="math inline">\(Ax=b\)</span> using an inverse</a></li>
+  <li><a href="#conditions-related-to-invertibility" id="toc-conditions-related-to-invertibility" class="nav-link" data-scroll-target="#conditions-related-to-invertibility"><span class="header-section-number">66</span> Conditions related to invertibility</a></li>
+  <li><a href="#determinant" id="toc-determinant" class="nav-link" data-scroll-target="#determinant"><span class="header-section-number">67</span> Determinant</a></li>
+  <li><a href="#determinant-and-geometric-scaling" id="toc-determinant-and-geometric-scaling" class="nav-link" data-scroll-target="#determinant-and-geometric-scaling"><span class="header-section-number">68</span> Determinant and geometric scaling</a></li>
+  <li><a href="#determinant-and-singular-matrices" id="toc-determinant-and-singular-matrices" class="nav-link" data-scroll-target="#determinant-and-singular-matrices"><span class="header-section-number">69</span> Determinant and singular matrices</a></li>
+  <li><a href="#why-rank-matters-in-linear-models" id="toc-why-rank-matters-in-linear-models" class="nav-link" data-scroll-target="#why-rank-matters-in-linear-models"><span class="header-section-number">70</span> Why rank matters in Linear Models</a></li>
+  <li><a href="#matrix-dimensions-a-linear-models-example" id="toc-matrix-dimensions-a-linear-models-example" class="nav-link" data-scroll-target="#matrix-dimensions-a-linear-models-example"><span class="header-section-number">71</span> Matrix dimensions: a Linear Models example</a></li>
+  <li><a href="#matrix-notation-for-a-simple-linear-model" id="toc-matrix-notation-for-a-simple-linear-model" class="nav-link" data-scroll-target="#matrix-notation-for-a-simple-linear-model"><span class="header-section-number">72</span> Matrix notation for a simple linear model</a></li>
+  <li><a href="#matrix-notation-for-multiple-predictors" id="toc-matrix-notation-for-multiple-predictors" class="nav-link" data-scroll-target="#matrix-notation-for-multiple-predictors"><span class="header-section-number">73</span> Matrix notation for multiple predictors</a></li>
+  <li><a href="#matrix-inverse" id="toc-matrix-inverse" class="nav-link" data-scroll-target="#matrix-inverse"><span class="header-section-number">74</span> Matrix inverse</a></li>
+  <li><a href="#inverse-of-a-2times2-matrix" id="toc-inverse-of-a-2times2-matrix" class="nav-link" data-scroll-target="#inverse-of-a-2times2-matrix"><span class="header-section-number">75</span> Inverse of a <span class="math inline">\(2\times2\)</span> matrix</a></li>
+  <li><a href="#inverse-of-a-product" id="toc-inverse-of-a-product" class="nav-link" data-scroll-target="#inverse-of-a-product"><span class="header-section-number">76</span> Inverse of a product</a></li>
+  <li><a href="#inverse-of-a-transpose" id="toc-inverse-of-a-transpose" class="nav-link" data-scroll-target="#inverse-of-a-transpose"><span class="header-section-number">77</span> Inverse of a transpose</a></li>
+  <li><a href="#inverse-and-linear-models" id="toc-inverse-and-linear-models" class="nav-link" data-scroll-target="#inverse-and-linear-models"><span class="header-section-number">78</span> Inverse and Linear Models</a></li>
+  <li><a href="#orthogonal-vectors" id="toc-orthogonal-vectors" class="nav-link" data-scroll-target="#orthogonal-vectors"><span class="header-section-number">79</span> Orthogonal vectors</a></li>
+  <li><a href="#orthogonal-matrices" id="toc-orthogonal-matrices" class="nav-link" data-scroll-target="#orthogonal-matrices"><span class="header-section-number">80</span> Orthogonal matrices</a></li>
+  <li><a href="#geometric-meaning-of-orthogonal-matrices" id="toc-geometric-meaning-of-orthogonal-matrices" class="nav-link" data-scroll-target="#geometric-meaning-of-orthogonal-matrices"><span class="header-section-number">81</span> Geometric meaning of orthogonal matrices</a></li>
+  <li><a href="#orthogonal-columns" id="toc-orthogonal-columns" class="nav-link" data-scroll-target="#orthogonal-columns"><span class="header-section-number">82</span> Orthogonal columns</a></li>
+  <li><a href="#orthonormal-vectors" id="toc-orthonormal-vectors" class="nav-link" data-scroll-target="#orthonormal-vectors"><span class="header-section-number">83</span> Orthonormal vectors</a></li>
+  <li><a href="#orthogonal-projection" id="toc-orthogonal-projection" class="nav-link" data-scroll-target="#orthogonal-projection"><span class="header-section-number">84</span> Orthogonal projection</a></li>
+  <li><a href="#projection-matrix-onto-a-vector" id="toc-projection-matrix-onto-a-vector" class="nav-link" data-scroll-target="#projection-matrix-onto-a-vector"><span class="header-section-number">85</span> Projection matrix onto a vector</a></li>
+  <li><a href="#properties-of-a-projection-matrix" id="toc-properties-of-a-projection-matrix" class="nav-link" data-scroll-target="#properties-of-a-projection-matrix"><span class="header-section-number">86</span> Properties of a projection matrix</a></li>
+  <li><a href="#idempotent-matrices" id="toc-idempotent-matrices" class="nav-link" data-scroll-target="#idempotent-matrices"><span class="header-section-number">87</span> Idempotent matrices</a></li>
+  <li><a href="#projection-onto-a-subspace" id="toc-projection-onto-a-subspace" class="nav-link" data-scroll-target="#projection-onto-a-subspace"><span class="header-section-number">88</span> Projection onto a subspace</a></li>
+  <li><a href="#the-residual-maker-matrix" id="toc-the-residual-maker-matrix" class="nav-link" data-scroll-target="#the-residual-maker-matrix"><span class="header-section-number">89</span> The residual-maker matrix</a></li>
+  <li><a href="#orthogonality-of-least-squares-residuals" id="toc-orthogonality-of-least-squares-residuals" class="nav-link" data-scroll-target="#orthogonality-of-least-squares-residuals"><span class="header-section-number">90</span> Orthogonality of least-squares residuals</a></li>
+  <li><a href="#normal-equations" id="toc-normal-equations" class="nav-link" data-scroll-target="#normal-equations"><span class="header-section-number">91</span> Normal equations</a></li>
+  <li><a href="#projection-matrix-properties" id="toc-projection-matrix-properties" class="nav-link" data-scroll-target="#projection-matrix-properties"><span class="header-section-number">92</span> Projection matrix properties</a></li>
+  <li><a href="#residual-maker-matrix-properties" id="toc-residual-maker-matrix-properties" class="nav-link" data-scroll-target="#residual-maker-matrix-properties"><span class="header-section-number">93</span> Residual-maker matrix properties</a></li>
+  <li><a href="#orthogonal-decomposition" id="toc-orthogonal-decomposition" class="nav-link" data-scroll-target="#orthogonal-decomposition"><span class="header-section-number">94</span> Orthogonal decomposition</a></li>
+  <li><a href="#pythagorean-identity-for-least-squares" id="toc-pythagorean-identity-for-least-squares" class="nav-link" data-scroll-target="#pythagorean-identity-for-least-squares"><span class="header-section-number">95</span> Pythagorean identity for least squares</a></li>
+  <li><a href="#quadratic-forms-in-linear-models" id="toc-quadratic-forms-in-linear-models" class="nav-link" data-scroll-target="#quadratic-forms-in-linear-models"><span class="header-section-number">96</span> Quadratic forms in Linear Models</a></li>
+  <li><a href="#positive-definite-matrices" id="toc-positive-definite-matrices" class="nav-link" data-scroll-target="#positive-definite-matrices"><span class="header-section-number">97</span> Positive definite matrices</a></li>
+  <li><a href="#why-xtop-x-matters" id="toc-why-xtop-x-matters" class="nav-link" data-scroll-target="#why-xtop-x-matters"><span class="header-section-number">98</span> Why <span class="math inline">\(X^\top X\)</span> matters</a></li>
+  <li><a href="#matrix-norms" id="toc-matrix-norms" class="nav-link" data-scroll-target="#matrix-norms"><span class="header-section-number">99</span> Matrix norms</a></li>
+  <li><a href="#matrix-multiplication-identities" id="toc-matrix-multiplication-identities" class="nav-link" data-scroll-target="#matrix-multiplication-identities"><span class="header-section-number">100</span> Matrix multiplication identities</a></li>
+  <li><a href="#common-matrix-mistakes" id="toc-common-matrix-mistakes" class="nav-link" data-scroll-target="#common-matrix-mistakes"><span class="header-section-number">101</span> Common matrix mistakes</a>
+  <ul class="collapse">
+  <li><a href="#assuming-multiplication-is-commutative" id="toc-assuming-multiplication-is-commutative" class="nav-link" data-scroll-target="#assuming-multiplication-is-commutative"><span class="header-section-number">101.0.1</span> Assuming multiplication is commutative</a></li>
+  <li><a href="#multiplying-corresponding-entries" id="toc-multiplying-corresponding-entries" class="nav-link" data-scroll-target="#multiplying-corresponding-entries"><span class="header-section-number">101.0.2</span> Multiplying corresponding entries</a></li>
+  <li><a href="#ignoring-dimensions" id="toc-ignoring-dimensions" class="nav-link" data-scroll-target="#ignoring-dimensions"><span class="header-section-number">101.0.3</span> Ignoring dimensions</a></li>
+  <li><a href="#forgetting-transpose-order" id="toc-forgetting-transpose-order" class="nav-link" data-scroll-target="#forgetting-transpose-order"><span class="header-section-number">101.0.4</span> Forgetting transpose order</a></li>
+  <li><a href="#treating-every-square-matrix-as-invertible" id="toc-treating-every-square-matrix-as-invertible" class="nav-link" data-scroll-target="#treating-every-square-matrix-as-invertible"><span class="header-section-number">101.0.5</span> Treating every square matrix as invertible</a></li>
+  <li><a href="#assuming-atop-aaatop" id="toc-assuming-atop-aaatop" class="nav-link" data-scroll-target="#assuming-atop-aaatop"><span class="header-section-number">101.0.6</span> Assuming <span class="math inline">\(A^\top A=AA^\top\)</span></a></li>
+  </ul></li>
+  <li><a href="#matrix-identities-worth-remembering" id="toc-matrix-identities-worth-remembering" class="nav-link" data-scroll-target="#matrix-identities-worth-remembering"><span class="header-section-number">102</span> Matrix identities worth remembering</a></li>
+  <li><a href="#dimension-reference" id="toc-dimension-reference" class="nav-link" data-scroll-target="#dimension-reference"><span class="header-section-number">103</span> Dimension reference</a></li>
+  <li><a href="#linear-models-matrix-map" id="toc-linear-models-matrix-map" class="nav-link" data-scroll-target="#linear-models-matrix-map"><span class="header-section-number">104</span> Linear Models matrix map</a></li>
+  <li><a href="#what-you-should-know-before-moving-to-the-core-material" id="toc-what-you-should-know-before-moving-to-the-core-material" class="nav-link" data-scroll-target="#what-you-should-know-before-moving-to-the-core-material"><span class="header-section-number">105</span> What you should know before moving to the Core material</a>
+  <ul class="collapse">
+  <li><a href="#essential" id="toc-essential" class="nav-link" data-scroll-target="#essential"><span class="header-section-number">105.1</span> Essential</a></li>
+  <li><a href="#important-for-linear-models" id="toc-important-for-linear-models" class="nav-link" data-scroll-target="#important-for-linear-models"><span class="header-section-number">105.2</span> Important for Linear Models</a></li>
+  <li><a href="#useful-but-not-necessarily-central" id="toc-useful-but-not-necessarily-central" class="nav-link" data-scroll-target="#useful-but-not-necessarily-central"><span class="header-section-number">105.3</span> Useful but not necessarily central</a></li>
+  </ul></li>
+  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference"><span class="header-section-number">106</span> Quick reference</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">107</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Prerequisites</li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/vectors.html">Linear Algebra</a></li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/matrices.html">Matrices</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Matrices</h1>
+<p class="subtitle lead">Linear Algebra Prerequisite</p>
+</div>
+
+<div>
+  <div class="description">
+    Matrices, matrix operations, matrix-vector multiplication, and the fundamental matrix structures used in Linear Models.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="topic-status" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Topic status</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Prerequisite information
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Category:</strong> Prerequisite<br>
+<strong>Course relevance:</strong> Supporting / Core prerequisite<br>
+<strong>Recommended depth:</strong> 3 · Apply / Derive</p>
+<p>Matrices are one of the central languages of Linear Models.</p>
+<p>You should become comfortable with matrix notation, dimensions, matrix addition and multiplication, transposes, special matrices, and the interpretation of matrix-vector multiplication.</p>
+<p>Later sections will develop matrix inverses, determinants, rank, linear systems, subspaces, and other concepts that are particularly important for least squares.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="what-is-a-matrix" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> What is a matrix?</h1>
+<p>A <strong>matrix</strong> is a rectangular array of numbers arranged into rows and columns.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{pmatrix}
+\]</span></p>
+<p>is a matrix with two rows and three columns.</p>
+<p>Matrices are useful because they allow many related numbers and operations to be represented compactly.</p>
+<p>In Linear Models, matrices are used to represent:</p>
+<ul>
+<li>collections of observations,</li>
+<li>explanatory variables,</li>
+<li>linear transformations,</li>
+<li>systems of equations,</li>
+<li>covariance structures,</li>
+<li>projections,</li>
+<li>and relationships between vectors.</li>
+</ul>
+<p>The most important matrix in a basic linear model is the <strong>design matrix</strong>.</p>
+<p>For a simple linear regression,</p>
+<p><span class="math display">\[
+y_i=\beta_0+\beta_1x_i+\varepsilon_i,
+\]</span></p>
+<p>the model can be written as</p>
+<p><span class="math display">\[
+y=X\beta+\varepsilon,
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+X=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}.
+\]</span></p>
+<p>Understanding matrices therefore becomes essential once Linear Models is written in its standard vector-matrix form.</p>
+<hr>
+</section>
+<section id="matrix-notation" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Matrix notation</h1>
+<p>Matrices are usually represented by uppercase letters:</p>
+<p><span class="math display">\[
+A,\ B,\ X,\ Y,\ M.
+\]</span></p>
+<p>The entries of a matrix are usually represented by lowercase letters with subscripts.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+a_{11} &amp; a_{12}\\
+a_{21} &amp; a_{22}
+\end{pmatrix}.
+\]</span></p>
+<p>The notation <span class="math inline">\(a_{ij}\)</span> means:</p>
+<ul>
+<li><span class="math inline">\(i\)</span> identifies the row,</li>
+<li><span class="math inline">\(j\)</span> identifies the column.</li>
+</ul>
+<p>Thus:</p>
+<p><span class="math display">\[
+a_{11}
+\]</span></p>
+<p>is the entry in row <span class="math inline">\(1\)</span>, column <span class="math inline">\(1\)</span>,</p>
+<p>while</p>
+<p><span class="math display">\[
+a_{23}
+\]</span></p>
+<p>is the entry in row <span class="math inline">\(2\)</span>, column <span class="math inline">\(3\)</span>.</p>
+<p>A matrix can therefore be written compactly as</p>
+<p><span class="math display">\[
+A=(a_{ij}).
+\]</span></p>
+<p>If the matrix has <span class="math inline">\(m\)</span> rows and <span class="math inline">\(n\)</span> columns, we can write</p>
+<p><span class="math display">\[
+A=(a_{ij})_{m\times n}.
+\]</span></p>
+<hr>
+</section>
+<section id="dimensions-of-a-matrix" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Dimensions of a matrix</h1>
+<p>The <strong>dimensions</strong> of a matrix describe its number of rows and columns.</p>
+<p>If a matrix has <span class="math inline">\(m\)</span> rows and <span class="math inline">\(n\)</span> columns, we say that it is an</p>
+<p><span class="math display">\[
+m\times n
+\]</span></p>
+<p>matrix.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{pmatrix}
+\]</span></p>
+<p>has <span class="math inline">\(2\)</span> rows and <span class="math inline">\(3\)</span> columns.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+A\in\mathbb R^{2\times3}.
+\]</span></p>
+<p>The dimensions are always written as</p>
+<p><span class="math display">\[
+\boxed{\text{rows}\times\text{columns}}.
+\]</span></p>
+<p>This convention is extremely important.</p>
+<p>A <span class="math inline">\(2\times3\)</span> matrix is <strong>not</strong> the same shape as a <span class="math inline">\(3\times2\)</span> matrix.</p>
+<hr>
+</section>
+<section id="rows-and-columns" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Rows and columns</h1>
+<p>Consider</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{pmatrix}.
+\]</span></p>
+<p>The first row is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2 &amp; 3
+\end{pmatrix}.
+\]</span></p>
+<p>The second row is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+4 &amp; 5 &amp; 6
+\end{pmatrix}.
+\]</span></p>
+<p>The first column is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1\\
+4
+\end{pmatrix}.
+\]</span></p>
+<p>The second column is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+2\\
+5
+\end{pmatrix}.
+\]</span></p>
+<p>The third column is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+3\\
+6
+\end{pmatrix}.
+\]</span></p>
+<p>Thus a matrix can be viewed either as a collection of rows or as a collection of columns.</p>
+<p>This becomes particularly important in Linear Models because the <strong>columns of the design matrix represent predictors and their associated basis vectors</strong>.</p>
+<hr>
+</section>
+<section id="matrix-entries" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Matrix entries</h1>
+<p>For</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+2 &amp; 5 &amp; -1\\
+0 &amp; 3 &amp; 7
+\end{pmatrix},
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+a_{11}=2,
+\]</span></p>
+<p><span class="math display">\[
+a_{12}=5,
+\]</span></p>
+<p><span class="math display">\[
+a_{13}=-1,
+\]</span></p>
+<p><span class="math display">\[
+a_{21}=0,
+\]</span></p>
+<p><span class="math display">\[
+a_{22}=3,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+a_{23}=7.
+\]</span></p>
+<p>The first subscript always refers to the row and the second to the column.</p>
+<p>Thus</p>
+<p><span class="math display">\[
+a_{ij}
+\]</span></p>
+<p>means “the entry in row <span class="math inline">\(i\)</span>, column <span class="math inline">\(j\)</span>.”</p>
+<hr>
+</section>
+<section id="matrix-dimensions-and-indexing" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Matrix dimensions and indexing</h1>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>then its entries are indexed by</p>
+<p><span class="math display">\[
+a_{ij},
+\qquad
+i=1,\ldots,m,
+\qquad
+j=1,\ldots,n.
+\]</span></p>
+<p>The first index ranges over the rows:</p>
+<p><span class="math display">\[
+i=1,\ldots,m.
+\]</span></p>
+<p>The second index ranges over the columns:</p>
+<p><span class="math display">\[
+j=1,\ldots,n.
+\]</span></p>
+<p>For example, if</p>
+<p><span class="math display">\[
+A\in\mathbb R^{4\times7},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+a_{37}
+\]</span></p>
+<p>exists because row <span class="math inline">\(3\)</span> and column <span class="math inline">\(7\)</span> exist.</p>
+<p>However,</p>
+<p><span class="math display">\[
+a_{57}
+\]</span></p>
+<p>does not exist because there is no fifth row.</p>
+<hr>
+</section>
+<section id="column-vectors-as-matrices" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Column vectors as matrices</h1>
+<p>A vector can be viewed as a matrix with exactly one column.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+x_3
+\end{pmatrix}
+\]</span></p>
+<p>is a</p>
+<p><span class="math display">\[
+3\times1
+\]</span></p>
+<p>matrix.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+x\in\mathbb R^{3\times1}.
+\]</span></p>
+<p>More generally,</p>
+<p><span class="math display">\[
+x\in\mathbb R^n
+\]</span></p>
+<p>is usually interpreted as an</p>
+<p><span class="math display">\[
+n\times1
+\]</span></p>
+<p>column matrix.</p>
+<p>This is why vector and matrix notation fit together so naturally.</p>
+<hr>
+</section>
+<section id="row-vectors" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Row vectors</h1>
+<p>A row vector is a matrix with exactly one row.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x^\top=
+\begin{pmatrix}
+x_1 &amp; x_2 &amp; x_3
+\end{pmatrix}
+\]</span></p>
+<p>is a</p>
+<p><span class="math display">\[
+1\times3
+\]</span></p>
+<p>matrix.</p>
+<p>If</p>
+<p><span class="math display">\[
+x\in\mathbb R^{3\times1},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+x^\top\in\mathbb R^{1\times3}.
+\]</span></p>
+<p>The transpose operation converts one into the other.</p>
+<hr>
+</section>
+<section id="matrix-equality" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Matrix equality</h1>
+<p>Two matrices are equal if and only if:</p>
+<ol type="1">
+<li>They have the same dimensions.</li>
+<li>Every corresponding entry is equal.</li>
+</ol>
+<p>Suppose</p>
+<p><span class="math display">\[
+A=(a_{ij})
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B=(b_{ij}).
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+A=B
+\]</span></p>
+<p>if and only if</p>
+<p><span class="math display">\[
+a_{ij}=b_{ij}
+\]</span></p>
+<p>for every valid pair <span class="math inline">\((i,j)\)</span>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}.
+\]</span></p>
+<p>But</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}
+\neq
+\begin{pmatrix}
+1 &amp; 3\\
+2 &amp; 4
+\end{pmatrix}.
+\]</span></p>
+<p>Even though both matrices contain the same numbers, the numbers occupy different positions.</p>
+<hr>
+</section>
+<section id="the-zero-matrix" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> The zero matrix</h1>
+<p>The <strong>zero matrix</strong> is a matrix whose entries are all zero.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+0_{2\times3}
+=
+\begin{pmatrix}
+0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0
+\end{pmatrix}.
+\]</span></p>
+<p>The dimensions of the zero matrix must be understood from context.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+0_{2\times3}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+0_{3\times2}
+\]</span></p>
+<p>are different matrices.</p>
+<p>The zero matrix acts as the additive identity:</p>
+<p><span class="math display">\[
+A+0=A.
+\]</span></p>
+<hr>
+</section>
+<section id="matrix-addition" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Matrix addition</h1>
+<p>Two matrices can be added only when they have the same dimensions.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+A=(a_{ij})
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B=(b_{ij})
+\]</span></p>
+<p>are both <span class="math inline">\(m\times n\)</span> matrices.</p>
+<p>Then</p>
+<p><span class="math display">\[
+A+B
+\]</span></p>
+<p>is defined componentwise:</p>
+<p><span class="math display">\[
+A+B=(a_{ij}+b_{ij}).
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B=
+\begin{pmatrix}
+5 &amp; 6\\
+7 &amp; 8
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+A+B
+=
+\begin{pmatrix}
+1+5 &amp; 2+6\\
+3+7 &amp; 4+8
+\end{pmatrix}
+=
+\begin{pmatrix}
+6 &amp; 8\\
+10 &amp; 12
+\end{pmatrix}.
+\]</span></p>
+<p>Matrix addition is therefore simply componentwise addition.</p>
+<hr>
+</section>
+<section id="matrix-subtraction" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Matrix subtraction</h1>
+<p>Matrix subtraction is also performed componentwise.</p>
+<p>If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> have the same dimensions, then</p>
+<p><span class="math display">\[
+A-B
+\]</span></p>
+<p>is defined by</p>
+<p><span class="math display">\[
+A-B=(a_{ij}-b_{ij}).
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+A-B=A+(-B).
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+5 &amp; 7\\
+2 &amp; 9
+\end{pmatrix}
+-
+\begin{pmatrix}
+1 &amp; 3\\
+4 &amp; 2
+\end{pmatrix}
+=
+\begin{pmatrix}
+4 &amp; 4\\
+-2 &amp; 7
+\end{pmatrix}.
+\]</span></p>
+<hr>
+</section>
+<section id="scalar-multiplication-of-matrices" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Scalar multiplication of matrices</h1>
+<p>A scalar can multiply every entry of a matrix.</p>
+<p>If <span class="math inline">\(c\in\mathbb R\)</span> and</p>
+<p><span class="math display">\[
+A=(a_{ij}),
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+cA=(ca_{ij}).
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+3
+\begin{pmatrix}
+1 &amp; 2\\
+-1 &amp; 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 &amp; 6\\
+-3 &amp; 12
+\end{pmatrix}.
+\]</span></p>
+<p>The same idea appeared with vectors.</p>
+<p>In fact, vectors can be viewed as a special case of matrices, so the operations are consistent.</p>
+<hr>
+</section>
+<section id="matrix-subtraction-and-scalar-multiplication" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Matrix subtraction and scalar multiplication</h1>
+<p>Scalar multiplication can be combined with addition and subtraction.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+2A-3B
+\]</span></p>
+<p>means</p>
+<p><span class="math display">\[
+2A+(-3B).
+\]</span></p>
+<p>If</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix},
+\qquad
+B=
+\begin{pmatrix}
+2 &amp; 0\\
+1 &amp; 3
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+2A
+=
+\begin{pmatrix}
+2 &amp; 4\\
+6 &amp; 8
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+3B
+=
+\begin{pmatrix}
+6 &amp; 0\\
+3 &amp; 9
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+2A-3B
+=
+\begin{pmatrix}
+-4 &amp; 4\\
+3 &amp; -1
+\end{pmatrix}.
+\]</span></p>
+<hr>
+</section>
+<section id="matrix-multiplication" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Matrix multiplication</h1>
+<p>Matrix multiplication is different from matrix addition.</p>
+<p>Unlike addition, matrices do <strong>not</strong> need to have the same dimensions to be multiplied.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B\in\mathbb R^{n\times p}.
+\]</span></p>
+<p>Then the product</p>
+<p><span class="math display">\[
+AB
+\]</span></p>
+<p>is defined and has dimensions</p>
+<p><span class="math display">\[
+AB\in\mathbb R^{m\times p}.
+\]</span></p>
+<p>The important dimension rule is therefore</p>
+<p><span class="math display">\[
+\boxed{
+(m\times n)(n\times p)=m\times p
+}
+\]</span></p>
+<p>The inner dimensions must match.</p>
+<p>The outer dimensions determine the dimensions of the result.</p>
+<hr>
+</section>
+<section id="the-dimension-rule" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> The dimension rule</h1>
+<p>When multiplying matrices,</p>
+<p><span class="math display">\[
+A_{m\times n}B_{r\times p},
+\]</span></p>
+<p>the product is defined only when</p>
+<p><span class="math display">\[
+n=r.
+\]</span></p>
+<p>If the dimensions match, then</p>
+<p><span class="math display">\[
+AB
+\]</span></p>
+<p>has dimensions</p>
+<p><span class="math display">\[
+m\times p.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+A_{2\times3}B_{3\times4}
+\]</span></p>
+<p>is valid and produces</p>
+<p><span class="math display">\[
+AB_{2\times4}.
+\]</span></p>
+<p>But</p>
+<p><span class="math display">\[
+A_{2\times3}B_{2\times4}
+\]</span></p>
+<p>is not defined because the inner dimensions <span class="math inline">\(3\)</span> and <span class="math inline">\(2\)</span> do not match.</p>
+<p>A useful mental model is:</p>
+<p><span class="math display">\[
+\boxed{
+\text{inner dimensions must match; outer dimensions survive}
+}
+\]</span></p>
+<hr>
+</section>
+<section id="computing-a-matrix-product" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> Computing a matrix product</h1>
+<p>Suppose</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+a_{11} &amp; a_{12}\\
+a_{21} &amp; a_{22}
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B=
+\begin{pmatrix}
+b_{11} &amp; b_{12}\\
+b_{21} &amp; b_{22}
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+AB
+=
+\begin{pmatrix}
+a_{11}b_{11}+a_{12}b_{21}
+&amp;
+a_{11}b_{12}+a_{12}b_{22}
+\\
+a_{21}b_{11}+a_{22}b_{21}
+&amp;
+a_{21}b_{12}+a_{22}b_{22}
+\end{pmatrix}.
+\]</span></p>
+<p>Each entry of the product is obtained by taking a <strong>row from the first matrix</strong> and a <strong>column from the second matrix</strong>, then computing their dot product.</p>
+<p>For example, the <span class="math inline">\((1,2)\)</span> entry is</p>
+<p><span class="math display">\[
+(AB)_{12}
+=
+a_{11}b_{12}+a_{12}b_{22}.
+\]</span></p>
+<p>This row-column rule is the fundamental definition of ordinary matrix multiplication.</p>
+<hr>
+</section>
+<section id="matrix-multiplication-as-dot-products" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> Matrix multiplication as dot products</h1>
+<p>The row-column rule can be understood directly using vectors.</p>
+<p>Suppose the first row of <span class="math inline">\(A\)</span> is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+a_{11} &amp; a_{12} &amp; a_{13}
+\end{pmatrix}
+\]</span></p>
+<p>and the first column of <span class="math inline">\(B\)</span> is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+b_{11}\\
+b_{21}\\
+b_{31}
+\end{pmatrix}.
+\]</span></p>
+<p>Then the corresponding entry of <span class="math inline">\(AB\)</span> is</p>
+<p><span class="math display">\[
+a_{11}b_{11}
++
+a_{12}b_{21}
++
+a_{13}b_{31}.
+\]</span></p>
+<p>This is exactly the dot product</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+a_{11} &amp; a_{12} &amp; a_{13}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11}\\
+b_{21}\\
+b_{31}
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Each entry of a matrix product is a row-column dot product.}
+}
+\]</span></p>
+<p>This connection is extremely useful because it links matrix multiplication directly to the vector concepts introduced previously.</p>
+<hr>
+</section>
+<section id="a-numerical-matrix-multiplication-example" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> A numerical matrix multiplication example</h1>
+<p>Let</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B=
+\begin{pmatrix}
+5 &amp; 6\\
+7 &amp; 8
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+AB
+=
+\begin{pmatrix}
+1(5)+2(7) &amp; 1(6)+2(8)\\
+3(5)+4(7) &amp; 3(6)+4(8)
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+AB
+=
+\begin{pmatrix}
+19 &amp; 22\\
+43 &amp; 50
+\end{pmatrix}.
+\]</span></p>
+<p>Notice that the multiplication is <strong>not</strong> performed by multiplying corresponding entries.</p>
+<p>That operation,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+a_{11}b_{11} &amp; a_{12}b_{12}\\
+a_{21}b_{21} &amp; a_{22}b_{22}
+\end{pmatrix},
+\]</span></p>
+<p>is a different operation called the <strong>Hadamard product</strong>.</p>
+<p>Standard matrix multiplication uses row-column dot products.</p>
+<hr>
+</section>
+<section id="matrix-multiplication-is-not-commutative" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> Matrix multiplication is not commutative</h1>
+<p>For ordinary numbers,</p>
+<p><span class="math display">\[
+ab=ba.
+\]</span></p>
+<p>Matrix multiplication generally does <strong>not</strong> have this property.</p>
+<p>In general,</p>
+<p><span class="math display">\[
+\boxed{
+AB\neq BA
+}
+\]</span></p>
+<p>even when both products are defined.</p>
+<p>Using</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix},
+\qquad
+B=
+\begin{pmatrix}
+5 &amp; 6\\
+7 &amp; 8
+\end{pmatrix},
+\]</span></p>
+<p>we found</p>
+<p><span class="math display">\[
+AB=
+\begin{pmatrix}
+19 &amp; 22\\
+43 &amp; 50
+\end{pmatrix}.
+\]</span></p>
+<p>But</p>
+<p><span class="math display">\[
+BA
+=
+\begin{pmatrix}
+23 &amp; 34\\
+31 &amp; 46
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+AB\neq BA.
+\]</span></p>
+<p>This is one of the most important differences between ordinary scalar algebra and matrix algebra.</p>
+<hr>
+</section>
+<section id="matrix-vector-multiplication" class="level1" data-number="22">
+<h1 data-number="22"><span class="header-section-number">22</span> Matrix-vector multiplication</h1>
+<p>A vector can be multiplied by a matrix.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+x\in\mathbb R^n.
+\]</span></p>
+<p>Viewing <span class="math inline">\(x\)</span> as an <span class="math inline">\(n\times1\)</span> column matrix,</p>
+<p><span class="math display">\[
+Ax
+\]</span></p>
+<p>is defined and produces an <span class="math inline">\(m\times1\)</span> vector.</p>
+<p>In dimensions,</p>
+<p><span class="math display">\[
+(m\times n)(n\times1)
+=
+m\times1.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix},
+\qquad
+x=
+\begin{pmatrix}
+5\\
+6
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+Ax
+=
+\begin{pmatrix}
+1(5)+2(6)\\
+3(5)+4(6)
+\end{pmatrix}
+=
+\begin{pmatrix}
+17\\
+39
+\end{pmatrix}.
+\]</span></p>
+<p>Thus matrix-vector multiplication produces another vector.</p>
+<hr>
+</section>
+<section id="matrix-vector-multiplication-as-linear-combinations" class="level1" data-number="23">
+<h1 data-number="23"><span class="header-section-number">23</span> Matrix-vector multiplication as linear combinations</h1>
+<p>There is a particularly important way to interpret <span class="math inline">\(Ax\)</span>.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+| &amp; | &amp; &amp; |\\
+a_1 &amp; a_2 &amp; \cdots &amp; a_n\\
+| &amp; | &amp; &amp; |
+\end{pmatrix}
+\]</span></p>
+<p>where <span class="math inline">\(a_1,\ldots,a_n\)</span> are the columns of <span class="math inline">\(A\)</span>.</p>
+<p>Let</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+Ax
+=
+x_1a_1+x_2a_2+\cdots+x_na_n.
+\]</span></p>
+<p>Therefore, <strong>matrix-vector multiplication is a linear combination of the columns of the matrix</strong>.</p>
+<p>This is one of the most important interpretations of matrices for Linear Models.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If</p>
+<p><span class="math display">\[
+X=
+\begin{pmatrix}
+| &amp; | &amp; &amp; |\\
+x_1 &amp; x_2 &amp; \cdots &amp; x_p\\
+| &amp; | &amp; &amp; |
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\beta=
+\begin{pmatrix}
+\beta_1\\
+\beta_2\\
+\vdots\\
+\beta_p
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+X\beta
+=
+\beta_1x_1+\beta_2x_2+\cdots+\beta_px_p.
+\]</span></p>
+<p>Thus <span class="math inline">\(X\beta\)</span> is a linear combination of the columns of <span class="math inline">\(X\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="matrix-multiplication-and-linear-models" class="level1" data-number="24">
+<h1 data-number="24"><span class="header-section-number">24</span> Matrix multiplication and Linear Models</h1>
+<p>The linear model</p>
+<p><span class="math display">\[
+y=X\beta+\varepsilon
+\]</span></p>
+<p>contains a matrix-vector multiplication:</p>
+<p><span class="math display">\[
+X\beta.
+\]</span></p>
+<p>Suppose</p>
+<p><span class="math display">\[
+X=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\beta=
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+X\beta
+=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+\]</span></p>
+<p>Multiplying gives</p>
+<p><span class="math display">\[
+X\beta
+=
+\begin{pmatrix}
+\beta_0+\beta_1x_1\\
+\beta_0+\beta_1x_2\\
+\vdots\\
+\beta_0+\beta_1x_n
+\end{pmatrix}.
+\]</span></p>
+<p>Thus the matrix-vector product contains all of the fitted values simultaneously.</p>
+<p>This is the reason matrix notation is so powerful in Linear Models.</p>
+<hr>
+</section>
+<section id="matrix-multiplication-as-a-linear-transformation" class="level1" data-number="25">
+<h1 data-number="25"><span class="header-section-number">25</span> Matrix multiplication as a linear transformation</h1>
+<p>A matrix</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n}
+\]</span></p>
+<p>defines a function</p>
+<p><span class="math display">\[
+T:\mathbb R^n\rightarrow\mathbb R^m
+\]</span></p>
+<p>given by</p>
+<p><span class="math display">\[
+T(x)=Ax.
+\]</span></p>
+<p>This function is a <strong>linear transformation</strong> because</p>
+<p><span class="math display">\[
+A(x+y)=Ax+Ay
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+A(cx)=c(Ax)
+\]</span></p>
+<p>for vectors <span class="math inline">\(x,y\)</span> and scalar <span class="math inline">\(c\)</span>.</p>
+<p>Thus matrix multiplication is not merely an algebraic procedure.</p>
+<p>A matrix can be understood as an object that takes vectors as inputs and produces transformed vectors as outputs.</p>
+<p>The detailed theory of linear transformations will be developed separately.</p>
+<hr>
+</section>
+<section id="important-properties-of-matrix-multiplication" class="level1" data-number="26">
+<h1 data-number="26"><span class="header-section-number">26</span> Important properties of matrix multiplication</h1>
+<p>Whenever the dimensions are compatible, matrix multiplication satisfies:</p>
+<section id="associativity" class="level3" data-number="26.0.1">
+<h3 data-number="26.0.1" class="anchored" data-anchor-id="associativity"><span class="header-section-number">26.0.1</span> Associativity</h3>
+<p><span class="math display">\[
+(AB)C=A(BC).
+\]</span></p>
+</section>
+<section id="distributivity-over-addition" class="level3" data-number="26.0.2">
+<h3 data-number="26.0.2" class="anchored" data-anchor-id="distributivity-over-addition"><span class="header-section-number">26.0.2</span> Distributivity over addition</h3>
+<p><span class="math display">\[
+A(B+C)=AB+AC.
+\]</span></p>
+<p>Similarly,</p>
+<p><span class="math display">\[
+(A+B)C=AC+BC.
+\]</span></p>
+</section>
+<section id="compatibility-with-scalar-multiplication" class="level3" data-number="26.0.3">
+<h3 data-number="26.0.3" class="anchored" data-anchor-id="compatibility-with-scalar-multiplication"><span class="header-section-number">26.0.3</span> Compatibility with scalar multiplication</h3>
+<p><span class="math display">\[
+c(AB)=(cA)B=A(cB).
+\]</span></p>
+<p>However, matrix multiplication is generally <strong>not commutative</strong>:</p>
+<p><span class="math display">\[
+AB\neq BA.
+\]</span></p>
+<p>This distinction should always be kept in mind.</p>
+<hr>
+</section>
+</section>
+<section id="the-identity-matrix" class="level1" data-number="27">
+<h1 data-number="27"><span class="header-section-number">27</span> The identity matrix</h1>
+<p>The <strong>identity matrix</strong> is the matrix equivalent of the scalar number <span class="math inline">\(1\)</span>.</p>
+<p>The <span class="math inline">\(n\times n\)</span> identity matrix is denoted by</p>
+<p><span class="math display">\[
+I_n
+\]</span></p>
+<p>and has ones on the main diagonal and zeros everywhere else.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+I_3=
+\begin{pmatrix}
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1
+\end{pmatrix}.
+\]</span></p>
+<p>For a compatible matrix <span class="math inline">\(A\)</span>,</p>
+<p><span class="math display">\[
+AI=A
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+IA=A.
+\]</span></p>
+<p>Thus the identity matrix acts as the multiplicative identity.</p>
+<p>For a vector <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[
+I_nx=x.
+\]</span></p>
+<hr>
+</section>
+<section id="identity-matrix-and-standard-basis-vectors" class="level1" data-number="28">
+<h1 data-number="28"><span class="header-section-number">28</span> Identity matrix and standard basis vectors</h1>
+<p>The identity matrix can also be understood through its columns.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+I_3=
+\begin{pmatrix}
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+| &amp; | &amp; |\\
+e_1 &amp; e_2 &amp; e_3\\
+| &amp; | &amp; |
+\end{pmatrix}.
+\]</span></p>
+<p>Its columns are the standard basis vectors.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+I_nx=x
+\]</span></p>
+<p>because multiplying by the identity leaves every coordinate unchanged.</p>
+<hr>
+</section>
+<section id="diagonal-matrices" class="level1" data-number="29">
+<h1 data-number="29"><span class="header-section-number">29</span> Diagonal matrices</h1>
+<p>A square matrix is <strong>diagonal</strong> if all entries outside the main diagonal are zero.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+D=
+\begin{pmatrix}
+2 &amp; 0 &amp; 0\\
+0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; -1
+\end{pmatrix}.
+\]</span></p>
+<p>A diagonal matrix can be written as</p>
+<p><span class="math display">\[
+D=
+\operatorname{diag}(d_1,\ldots,d_n).
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+D=\operatorname{diag}(2,5,-1).
+\]</span></p>
+<p>Multiplying a vector by a diagonal matrix simply scales each coordinate:</p>
+<p><span class="math display">\[
+Dx
+=
+\begin{pmatrix}
+d_1x_1\\
+d_2x_2\\
+\vdots\\
+d_nx_n
+\end{pmatrix}.
+\]</span></p>
+<p>Diagonal matrices are particularly useful because many matrix operations become much simpler for them.</p>
+<hr>
+</section>
+<section id="scalar-matrices" class="level1" data-number="30">
+<h1 data-number="30"><span class="header-section-number">30</span> Scalar matrices</h1>
+<p>A <strong>scalar matrix</strong> is a diagonal matrix whose diagonal entries are all equal.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+3I_3
+=
+\begin{pmatrix}
+3 &amp; 0 &amp; 0\\
+0 &amp; 3 &amp; 0\\
+0 &amp; 0 &amp; 3
+\end{pmatrix}.
+\]</span></p>
+<p>A scalar matrix behaves like multiplication by a scalar:</p>
+<p><span class="math display">\[
+(3I_3)x=3x.
+\]</span></p>
+<p>The identity matrix is the special case where the scalar is <span class="math inline">\(1\)</span>.</p>
+<hr>
+</section>
+<section id="triangular-matrices" class="level1" data-number="31">
+<h1 data-number="31"><span class="header-section-number">31</span> Triangular matrices</h1>
+<p>A square matrix is <strong>upper triangular</strong> if all entries below the main diagonal are zero.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+0 &amp; 4 &amp; 5\\
+0 &amp; 0 &amp; 6
+\end{pmatrix}.
+\]</span></p>
+<p>A square matrix is <strong>lower triangular</strong> if all entries above the main diagonal are zero.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+B=
+\begin{pmatrix}
+1 &amp; 0 &amp; 0\\
+2 &amp; 4 &amp; 0\\
+3 &amp; 5 &amp; 6
+\end{pmatrix}.
+\]</span></p>
+<p>Triangular matrices become particularly useful when solving systems of equations and studying determinants and eigenvalues.</p>
+<hr>
+</section>
+<section id="symmetric-matrices" class="level1" data-number="32">
+<h1 data-number="32"><span class="header-section-number">32</span> Symmetric matrices</h1>
+<p>A square matrix <span class="math inline">\(A\)</span> is <strong>symmetric</strong> if</p>
+<p><span class="math display">\[
+A^\top=A.
+\]</span></p>
+<p>This means</p>
+<p><span class="math display">\[
+a_{ij}=a_{ji}
+\]</span></p>
+<p>for all <span class="math inline">\(i,j\)</span>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+2 &amp; 4 &amp; 5\\
+3 &amp; 5 &amp; 6
+\end{pmatrix}
+\]</span></p>
+<p>is symmetric.</p>
+<p>The entries mirror each other across the main diagonal.</p>
+<p>Symmetric matrices are extremely important in statistics.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>is always symmetric because</p>
+<p><span class="math display">\[
+(X^\top X)^\top
+=
+X^\top(X^\top)^\top
+=
+X^\top X.
+\]</span></p>
+<p>Similarly, covariance matrices are symmetric.</p>
+<p>Symmetric matrices will therefore appear repeatedly in Linear Models.</p>
+<hr>
+</section>
+<section id="the-trace" class="level1" data-number="33">
+<h1 data-number="33"><span class="header-section-number">33</span> The trace</h1>
+<p>For a square matrix</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+a_{11} &amp; \cdots &amp; a_{1n}\\
+\vdots &amp; \ddots &amp; \vdots\\
+a_{n1} &amp; \cdots &amp; a_{nn}
+\end{pmatrix},
+\]</span></p>
+<p>the <strong>trace</strong> is the sum of the diagonal entries:</p>
+<p><span class="math display">\[
+\operatorname{tr}(A)
+=
+\sum_{i=1}^n a_{ii}.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\operatorname{tr}(A)
+=
+a_{11}+a_{22}+\cdots+a_{nn}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+2 &amp; 4 &amp; 1\\
+0 &amp; 3 &amp; 5\\
+7 &amp; 1 &amp; -2
+\end{pmatrix}
+\]</span></p>
+<p>has trace</p>
+<p><span class="math display">\[
+\operatorname{tr}(A)
+=
+2+3-2
+=
+3.
+\]</span></p>
+<p>The trace becomes useful later when working with quadratic forms, covariance matrices, expectations, and matrix decompositions.</p>
+<p>For basic Linear Models, you mainly need to recognize the definition and notation.</p>
+<hr>
+</section>
+<section id="matrix-transpose" class="level1" data-number="34">
+<h1 data-number="34"><span class="header-section-number">34</span> Matrix transpose</h1>
+<p>The <strong>transpose</strong> of a matrix is obtained by exchanging its rows and columns.</p>
+<p>If</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+A^\top=
+\begin{pmatrix}
+1 &amp; 4\\
+2 &amp; 5\\
+3 &amp; 6
+\end{pmatrix}.
+\]</span></p>
+<p>The first row of <span class="math inline">\(A\)</span> becomes the first column of <span class="math inline">\(A^\top\)</span>, and the second row becomes the second column.</p>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+A^\top\in\mathbb R^{n\times m}.
+\]</span></p>
+<p>Thus transposition reverses the dimensions:</p>
+<p><span class="math display">\[
+\boxed{
+m\times n
+\longrightarrow
+n\times m
+}
+\]</span></p>
+<hr>
+</section>
+<section id="transpose-of-an-entry" class="level1" data-number="35">
+<h1 data-number="35"><span class="header-section-number">35</span> Transpose of an entry</h1>
+<p>If</p>
+<p><span class="math display">\[
+A=(a_{ij}),
+\]</span></p>
+<p>then the entries of the transpose are given by</p>
+<p><span class="math display">\[
+(A^\top)_{ij}=a_{ji}.
+\]</span></p>
+<p>In other words, the row and column indices are exchanged.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4\\
+5 &amp; 6
+\end{pmatrix}
+\]</span></p>
+<p>has</p>
+<p><span class="math display">\[
+A^\top=
+\begin{pmatrix}
+1 &amp; 3 &amp; 5\\
+2 &amp; 4 &amp; 6
+\end{pmatrix}.
+\]</span></p>
+<p>Notice that</p>
+<p><span class="math display">\[
+a_{12}=2
+\]</span></p>
+<p>becomes</p>
+<p><span class="math display">\[
+(A^\top)_{21}=2.
+\]</span></p>
+<hr>
+</section>
+<section id="transpose-of-a-vector" class="level1" data-number="36">
+<h1 data-number="36"><span class="header-section-number">36</span> Transpose of a vector</h1>
+<p>The transpose of a column vector is a row vector.</p>
+<p>If</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+x^\top=
+\begin{pmatrix}
+x_1 &amp; x_2 &amp; \cdots &amp; x_n
+\end{pmatrix}.
+\]</span></p>
+<p>Conversely,</p>
+<p><span class="math display">\[
+(x^\top)^\top=x.
+\]</span></p>
+<p>This is why the expression</p>
+<p><span class="math display">\[
+x^\top y
+\]</span></p>
+<p>is a valid matrix product when <span class="math inline">\(x,y\in\mathbb R^n\)</span>.</p>
+<p>The dimensions are</p>
+<p><span class="math display">\[
+x^\top\in\mathbb R^{1\times n}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+y\in\mathbb R^{n\times1},
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+x^\top y\in\mathbb R^{1\times1}.
+\]</span></p>
+<p>This <span class="math inline">\(1\times1\)</span> matrix is identified with the scalar dot product.</p>
+<hr>
+</section>
+<section id="transpose-of-a-sum" class="level1" data-number="37">
+<h1 data-number="37"><span class="header-section-number">37</span> Transpose of a sum</h1>
+<p>The transpose distributes over addition:</p>
+<p><span class="math display">\[
+\boxed{
+(A+B)^\top=A^\top+B^\top
+}
+\]</span></p>
+<p>provided the matrices have compatible dimensions.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+(A+B)^\top
+\]</span></p>
+<p>can be obtained either by adding first and then transposing, or by transposing each matrix and then adding.</p>
+<hr>
+</section>
+<section id="transpose-and-scalar-multiplication" class="level1" data-number="38">
+<h1 data-number="38"><span class="header-section-number">38</span> Transpose and scalar multiplication</h1>
+<p>For a scalar <span class="math inline">\(c\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+(cA)^\top=cA^\top
+}
+\]</span></p>
+<p>The scalar is unaffected by transposition.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+\left(
+3
+\begin{pmatrix}
+1 &amp; 2\\
+4 &amp; 5
+\end{pmatrix}
+\right)^\top
+=
+3
+\begin{pmatrix}
+1 &amp; 4\\
+2 &amp; 5
+\end{pmatrix}.
+\]</span></p>
+<hr>
+</section>
+<section id="transpose-of-a-matrix-product" class="level1" data-number="39">
+<h1 data-number="39"><span class="header-section-number">39</span> Transpose of a matrix product</h1>
+<p>One of the most important transpose rules is</p>
+<p><span class="math display">\[
+\boxed{
+(AB)^\top=B^\top A^\top
+}
+\]</span></p>
+<p>Notice that the order reverses.</p>
+<p>This is crucial.</p>
+<p>It is <strong>not</strong></p>
+<p><span class="math display">\[
+(AB)^\top=A^\top B^\top.
+\]</span></p>
+<p>Instead,</p>
+<p><span class="math display">\[
+\boxed{
+(AB)^\top=B^\top A^\top
+}
+\]</span></p>
+<p>For example, if</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+B\in\mathbb R^{n\times p},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+AB\in\mathbb R^{m\times p}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+(AB)^\top\in\mathbb R^{p\times m}.
+\]</span></p>
+<p>On the other hand,</p>
+<p><span class="math display">\[
+B^\top\in\mathbb R^{p\times n}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+A^\top\in\mathbb R^{n\times m},
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+B^\top A^\top\in\mathbb R^{p\times m}.
+\]</span></p>
+<p>The dimensions confirm the rule.</p>
+<hr>
+</section>
+<section id="transpose-of-multiple-matrix-products" class="level1" data-number="40">
+<h1 data-number="40"><span class="header-section-number">40</span> Transpose of multiple matrix products</h1>
+<p>The same rule extends to more than two matrices.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+(ABC)^\top
+=
+C^\top B^\top A^\top.
+\]</span></p>
+<p>The order is completely reversed.</p>
+<p>More generally,</p>
+<p><span class="math display">\[
+(A_1A_2\cdots A_k)^\top
+=
+A_k^\top\cdots A_2^\top A_1^\top.
+\]</span></p>
+<p>This becomes particularly important when manipulating expressions such as</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(X^\top X)^\top.
+\]</span></p>
+<hr>
+</section>
+<section id="transpose-and-the-dot-product" class="level1" data-number="41">
+<h1 data-number="41"><span class="header-section-number">41</span> Transpose and the dot product</h1>
+<p>For vectors <span class="math inline">\(x,y\)</span>,</p>
+<p><span class="math display">\[
+x^\top y
+\]</span></p>
+<p>is a scalar.</p>
+<p>Since a scalar is equal to its own transpose,</p>
+<p><span class="math display">\[
+(x^\top y)^\top=x^\top y.
+\]</span></p>
+<p>Using the product transpose rule,</p>
+<p><span class="math display">\[
+(x^\top y)^\top
+=
+y^\top(x^\top)^\top.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+x^\top y=y^\top x.
+\]</span></p>
+<p>This recovers the symmetry of the dot product from matrix algebra.</p>
+<hr>
+</section>
+<section id="symmetric-matrices-1" class="level1" data-number="42">
+<h1 data-number="42"><span class="header-section-number">42</span> Symmetric matrices</h1>
+<p>A square matrix <span class="math inline">\(A\)</span> is symmetric when</p>
+<p><span class="math display">\[
+A^\top=A.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+a_{ij}=a_{ji}
+\]</span></p>
+<p>for all <span class="math inline">\(i,j\)</span>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+2 &amp; 4 &amp; -1\\
+4 &amp; 3 &amp; 5\\
+-1 &amp; 5 &amp; 7
+\end{pmatrix}
+\]</span></p>
+<p>is symmetric.</p>
+<p>Symmetric matrices are especially important in statistics because many important matrices have this property.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>is always symmetric.</p>
+<p>Indeed,</p>
+<p><span class="math display">\[
+(X^\top X)^\top
+=
+X^\top(X^\top)^\top
+=
+X^\top X.
+\]</span></p>
+<hr>
+</section>
+<section id="the-matrix-xtop-x" class="level1" data-number="43">
+<h1 data-number="43"><span class="header-section-number">43</span> The matrix <span class="math inline">\(X^\top X\)</span></h1>
+<p>The expression</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>appears constantly in Linear Models.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+X\in\mathbb R^{n\times p}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+X^\top\in\mathbb R^{p\times n},
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+X^\top X
+\in\mathbb R^{p\times p}.
+\]</span></p>
+<p>Thus an <span class="math inline">\(n\times p\)</span> design matrix produces a <span class="math inline">\(p\times p\)</span> matrix when multiplied by its transpose.</p>
+<p>The entries of <span class="math inline">\(X^\top X\)</span> are dot products between columns of <span class="math inline">\(X\)</span>.</p>
+<p>If the columns of <span class="math inline">\(X\)</span> are</p>
+<p><span class="math display">\[
+x_1,\ldots,x_p,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+X^\top X
+=
+\begin{pmatrix}
+x_1^\top x_1 &amp; x_1^\top x_2 &amp; \cdots &amp; x_1^\top x_p\\
+x_2^\top x_1 &amp; x_2^\top x_2 &amp; \cdots &amp; x_2^\top x_p\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+x_p^\top x_1 &amp; x_p^\top x_2 &amp; \cdots &amp; x_p^\top x_p
+\end{pmatrix}.
+\]</span></p>
+<p>Thus the diagonal entries contain squared lengths of the columns, while the off-diagonal entries contain pairwise dot products.</p>
+<hr>
+</section>
+<section id="the-gram-matrix" class="level1" data-number="44">
+<h1 data-number="44"><span class="header-section-number">44</span> The Gram matrix</h1>
+<p>A matrix of the form</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>is called a <strong>Gram matrix</strong>.</p>
+<p>If the columns of <span class="math inline">\(X\)</span> are</p>
+<p><span class="math display">\[
+x_1,\ldots,x_p,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+(X^\top X)_{ij}=x_i^\top x_j.
+\]</span></p>
+<p>Therefore the Gram matrix records all pairwise inner products among the columns of $X.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+X^\top X
+=
+\begin{pmatrix}
+\|x_1\|^2 &amp; x_1^\top x_2\\
+x_2^\top x_1 &amp; \|x_2\|^2
+\end{pmatrix}.
+\]</span></p>
+<p>This gives a useful interpretation:</p>
+<p><span class="math display">\[
+\boxed{
+X^\top X
+\text{ records the geometry of the columns of }X.
+}
+\]</span></p>
+<p>The Gram matrix will appear repeatedly in least squares.</p>
+<hr>
+</section>
+<section id="positive-semidefinite-matrices" class="level1" data-number="45">
+<h1 data-number="45"><span class="header-section-number">45</span> Positive semidefinite matrices</h1>
+<p>A symmetric matrix <span class="math inline">\(A\)</span> is <strong>positive semidefinite</strong> if</p>
+<p><span class="math display">\[
+x^\top Ax\geq0
+\]</span></p>
+<p>for every vector <span class="math inline">\(x\)</span>.</p>
+<p>A particularly important example is</p>
+<p><span class="math display">\[
+A=X^\top X.
+\]</span></p>
+<p>For any vector <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[
+x^\top X^\top Xx
+=
+(Xx)^\top(Xx).
+\]</span></p>
+<p>But</p>
+<p><span class="math display">\[
+(Xx)^\top(Xx)
+=
+\|Xx\|^2
+\geq0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+X^\top X
+\text{ is always positive semidefinite.}
+}
+\]</span></p>
+<p>This property is important in optimization and least-squares theory.</p>
+<p>The full theory of positive semidefinite matrices is covered in more advanced linear algebra material, but the definition is worth recognizing.</p>
+<hr>
+</section>
+<section id="quadratic-forms" class="level1" data-number="46">
+<h1 data-number="46"><span class="header-section-number">46</span> Quadratic forms</h1>
+<p>An expression of the form</p>
+<p><span class="math display">\[
+x^\top Ax
+\]</span></p>
+<p>is called a <strong>quadratic form</strong>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix},
+\qquad
+A=
+\begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix},
+\]</span></p>
+<p>gives</p>
+<p><span class="math display">\[
+x^\top Ax.
+\]</span></p>
+<p>First,</p>
+<p><span class="math display">\[
+Ax
+=
+\begin{pmatrix}
+ax_1+bx_2\\
+cx_1+dx_2
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+x^\top Ax
+=
+x_1(ax_1+bx_2)
++
+x_2(cx_1+dx_2).
+\]</span></p>
+<p>So</p>
+<p><span class="math display">\[
+x^\top Ax
+=
+ax_1^2+(b+c)x_1x_2+dx_2^2.
+\]</span></p>
+<p>Quadratic forms appear naturally in least squares because</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2
+\]</span></p>
+<p>can be expanded into a quadratic function of <span class="math inline">\(\beta\)</span>.</p>
+<hr>
+</section>
+<section id="matrix-vector-multiplication-and-rows" class="level1" data-number="47">
+<h1 data-number="47"><span class="header-section-number">47</span> Matrix-vector multiplication and rows</h1>
+<p>There are two useful ways to understand matrix-vector multiplication.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+\text{--- }a_1^\top\text{ ---}\\
+\text{--- }a_2^\top\text{ ---}\\
+\vdots\\
+\text{--- }a_m^\top\text{ ---}
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+x\in\mathbb R^n.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+Ax
+=
+\begin{pmatrix}
+a_1^\top x\\
+a_2^\top x\\
+\vdots\\
+a_m^\top x
+\end{pmatrix}.
+\]</span></p>
+<p>Thus each output coordinate is the dot product of one row of <span class="math inline">\(A\)</span> with <span class="math inline">\(x\)</span>.</p>
+<p>So there are two complementary interpretations:</p>
+<p><span class="math display">\[
+\boxed{
+Ax=\text{linear combination of the columns of }A
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+Ax=\text{collection of dot products between rows of }A\text{ and }x.
+}
+\]</span></p>
+<p>Both viewpoints are useful.</p>
+<hr>
+</section>
+<section id="column-interpretation-of-a-matrix" class="level1" data-number="48">
+<h1 data-number="48"><span class="header-section-number">48</span> Column interpretation of a matrix</h1>
+<p>Suppose</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+| &amp; | &amp; |\\
+a_1 &amp; a_2 &amp; a_3\\
+| &amp; | &amp; |
+\end{pmatrix}.
+\]</span></p>
+<p>Then the columns <span class="math inline">\(a_1,a_2,a_3\)</span> are vectors.</p>
+<p>For</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+x_3
+\end{pmatrix},
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+Ax=x_1a_1+x_2a_2+x_3a_3.
+\]</span></p>
+<p>Therefore every vector produced by <span class="math inline">\(Ax\)</span> belongs to the span of the columns:</p>
+<p><span class="math display">\[
+Ax\in\operatorname{span}(a_1,a_2,a_3).
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+\{Ax:x\in\mathbb R^3\}
+=
+\operatorname{span}(a_1,a_2,a_3).
+\]</span></p>
+<p>This set is called the <strong>column space</strong> of <span class="math inline">\(A\)</span>.</p>
+<hr>
+</section>
+<section id="column-space" class="level1" data-number="49">
+<h1 data-number="49"><span class="header-section-number">49</span> Column space</h1>
+<p>The <strong>column space</strong> of a matrix <span class="math inline">\(A\)</span> is the span of its columns.</p>
+<p>If</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+| &amp; | &amp; &amp; |\\
+a_1 &amp; a_2 &amp; \cdots &amp; a_n\\
+| &amp; | &amp; &amp; |
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname{Col}(A)
+=
+\operatorname{span}(a_1,\ldots,a_n).
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\operatorname{Col}(A)
+=
+\{Ax:x\in\mathbb R^n\}.
+\]</span></p>
+<p>The column space is a subspace of the output space.</p>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname{Col}(A)\subseteq\mathbb R^m.
+\]</span></p>
+<p>This is important in Linear Models because the fitted values</p>
+<p><span class="math display">\[
+X\hat\beta
+\]</span></p>
+<p>belong to</p>
+<p><span class="math display">\[
+\operatorname{Col}(X).
+\]</span></p>
+<hr>
+</section>
+<section id="row-space" class="level1" data-number="50">
+<h1 data-number="50"><span class="header-section-number">50</span> Row space</h1>
+<p>The <strong>row space</strong> of a matrix is the span of its rows.</p>
+<p>If the rows of <span class="math inline">\(A\)</span> are</p>
+<p><span class="math display">\[
+r_1^\top,\ldots,r_m^\top,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname{Row}(A)
+=
+\operatorname{span}(r_1,\ldots,r_m).
+\]</span></p>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname{Row}(A)\subseteq\mathbb R^n.
+\]</span></p>
+<p>The row space and column space are different subspaces in general, although they have the same dimension.</p>
+<p>That common dimension is the <strong>rank</strong> of the matrix.</p>
+<hr>
+</section>
+<section id="rank" class="level1" data-number="51">
+<h1 data-number="51"><span class="header-section-number">51</span> Rank</h1>
+<p>The <strong>rank</strong> of a matrix is the dimension of its column space.</p>
+<p>Equivalently, it is the dimension of its row space.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{rank}(A)
+=
+\dim(\operatorname{Col}(A))
+=
+\dim(\operatorname{Row}(A))
+}
+\]</span></p>
+<p>Rank measures how many linearly independent directions are contained in the matrix.</p>
+<p>For a matrix</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>the rank can never exceed either dimension:</p>
+<p><span class="math display">\[
+\operatorname{rank}(A)\leq\min(m,n).
+\]</span></p>
+<p>For example, a <span class="math inline">\(3\times5\)</span> matrix can have rank at most</p>
+<p><span class="math display">\[
+3.
+\]</span></p>
+<p>A <span class="math inline">\(10\times2\)</span> matrix can have rank at most</p>
+<p><span class="math display">\[
+2.
+\]</span></p>
+<hr>
+</section>
+<section id="full-rank" class="level1" data-number="52">
+<h1 data-number="52"><span class="header-section-number">52</span> Full rank</h1>
+<p>A matrix is said to have <strong>full column rank</strong> if its columns are linearly independent.</p>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>then full column rank means</p>
+<p><span class="math display">\[
+\operatorname{rank}(A)=n.
+\]</span></p>
+<p>This is possible only when</p>
+<p><span class="math display">\[
+n\leq m.
+\]</span></p>
+<p>Similarly, <span class="math inline">\(A\)</span> has <strong>full row rank</strong> if</p>
+<p><span class="math display">\[
+\operatorname{rank}(A)=m.
+\]</span></p>
+<p>This is possible only when</p>
+<p><span class="math display">\[
+m\leq n.
+\]</span></p>
+<p>In Linear Models, full column rank of the design matrix <span class="math inline">\(X\)</span> is particularly important because it guarantees uniqueness of the ordinary least-squares coefficient estimate under the usual setup.</p>
+<hr>
+</section>
+<section id="linear-dependence-of-matrix-columns" class="level1" data-number="53">
+<h1 data-number="53"><span class="header-section-number">53</span> Linear dependence of matrix columns</h1>
+<p>The columns of a matrix</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+| &amp; | &amp; &amp; |\\
+a_1 &amp; a_2 &amp; \cdots &amp; a_n\\
+| &amp; | &amp; &amp; |
+\end{pmatrix}
+\]</span></p>
+<p>are linearly dependent if there exist coefficients</p>
+<p><span class="math display">\[
+c_1,\ldots,c_n
+\]</span></p>
+<p>not all zero such that</p>
+<p><span class="math display">\[
+c_1a_1+\cdots+c_na_n=0.
+\]</span></p>
+<p>Using matrix notation, this can be written as</p>
+<p><span class="math display">\[
+Ac=0
+\]</span></p>
+<p>for some non-zero vector</p>
+<p><span class="math display">\[
+c=
+\begin{pmatrix}
+c_1\\
+\vdots\\
+c_n
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\text{The columns of }A\text{ are linearly independent}
+\iff
+Ac=0\text{ has only }c=0.
+}
+\]</span></p>
+<p>This connection between linear independence and matrix equations is fundamental.</p>
+<hr>
+</section>
+<section id="systems-of-linear-equations" class="level1" data-number="54">
+<h1 data-number="54"><span class="header-section-number">54</span> Systems of linear equations</h1>
+<p>A system of linear equations can be written compactly using matrices.</p>
+<p>Consider</p>
+<p><span class="math display">\[
+\begin{aligned}
+a_{11}x_1+a_{12}x_2&amp;=b_1,\\
+a_{21}x_1+a_{22}x_2&amp;=b_2.
+\end{aligned}
+\]</span></p>
+<p>This can be written as</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+a_{11} &amp; a_{12}\\
+a_{21} &amp; a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+b_1\\
+b_2
+\end{pmatrix}.
+\]</span></p>
+<p>In compact notation,</p>
+<p><span class="math display">\[
+Ax=b.
+\]</span></p>
+<p>This notation is extremely important.</p>
+<p>A large system of equations can therefore be represented by a single matrix equation.</p>
+<hr>
+</section>
+<section id="the-augmented-matrix" class="level1" data-number="55">
+<h1 data-number="55"><span class="header-section-number">55</span> The augmented matrix</h1>
+<p>A system</p>
+<p><span class="math display">\[
+Ax=b
+\]</span></p>
+<p>can also be represented using an <strong>augmented matrix</strong>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{aligned}
+x_1+2x_2&amp;=5,\\
+3x_1+4x_2&amp;=7
+\end{aligned}
+\]</span></p>
+<p>has augmented matrix</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+1 &amp; 2 &amp; 5\\
+3 &amp; 4 &amp; 7
+\end{array}
+\right].
+\]</span></p>
+<p>The vertical line separates the coefficient matrix from the right-hand side.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+1 &amp; 2 &amp; 5\\
+3 &amp; 4 &amp; 7
+\end{array}
+\right]
+\]</span></p>
+<p>represents</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+5\\
+7
+\end{pmatrix}.
+\]</span></p>
+<hr>
+</section>
+<section id="elementary-row-operations" class="level1" data-number="56">
+<h1 data-number="56"><span class="header-section-number">56</span> Elementary row operations</h1>
+<p>When solving a system of linear equations, we can perform certain operations on the rows without changing the solution set.</p>
+<p>The three elementary row operations are:</p>
+<ol type="1">
+<li>Swap two rows.</li>
+<li>Multiply a row by a non-zero scalar.</li>
+<li>Add a multiple of one row to another row.</li>
+</ol>
+<p>For example,</p>
+<p><span class="math display">\[
+R_2\leftarrow R_2-3R_1
+\]</span></p>
+<p>means replace row <span class="math inline">\(2\)</span> with</p>
+<p><span class="math display">\[
+R_2-3R_1.
+\]</span></p>
+<p>These operations form the basis of Gaussian elimination.</p>
+<hr>
+</section>
+<section id="row-echelon-form" class="level1" data-number="57">
+<h1 data-number="57"><span class="header-section-number">57</span> Row echelon form</h1>
+<p>A matrix is in <strong>row echelon form</strong> when it has the appropriate staircase structure:</p>
+<ul>
+<li>all non-zero rows occur above any zero rows,</li>
+<li>each leading non-zero entry is to the right of the leading entry in the row above,</li>
+<li>all entries below a leading entry are zero.</li>
+</ul>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2 &amp; 3\\
+0 &amp; 1 &amp; 4\\
+0 &amp; 0 &amp; 2
+\end{pmatrix}
+\]</span></p>
+<p>is in row echelon form.</p>
+<p>Row reduction allows us to transform a matrix into this form while preserving the essential information needed to solve a system.</p>
+<hr>
+</section>
+<section id="reduced-row-echelon-form" class="level1" data-number="58">
+<h1 data-number="58"><span class="header-section-number">58</span> Reduced row echelon form</h1>
+<p>A matrix is in <strong>reduced row echelon form</strong> when, in addition to being in row echelon form:</p>
+<ul>
+<li>every leading entry is <span class="math inline">\(1\)</span>,</li>
+<li>each leading <span class="math inline">\(1\)</span> is the only non-zero entry in its column.</li>
+</ul>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 0 &amp; 3\\
+0 &amp; 1 &amp; -2\\
+0 &amp; 0 &amp; 0
+\end{pmatrix}
+\]</span></p>
+<p>is in reduced row echelon form.</p>
+<p>Reduced row echelon form is unique for a given matrix.</p>
+<p>This makes it useful for identifying rank, solving systems, and determining linear dependence.</p>
+<hr>
+</section>
+<section id="gaussian-elimination" class="level1" data-number="59">
+<h1 data-number="59"><span class="header-section-number">59</span> Gaussian elimination</h1>
+<p><strong>Gaussian elimination</strong> is the process of using elementary row operations to simplify a system or matrix.</p>
+<p>For example, consider</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}.
+\]</span></p>
+<p>We can perform</p>
+<p><span class="math display">\[
+R_2\leftarrow R_2-3R_1.
+\]</span></p>
+<p>This gives</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2\\
+0 &amp; -2
+\end{pmatrix}.
+\]</span></p>
+<p>Further row operations can then be used to solve the associated system.</p>
+<p>Gaussian elimination is one of the fundamental computational tools of linear algebra.</p>
+<hr>
+</section>
+<section id="solving-a-system-using-row-reduction" class="level1" data-number="60">
+<h1 data-number="60"><span class="header-section-number">60</span> Solving a system using row reduction</h1>
+<p>Consider</p>
+<p><span class="math display">\[
+\begin{aligned}
+x+2y&amp;=5,\\
+3x+4y&amp;=11.
+\end{aligned}
+\]</span></p>
+<p>The augmented matrix is</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+1 &amp; 2 &amp; 5\\
+3 &amp; 4 &amp; 11
+\end{array}
+\right].
+\]</span></p>
+<p>Perform</p>
+<p><span class="math display">\[
+R_2\leftarrow R_2-3R_1.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+1 &amp; 2 &amp; 5\\
+0 &amp; -2 &amp; -4
+\end{array}
+\right].
+\]</span></p>
+<p>Divide the second row by <span class="math inline">\(-2\)</span>:</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+1 &amp; 2 &amp; 5\\
+0 &amp; 1 &amp; 2
+\end{array}
+\right].
+\]</span></p>
+<p>Now perform</p>
+<p><span class="math display">\[
+R_1\leftarrow R_1-2R_2.
+\]</span></p>
+<p>This gives</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{cc|c}
+1 &amp; 0 &amp; 1\\
+0 &amp; 1 &amp; 2
+\end{array}
+\right].
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+x=1,
+\qquad
+y=2.
+\]</span></p>
+<hr>
+</section>
+<section id="homogeneous-systems" class="level1" data-number="61">
+<h1 data-number="61"><span class="header-section-number">61</span> Homogeneous systems</h1>
+<p>A system of the form</p>
+<p><span class="math display">\[
+Ax=0
+\]</span></p>
+<p>is called a <strong>homogeneous system</strong>.</p>
+<p>It always has at least one solution:</p>
+<p><span class="math display">\[
+x=0.
+\]</span></p>
+<p>This is called the <strong>trivial solution</strong>.</p>
+<p>The important question is whether there are also non-zero solutions.</p>
+<p>If</p>
+<p><span class="math display">\[
+Ax=0
+\]</span></p>
+<p>has a non-zero solution, then the columns of <span class="math inline">\(A\)</span> are linearly dependent.</p>
+<p>If the only solution is</p>
+<p><span class="math display">\[
+x=0,
+\]</span></p>
+<p>then the columns of <span class="math inline">\(A\)</span> are linearly independent.</p>
+<p>Thus:</p>
+<p><span class="math display">\[
+\boxed{
+Ax=0
+\text{ has only the trivial solution}
+\iff
+\text{columns of }A\text{ are linearly independent}
+}
+\]</span></p>
+<hr>
+</section>
+<section id="null-space" class="level1" data-number="62">
+<h1 data-number="62"><span class="header-section-number">62</span> Null space</h1>
+<p>The <strong>null space</strong> or <strong>kernel</strong> of a matrix <span class="math inline">\(A\)</span> is the set of all vectors that are mapped to the zero vector.</p>
+<p>It is defined as</p>
+<p><span class="math display">\[
+\operatorname{Null}(A)
+=
+\{x:Ax=0\}.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\operatorname{Null}(A)
+\]</span></p>
+<p>is the set of all solutions to the homogeneous system</p>
+<p><span class="math display">\[
+Ax=0.
+\]</span></p>
+<p>The null space is a subspace of the domain of <span class="math inline">\(A\)</span>.</p>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname{Null}(A)\subseteq\mathbb R^n.
+\]</span></p>
+<p>This is because <span class="math inline">\(x\)</span> must have <span class="math inline">\(n\)</span> entries in order for <span class="math inline">\(Ax\)</span> to be defined.</p>
+<hr>
+</section>
+<section id="rank-and-nullity" class="level1" data-number="63">
+<h1 data-number="63"><span class="header-section-number">63</span> Rank and nullity</h1>
+<p>The <strong>nullity</strong> of a matrix is the dimension of its null space:</p>
+<p><span class="math display">\[
+\operatorname{nullity}(A)
+=
+\dim(\operatorname{Null}(A)).
+\]</span></p>
+<p>For a matrix</p>
+<p><span class="math display">\[
+A\in\mathbb R^{m\times n},
+\]</span></p>
+<p>the rank-nullity theorem states</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{rank}(A)
++
+\operatorname{nullity}(A)
+=
+n
+}
+\]</span></p>
+<p>where <span class="math inline">\(n\)</span> is the number of columns of <span class="math inline">\(A\)</span>.</p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{rank}(A)
++
+\dim(\operatorname{Null}(A))
+=
+\text{number of columns of }A
+}
+\]</span></p>
+<p>This theorem connects three important ideas:</p>
+<p><span class="math display">\[
+\text{linear independence}
+\longleftrightarrow
+\text{rank}
+\longleftrightarrow
+\text{null space}.
+\]</span></p>
+<hr>
+</section>
+<section id="invertible-matrices" class="level1" data-number="64">
+<h1 data-number="64"><span class="header-section-number">64</span> Invertible matrices</h1>
+<p>A square matrix <span class="math inline">\(A\)</span> is <strong>invertible</strong> if there exists another matrix <span class="math inline">\(A^{-1}\)</span> such that</p>
+<p><span class="math display">\[
+AA^{-1}=I
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+A^{-1}A=I.
+\]</span></p>
+<p>The matrix <span class="math inline">\(A^{-1}\)</span> is called the <strong>inverse</strong> of <span class="math inline">\(A\)</span>.</p>
+<p>The inverse plays the same conceptual role as the reciprocal of a non-zero scalar.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+5\cdot\frac15=1.
+\]</span></p>
+<p>Similarly,</p>
+<p><span class="math display">\[
+AA^{-1}=I.
+\]</span></p>
+<p>Not every matrix has an inverse.</p>
+<p>Only square matrices can have a two-sided inverse in the ordinary sense.</p>
+<hr>
+</section>
+<section id="solving-axb-using-an-inverse" class="level1" data-number="65">
+<h1 data-number="65"><span class="header-section-number">65</span> Solving <span class="math inline">\(Ax=b\)</span> using an inverse</h1>
+<p>If <span class="math inline">\(A\)</span> is invertible and</p>
+<p><span class="math display">\[
+Ax=b,
+\]</span></p>
+<p>multiply both sides by <span class="math inline">\(A^{-1}\)</span>:</p>
+<p><span class="math display">\[
+A^{-1}Ax=A^{-1}b.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+A^{-1}A=I,
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+Ix=A^{-1}b.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+x=A^{-1}b
+}
+\]</span></p>
+<p>This gives a formal solution to the system.</p>
+<p>However, in numerical computation, explicitly calculating <span class="math inline">\(A^{-1}\)</span> is often not the preferred way to solve a system. Methods such as Gaussian elimination or matrix factorizations are generally more efficient and numerically stable.</p>
+<hr>
+</section>
+<section id="conditions-related-to-invertibility" class="level1" data-number="66">
+<h1 data-number="66"><span class="header-section-number">66</span> Conditions related to invertibility</h1>
+<p>For a square matrix <span class="math inline">\(A\)</span>, the following properties are equivalent:</p>
+<p><span class="math display">\[
+A\text{ is invertible}
+\]</span></p>
+<p>if and only if</p>
+<p><span class="math display">\[
+\operatorname{rank}(A)=n,
+\]</span></p>
+<p>if and only if</p>
+<p><span class="math display">\[
+\operatorname{Null}(A)=\{0\},
+\]</span></p>
+<p>if and only if the columns of <span class="math inline">\(A\)</span> are linearly independent,</p>
+<p>if and only if the columns of <span class="math inline">\(A\)</span> form a basis of <span class="math inline">\(\mathbb R^n\)</span>.</p>
+<p>These equivalences are part of the broader theory of invertible matrices.</p>
+<p>For Linear Models, one especially important consequence is that if</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>is invertible, then the least-squares estimator can be written as</p>
+<p><span class="math display">\[
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y.
+\]</span></p>
+<p>The conditions under which this formula exists and what happens when it does not will be developed later.</p>
+<hr>
+</section>
+<section id="determinant" class="level1" data-number="67">
+<h1 data-number="67"><span class="header-section-number">67</span> Determinant</h1>
+<p>The <strong>determinant</strong> is a scalar associated with a square matrix.</p>
+<p>For a <span class="math inline">\(2\times2\)</span> matrix</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix},
+\]</span></p>
+<p>the determinant is</p>
+<p><span class="math display">\[
+\det(A)=ad-bc.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+2 &amp; 3\\
+1 &amp; 4
+\end{pmatrix}
+\]</span></p>
+<p>has</p>
+<p><span class="math display">\[
+\det(A)
+=
+2(4)-3(1)
+=
+5.
+\]</span></p>
+<p>The determinant has several interpretations, including geometric scaling and invertibility.</p>
+<p>For a square matrix,</p>
+<p><span class="math display">\[
+\boxed{
+\det(A)\neq0
+\iff
+A\text{ is invertible}.
+}
+\]</span></p>
+<p>The determinant becomes less convenient as a computational tool for large matrices, but it remains conceptually important.</p>
+<hr>
+</section>
+<section id="determinant-and-geometric-scaling" class="level1" data-number="68">
+<h1 data-number="68"><span class="header-section-number">68</span> Determinant and geometric scaling</h1>
+<p>For a <span class="math inline">\(2\times2\)</span> matrix,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix},
+\]</span></p>
+<p>the absolute value</p>
+<p><span class="math display">\[
+|\det(A)|
+\]</span></p>
+<p>represents the factor by which the transformation changes areas.</p>
+<p>For example, if</p>
+<p><span class="math display">\[
+|\det(A)|=3,
+\]</span></p>
+<p>then areas are scaled by a factor of <span class="math inline">\(3\)</span>.</p>
+<p>The sign of the determinant also records whether orientation is preserved or reversed.</p>
+<p>In higher dimensions, the determinant generalizes this idea to volume.</p>
+<p>This geometric interpretation is useful for understanding why</p>
+<p><span class="math display">\[
+\det(A)=0
+\]</span></p>
+<p>means that the transformation collapses space into a lower-dimensional object.</p>
+<hr>
+</section>
+<section id="determinant-and-singular-matrices" class="level1" data-number="69">
+<h1 data-number="69"><span class="header-section-number">69</span> Determinant and singular matrices</h1>
+<p>A square matrix is called <strong>singular</strong> if it is not invertible.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+A\text{ is singular}
+\iff
+\det(A)=0
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+A\text{ is non-singular}
+\iff
+\det(A)\neq0.
+}
+\]</span></p>
+<p>A singular matrix has linearly dependent columns.</p>
+<p>Equivalently, there exists a non-zero vector <span class="math inline">\(x\)</span> such that</p>
+<p><span class="math display">\[
+Ax=0.
+\]</span></p>
+<p>Thus several ideas are connected:</p>
+<p><span class="math display">\[
+\boxed{
+\det(A)=0
+\iff
+A\text{ is singular}
+\iff
+A\text{ is not invertible}
+\iff
+\operatorname{Null}(A)\neq\{0\}
+}
+\]</span></p>
+<hr>
+</section>
+<section id="why-rank-matters-in-linear-models" class="level1" data-number="70">
+<h1 data-number="70"><span class="header-section-number">70</span> Why rank matters in Linear Models</h1>
+<p>Suppose the design matrix is</p>
+<p><span class="math display">\[
+X\in\mathbb R^{n\times p}.
+\]</span></p>
+<p>If the columns of <span class="math inline">\(X\)</span> are linearly independent, then</p>
+<p><span class="math display">\[
+\operatorname{rank}(X)=p.
+\]</span></p>
+<p>This is called full column rank.</p>
+<p>If the columns are not linearly independent, then some predictor columns can be expressed as linear combinations of the others.</p>
+<p>For example, suppose</p>
+<p><span class="math display">\[
+x_3=2x_1-x_2.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+2x_1-x_2-x_3=0.
+\]</span></p>
+<p>The columns are therefore linearly dependent.</p>
+<p>This creates redundancy in the model and means that the coefficients cannot generally be uniquely identified from the design matrix alone.</p>
+<p>This issue is closely connected to multicollinearity and will become important in the Linear Models material.</p>
+<hr>
+</section>
+<section id="matrix-dimensions-a-linear-models-example" class="level1" data-number="71">
+<h1 data-number="71"><span class="header-section-number">71</span> Matrix dimensions: a Linear Models example</h1>
+<p>Suppose there are <span class="math inline">\(n\)</span> observations and <span class="math inline">\(p\)</span> predictors.</p>
+<p>The design matrix is typically</p>
+<p><span class="math display">\[
+X\in\mathbb R^{n\times p}.
+\]</span></p>
+<p>The coefficient vector is</p>
+<p><span class="math display">\[
+\beta\in\mathbb R^p.
+\]</span></p>
+<p>The response vector is</p>
+<p><span class="math display">\[
+y\in\mathbb R^n.
+\]</span></p>
+<p>The error vector is</p>
+<p><span class="math display">\[
+\varepsilon\in\mathbb R^n.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+X\beta
+\]</span></p>
+<p>has dimensions</p>
+<p><span class="math display">\[
+(n\times p)(p\times1)
+=
+n\times1.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+X\beta\in\mathbb R^n,
+\]</span></p>
+<p>which allows</p>
+<p><span class="math display">\[
+y=X\beta+\varepsilon
+\]</span></p>
+<p>to make dimensional sense.</p>
+<p>This is a very useful habit:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Always check the dimensions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Whenever you see a matrix expression, check its dimensions.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>has dimensions</p>
+<p><span class="math display">\[
+(p\times n)(n\times p)
+=
+p\times p,
+\]</span></p>
+<p>while</p>
+<p><span class="math display">\[
+X^\top y
+\]</span></p>
+<p>has dimensions</p>
+<p><span class="math display">\[
+(p\times n)(n\times1)
+=
+p\times1.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+(X^\top X)\beta=X^\top y
+\]</span></p>
+<p>has dimensions</p>
+<p><span class="math display">\[
+(p\times p)(p\times1)
+=
+p\times1.
+\]</span></p>
+<p>Dimension checking is one of the best ways to catch algebraic mistakes in Linear Models.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="matrix-notation-for-a-simple-linear-model" class="level1" data-number="72">
+<h1 data-number="72"><span class="header-section-number">72</span> Matrix notation for a simple linear model</h1>
+<p>Consider</p>
+<p><span class="math display">\[
+y_i=\beta_0+\beta_1x_i+\varepsilon_i,
+\qquad
+i=1,\ldots,n.
+\]</span></p>
+<p>The individual equations are</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_1&amp;=\beta_0+\beta_1x_1+\varepsilon_1,\\
+y_2&amp;=\beta_0+\beta_1x_2+\varepsilon_2,\\
+&amp;\vdots\\
+y_n&amp;=\beta_0+\beta_1x_n+\varepsilon_n.
+\end{aligned}
+\]</span></p>
+<p>These can be written as</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+\]</span></p>
+<p>Using compact notation,</p>
+<p><span class="math display">\[
+\boxed{
+y=X\beta+\varepsilon
+}
+\]</span></p>
+<p>This is the matrix form of the linear model.</p>
+<hr>
+</section>
+<section id="matrix-notation-for-multiple-predictors" class="level1" data-number="73">
+<h1 data-number="73"><span class="header-section-number">73</span> Matrix notation for multiple predictors</h1>
+<p>Suppose there are <span class="math inline">\(p\)</span> predictors.</p>
+<p>The model for observation <span class="math inline">\(i\)</span> can be written as</p>
+<p><span class="math display">\[
+y_i
+=
+\beta_0
++
+\beta_1x_{i1}
++
+\beta_2x_{i2}
++
+\cdots
++
+\beta_px_{ip}
++
+\varepsilon_i.
+\]</span></p>
+<p>The design matrix can be written as</p>
+<p><span class="math display">\[
+X=
+\begin{pmatrix}
+1 &amp; x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1p}\\
+1 &amp; x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2p}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+1 &amp; x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{np}
+\end{pmatrix}.
+\]</span></p>
+<p>The coefficient vector is</p>
+<p><span class="math display">\[
+\beta=
+\begin{pmatrix}
+\beta_0\\
+\beta_1\\
+\vdots\\
+\beta_p
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+X\beta
+\]</span></p>
+<p>contains all fitted linear predictors.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+y=X\beta+\varepsilon.
+\]</span></p>
+<p>This notation is the foundation for the matrix treatment of Linear Models.</p>
+<hr>
+</section>
+<section id="matrix-inverse" class="level1" data-number="74">
+<h1 data-number="74"><span class="header-section-number">74</span> Matrix inverse</h1>
+<p>For a square matrix <span class="math inline">\(A\)</span>, an inverse <span class="math inline">\(A^{-1}\)</span> is a matrix satisfying</p>
+<p><span class="math display">\[
+AA^{-1}=A^{-1}A=I.
+\]</span></p>
+<p>If the inverse exists, <span class="math inline">\(A\)</span> is called <strong>invertible</strong> or <strong>non-singular</strong>.</p>
+<p>The inverse is unique.</p>
+<p>For example, if</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+2 &amp; 0\\
+0 &amp; 4
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+A^{-1}
+=
+\begin{pmatrix}
+\frac12 &amp; 0\\
+0 &amp; \frac14
+\end{pmatrix}.
+\]</span></p>
+<p>Indeed,</p>
+<p><span class="math display">\[
+AA^{-1}
+=
+\begin{pmatrix}
+2 &amp; 0\\
+0 &amp; 4
+\end{pmatrix}
+\begin{pmatrix}
+\frac12 &amp; 0\\
+0 &amp; \frac14
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 0\\
+0 &amp; 1
+\end{pmatrix}.
+\]</span></p>
+<hr>
+</section>
+<section id="inverse-of-a-2times2-matrix" class="level1" data-number="75">
+<h1 data-number="75"><span class="header-section-number">75</span> Inverse of a <span class="math inline">\(2\times2\)</span> matrix</h1>
+<p>For</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+a &amp; b\\
+c &amp; d
+\end{pmatrix},
+\]</span></p>
+<p>if</p>
+<p><span class="math display">\[
+ad-bc\neq0,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+A^{-1}
+=
+\frac{1}{ad-bc}
+\begin{pmatrix}
+d &amp; -b\\
+-c &amp; a
+\end{pmatrix}.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+\det(A)=ad-bc,
+\]</span></p>
+<p>this can also be written as</p>
+<p><span class="math display">\[
+A^{-1}
+=
+\frac{1}{\det(A)}
+\begin{pmatrix}
+d &amp; -b\\
+-c &amp; a
+\end{pmatrix}.
+\]</span></p>
+<p>The determinant therefore determines whether the inverse exists.</p>
+<p>If</p>
+<p><span class="math display">\[
+\det(A)=0,
+\]</span></p>
+<p>then <span class="math inline">\(A^{-1}\)</span> does not exist.</p>
+<hr>
+</section>
+<section id="inverse-of-a-product" class="level1" data-number="76">
+<h1 data-number="76"><span class="header-section-number">76</span> Inverse of a product</h1>
+<p>If <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are invertible matrices, then</p>
+<p><span class="math display">\[
+\boxed{
+(AB)^{-1}=B^{-1}A^{-1}
+}
+\]</span></p>
+<p>The order reverses, just as it does for transposes.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+(ABC)^{-1}
+=
+C^{-1}B^{-1}A^{-1}.
+\]</span></p>
+<p>This follows because</p>
+<p><span class="math display">\[
+(ABC)(C^{-1}B^{-1}A^{-1})
+=
+A(BB^{-1})(CC^{-1})B^{-1}A^{-1},
+\]</span></p>
+<p>which simplifies to</p>
+<p><span class="math display">\[
+I.
+\]</span></p>
+<p>The order reversal is important because matrix multiplication is generally not commutative.</p>
+<hr>
+</section>
+<section id="inverse-of-a-transpose" class="level1" data-number="77">
+<h1 data-number="77"><span class="header-section-number">77</span> Inverse of a transpose</h1>
+<p>If <span class="math inline">\(A\)</span> is invertible, then</p>
+<p><span class="math display">\[
+\boxed{
+(A^\top)^{-1}=(A^{-1})^\top
+}
+\]</span></p>
+<p>This follows from</p>
+<p><span class="math display">\[
+AA^{-1}=I.
+\]</span></p>
+<p>Taking transposes gives</p>
+<p><span class="math display">\[
+(A^{-1})^\top A^\top=I.
+\]</span></p>
+<p>Thus <span class="math inline">\((A^{-1})^\top\)</span> is the inverse of <span class="math inline">\(A^\top\)</span>.</p>
+<hr>
+</section>
+<section id="inverse-and-linear-models" class="level1" data-number="78">
+<h1 data-number="78"><span class="header-section-number">78</span> Inverse and Linear Models</h1>
+<p>Suppose</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>is invertible.</p>
+<p>The ordinary least-squares estimator can then be written as</p>
+<p><span class="math display">\[
+\boxed{
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y
+}
+\]</span></p>
+<p>This is one of the most important formulas in the matrix formulation of Linear Models.</p>
+<p>However, the formula requires <span class="math inline">\(X^\top X\)</span> to be invertible.</p>
+<p>This occurs when the columns of <span class="math inline">\(X\)</span> are linearly independent, assuming the usual real-valued finite-dimensional setting.</p>
+<p>Thus:</p>
+<p><span class="math display">\[
+\text{full column rank of }X
+\Longrightarrow
+X^\top X\text{ is invertible}.
+\]</span></p>
+<p>This connection between rank and the least-squares estimator will be developed more fully in the Core section.</p>
+<hr>
+</section>
+<section id="orthogonal-vectors" class="level1" data-number="79">
+<h1 data-number="79"><span class="header-section-number">79</span> Orthogonal vectors</h1>
+<p>Two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are <strong>orthogonal</strong> if</p>
+<p><span class="math display">\[
+x^\top y=0.
+\]</span></p>
+<p>This is the vector-space version of perpendicularity.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+2\\
+-1
+\end{pmatrix}
+\]</span></p>
+<p>are orthogonal because</p>
+<p><span class="math display">\[
+x^\top y
+=
+1(2)+2(-1)
+=
+0.
+\]</span></p>
+<p>Orthogonality is one of the most important geometric ideas in Linear Models.</p>
+<hr>
+</section>
+<section id="orthogonal-matrices" class="level1" data-number="80">
+<h1 data-number="80"><span class="header-section-number">80</span> Orthogonal matrices</h1>
+<p>A square matrix <span class="math inline">\(Q\)</span> is called <strong>orthogonal</strong> if</p>
+<p><span class="math display">\[
+Q^\top Q=I.
+\]</span></p>
+<p>For a square matrix, this is equivalent to</p>
+<p><span class="math display">\[
+QQ^\top=I.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+Q^{-1}=Q^\top
+}
+\]</span></p>
+<p>for an orthogonal matrix.</p>
+<p>This is an extremely useful property.</p>
+<p>Instead of computing a general inverse, the inverse of an orthogonal matrix is obtained simply by transposing it.</p>
+<hr>
+</section>
+<section id="geometric-meaning-of-orthogonal-matrices" class="level1" data-number="81">
+<h1 data-number="81"><span class="header-section-number">81</span> Geometric meaning of orthogonal matrices</h1>
+<p>Orthogonal matrices preserve lengths and angles.</p>
+<p>For any vector <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[
+\|Qx\|^2
+=
+(Qx)^\top(Qx).
+\]</span></p>
+<p>Using the transpose rule,</p>
+<p><span class="math display">\[
+(Qx)^\top(Qx)
+=
+x^\top Q^\top Qx.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+Q^\top Q=I,
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+\|Qx\|^2
+=
+x^\top x
+=
+\|x\|^2.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\|Qx\|=\|x\|
+}
+\]</span></p>
+<p>Orthogonal transformations include rotations and reflections.</p>
+<p>They change the orientation of vectors without distorting Euclidean geometry.</p>
+<hr>
+</section>
+<section id="orthogonal-columns" class="level1" data-number="82">
+<h1 data-number="82"><span class="header-section-number">82</span> Orthogonal columns</h1>
+<p>Suppose the columns of a matrix <span class="math inline">\(Q\)</span> are</p>
+<p><span class="math display">\[
+q_1,\ldots,q_p.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+Q^\top Q
+\]</span></p>
+<p>contains their pairwise dot products.</p>
+<p>If</p>
+<p><span class="math display">\[
+Q^\top Q=I,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+q_i^\top q_j
+=
+\begin{cases}
+1 &amp; i=j,\\
+0 &amp; i\neq j.
+\end{cases}
+\]</span></p>
+<p>Thus the columns are mutually orthogonal and each has unit length.</p>
+<p>Such vectors are called <strong>orthonormal</strong>.</p>
+<p>Therefore an orthogonal matrix has orthonormal columns.</p>
+<hr>
+</section>
+<section id="orthonormal-vectors" class="level1" data-number="83">
+<h1 data-number="83"><span class="header-section-number">83</span> Orthonormal vectors</h1>
+<p>A collection of vectors</p>
+<p><span class="math display">\[
+q_1,\ldots,q_k
+\]</span></p>
+<p>is <strong>orthonormal</strong> if</p>
+<p><span class="math display">\[
+q_i^\top q_j=0
+\qquad
+\text{for }i\neq j
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+q_i^\top q_i=1.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\|q_i\|=1
+\]</span></p>
+<p>and the vectors are pairwise orthogonal.</p>
+<p>If the vectors are placed into a matrix,</p>
+<p><span class="math display">\[
+Q=
+\begin{pmatrix}
+| &amp; | &amp; &amp; |\\
+q_1 &amp; q_2 &amp; \cdots &amp; q_k\\
+| &amp; | &amp; &amp; |
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+Q^\top Q=I.
+\]</span></p>
+<p>Orthonormal bases are extremely useful because coordinates with respect to such bases are particularly easy to calculate.</p>
+<hr>
+</section>
+<section id="orthogonal-projection" class="level1" data-number="84">
+<h1 data-number="84"><span class="header-section-number">84</span> Orthogonal projection</h1>
+<p>The projection of a vector <span class="math inline">\(y\)</span> onto a non-zero vector <span class="math inline">\(x\)</span> is</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+\]</span></p>
+<p>This can be written as</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\hat y,
+\]</span></p>
+<p>where <span class="math inline">\(\hat y\)</span> is the component of <span class="math inline">\(y\)</span> lying in the direction of <span class="math inline">\(x\)</span>.</p>
+<p>The residual</p>
+<p><span class="math display">\[
+y-\hat y
+\]</span></p>
+<p>is orthogonal to <span class="math inline">\(x\)</span>.</p>
+<p>That is,</p>
+<p><span class="math display">\[
+x^\top(y-\hat y)=0.
+\]</span></p>
+<p>This fact is central to least squares.</p>
+<hr>
+</section>
+<section id="projection-matrix-onto-a-vector" class="level1" data-number="85">
+<h1 data-number="85"><span class="header-section-number">85</span> Projection matrix onto a vector</h1>
+<p>The projection formula can be rewritten as</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+\]</span></p>
+<p>Since scalar multiplication can be rearranged,</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\left(
+\frac{xx^\top}{x^\top x}
+\right)y.
+\]</span></p>
+<p>Therefore the matrix</p>
+<p><span class="math display">\[
+P=
+\frac{xx^\top}{x^\top x}
+\]</span></p>
+<p>is the <strong>projection matrix onto the span of <span class="math inline">\(x\)</span></strong>.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+Py=\operatorname{proj}_x(y)
+}
+\]</span></p>
+<p>This is an important bridge between vector geometry and matrix algebra.</p>
+<hr>
+</section>
+<section id="properties-of-a-projection-matrix" class="level1" data-number="86">
+<h1 data-number="86"><span class="header-section-number">86</span> Properties of a projection matrix</h1>
+<p>For an orthogonal projection matrix <span class="math inline">\(P\)</span>, two properties are especially important.</p>
+<p>First,</p>
+<p><span class="math display">\[
+P^\top=P.
+\]</span></p>
+<p>Thus <span class="math inline">\(P\)</span> is symmetric.</p>
+<p>Second,</p>
+<p><span class="math display">\[
+P^2=P.
+\]</span></p>
+<p>This property is called <strong>idempotence</strong>.</p>
+<p>The equation</p>
+<p><span class="math display">\[
+P^2=P
+\]</span></p>
+<p>has a simple interpretation.</p>
+<p>Once a vector has been projected onto a subspace, projecting it again does nothing:</p>
+<p><span class="math display">\[
+P(Py)=Py.
+\]</span></p>
+<p>Projection matrices therefore encode the idea of “projecting once is enough.”</p>
+<hr>
+</section>
+<section id="idempotent-matrices" class="level1" data-number="87">
+<h1 data-number="87"><span class="header-section-number">87</span> Idempotent matrices</h1>
+<p>A square matrix <span class="math inline">\(A\)</span> is called <strong>idempotent</strong> if</p>
+<p><span class="math display">\[
+A^2=A.
+\]</span></p>
+<p>Projection matrices are important examples of idempotent matrices.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+P=
+\begin{pmatrix}
+1 &amp; 0\\
+0 &amp; 0
+\end{pmatrix}
+\]</span></p>
+<p>satisfies</p>
+<p><span class="math display">\[
+P^2
+=
+\begin{pmatrix}
+1 &amp; 0\\
+0 &amp; 0
+\end{pmatrix}
+=P.
+\]</span></p>
+<p>Geometrically, this matrix projects</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}
+\]</span></p>
+<p>onto the <span class="math inline">\(x\)</span>-axis:</p>
+<p><span class="math display">\[
+P
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}
+=
+\begin{pmatrix}
+x\\
+0
+\end{pmatrix}.
+\]</span></p>
+<p>Idempotent matrices appear frequently in Linear Models, especially in projection and residual calculations.</p>
+<hr>
+</section>
+<section id="projection-onto-a-subspace" class="level1" data-number="88">
+<h1 data-number="88"><span class="header-section-number">88</span> Projection onto a subspace</h1>
+<p>The projection idea extends beyond a single vector.</p>
+<p>Suppose the columns of <span class="math inline">\(X\)</span> form a subspace</p>
+<p><span class="math display">\[
+\operatorname{Col}(X).
+\]</span></p>
+<p>If <span class="math inline">\(X\)</span> has full column rank, the projection matrix onto this column space is</p>
+<p><span class="math display">\[
+\boxed{
+P_X
+=
+X(X^\top X)^{-1}X^\top
+}
+\]</span></p>
+<p>For a vector <span class="math inline">\(y\)</span>,</p>
+<p><span class="math display">\[
+P_Xy
+\]</span></p>
+<p>is the orthogonal projection of <span class="math inline">\(y\)</span> onto</p>
+<p><span class="math display">\[
+\operatorname{Col}(X).
+\]</span></p>
+<p>This matrix is fundamental to least squares.</p>
+<p>The fitted values can be written as</p>
+<p><span class="math display">\[
+\hat y=P_Xy.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\boxed{
+\hat y
+=
+X(X^\top X)^{-1}X^\top y
+}
+\]</span></p>
+<p>when <span class="math inline">\(X\)</span> has full column rank.</p>
+<hr>
+</section>
+<section id="the-residual-maker-matrix" class="level1" data-number="89">
+<h1 data-number="89"><span class="header-section-number">89</span> The residual-maker matrix</h1>
+<p>If</p>
+<p><span class="math display">\[
+P_X
+=
+X(X^\top X)^{-1}X^\top,
+\]</span></p>
+<p>then define</p>
+<p><span class="math display">\[
+M_X=I-P_X.
+\]</span></p>
+<p>This matrix is sometimes called the <strong>residual-maker matrix</strong> or <strong>annihilator matrix</strong>.</p>
+<p>It projects a vector onto the orthogonal complement of the column space of <span class="math inline">\(X\)</span>.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+M_Xy
+\]</span></p>
+<p>is the component of <span class="math inline">\(y\)</span> orthogonal to the fitted-value space.</p>
+<p>In ordinary least squares,</p>
+<p><span class="math display">\[
+\boxed{
+e=M_Xy
+}
+\]</span></p>
+<p>where <span class="math inline">\(e\)</span> is the residual vector.</p>
+<p>Since</p>
+<p><span class="math display">\[
+M_X=I-P_X,
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+e
+=
+y-P_Xy
+=
+y-\hat y.
+\]</span></p>
+<hr>
+</section>
+<section id="orthogonality-of-least-squares-residuals" class="level1" data-number="90">
+<h1 data-number="90"><span class="header-section-number">90</span> Orthogonality of least-squares residuals</h1>
+<p>The least-squares fitted vector lies in</p>
+<p><span class="math display">\[
+\operatorname{Col}(X).
+\]</span></p>
+<p>The residual vector is orthogonal to this space.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+X^\top e=0.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+e=y-X\hat\beta,
+\]</span></p>
+<p>we obtain</p>
+<p><span class="math display">\[
+X^\top(y-X\hat\beta)=0.
+\]</span></p>
+<p>Expanding,</p>
+<p><span class="math display">\[
+X^\top y-X^\top X\hat\beta=0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+X^\top X\hat\beta=X^\top y
+}
+\]</span></p>
+<p>These are the <strong>normal equations</strong>.</p>
+<p>They are one of the most important connections between the linear algebra prerequisite material and the Linear Models course.</p>
+<hr>
+</section>
+<section id="normal-equations" class="level1" data-number="91">
+<h1 data-number="91"><span class="header-section-number">91</span> Normal equations</h1>
+<p>The least-squares estimator minimizes</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2.
+\]</span></p>
+<p>The resulting first-order condition is</p>
+<p><span class="math display">\[
+X^\top X\hat\beta=X^\top y.
+\]</span></p>
+<p>If <span class="math inline">\(X^\top X\)</span> is invertible, then</p>
+<p><span class="math display">\[
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y.
+\]</span></p>
+<p>Thus the standard least-squares formula follows from solving the normal equations.</p>
+<p>The chain of ideas is:</p>
+<p><span class="math display">\[
+\boxed{
+\text{least squares}
+\rightarrow
+\text{orthogonality}
+\rightarrow
+\text{normal equations}
+\rightarrow
+X^\top X\hat\beta=X^\top y
+}
+\]</span></p>
+<p>This chain is worth understanding rather than merely memorising.</p>
+<hr>
+</section>
+<section id="projection-matrix-properties" class="level1" data-number="92">
+<h1 data-number="92"><span class="header-section-number">92</span> Projection matrix properties</h1>
+<p>For</p>
+<p><span class="math display">\[
+P_X=X(X^\top X)^{-1}X^\top,
+\]</span></p>
+<p>assuming <span class="math inline">\(X\)</span> has full column rank, the projection matrix satisfies</p>
+<p><span class="math display">\[
+P_X^\top=P_X
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+P_X^2=P_X.
+\]</span></p>
+<p>It therefore has two key properties:</p>
+<p><span class="math display">\[
+\boxed{
+P_X\text{ is symmetric}
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+P_X\text{ is idempotent}.
+}
+\]</span></p>
+<p>Furthermore,</p>
+<p><span class="math display">\[
+P_XX=X.
+\]</span></p>
+<p>This makes sense because the columns of <span class="math inline">\(X\)</span> already belong to the space onto which <span class="math inline">\(P_X\)</span> projects.</p>
+<hr>
+</section>
+<section id="residual-maker-matrix-properties" class="level1" data-number="93">
+<h1 data-number="93"><span class="header-section-number">93</span> Residual-maker matrix properties</h1>
+<p>Recall</p>
+<p><span class="math display">\[
+M_X=I-P_X.
+\]</span></p>
+<p>Because <span class="math inline">\(P_X\)</span> is symmetric,</p>
+<p><span class="math display">\[
+M_X^\top=M_X.
+\]</span></p>
+<p>Because <span class="math inline">\(P_X^2=P_X\)</span>,</p>
+<p><span class="math display">\[
+M_X^2=M_X.
+\]</span></p>
+<p>Therefore <span class="math inline">\(M_X\)</span> is also symmetric and idempotent.</p>
+<p>Moreover,</p>
+<p><span class="math display">\[
+M_XX=0.
+\]</span></p>
+<p>This follows from</p>
+<p><span class="math display">\[
+M_XX
+=
+(I-P_X)X
+=
+X-P_XX
+=
+X-X
+=
+0.
+\]</span></p>
+<p>This algebraically expresses the fact that the residual-maker removes everything lying in the column space of <span class="math inline">\(X\)</span>.</p>
+<hr>
+</section>
+<section id="orthogonal-decomposition" class="level1" data-number="94">
+<h1 data-number="94"><span class="header-section-number">94</span> Orthogonal decomposition</h1>
+<p>A vector <span class="math inline">\(y\)</span> can be decomposed into two orthogonal components:</p>
+<p><span class="math display">\[
+y=P_Xy+M_Xy.
+\]</span></p>
+<p>The first component,</p>
+<p><span class="math display">\[
+P_Xy,
+\]</span></p>
+<p>lies in</p>
+<p><span class="math display">\[
+\operatorname{Col}(X).
+\]</span></p>
+<p>The second component,</p>
+<p><span class="math display">\[
+M_Xy,
+\]</span></p>
+<p>lies in the orthogonal complement of that space.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+y=\hat y+e
+}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\hat y\perp e.
+\]</span></p>
+<p>This gives the geometric interpretation of least squares:</p>
+<p><span class="math display">\[
+\boxed{
+\text{observed data}
+=
+\text{fitted component}
++
+\text{orthogonal residual component}.
+}
+\]</span></p>
+<hr>
+</section>
+<section id="pythagorean-identity-for-least-squares" class="level1" data-number="95">
+<h1 data-number="95"><span class="header-section-number">95</span> Pythagorean identity for least squares</h1>
+<p>Because</p>
+<p><span class="math display">\[
+\hat y\perp e,
+\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+y=\hat y+e
+\]</span></p>
+<p>with orthogonal components.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\|y\|^2
+=
+\|\hat y\|^2+\|e\|^2.
+\]</span></p>
+<p>That is,</p>
+<p><span class="math display">\[
+\boxed{
+\|y\|^2
+=
+\|X\hat\beta\|^2
++
+\|y-X\hat\beta\|^2
+}
+\]</span></p>
+<p>This is the geometric origin of many familiar sums-of-squares decompositions.</p>
+<hr>
+</section>
+<section id="quadratic-forms-in-linear-models" class="level1" data-number="96">
+<h1 data-number="96"><span class="header-section-number">96</span> Quadratic forms in Linear Models</h1>
+<p>The least-squares objective is</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2.
+\]</span></p>
+<p>Using the fact that</p>
+<p><span class="math display">\[
+\|z\|^2=z^\top z,
+\]</span></p>
+<p>we can write</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2
+=
+(y-X\beta)^\top(y-X\beta).
+\]</span></p>
+<p>Expanding gives</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2
+=
+y^\top y
+-
+2\beta^\top X^\top y
++
+\beta^\top X^\top X\beta.
+\]</span></p>
+<p>This is a quadratic function of <span class="math inline">\(\beta\)</span>.</p>
+<p>The matrix</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>therefore controls the quadratic part of the least-squares objective.</p>
+<p>This is one reason positive semidefinite matrices are important in Linear Models.</p>
+<hr>
+</section>
+<section id="positive-definite-matrices" class="level1" data-number="97">
+<h1 data-number="97"><span class="header-section-number">97</span> Positive definite matrices</h1>
+<p>A symmetric matrix <span class="math inline">\(A\)</span> is <strong>positive definite</strong> if</p>
+<p><span class="math display">\[
+x^\top Ax&gt;0
+\]</span></p>
+<p>for every non-zero vector <span class="math inline">\(x\)</span>.</p>
+<p>Compare this with positive semidefinite:</p>
+<p><span class="math display">\[
+x^\top Ax\geq0.
+\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[
+\text{positive definite}
+\quad\Longrightarrow\quad
+\text{positive semidefinite}.
+\]</span></p>
+<p>But a positive semidefinite matrix does not necessarily have to be positive definite.</p>
+<hr>
+</section>
+<section id="why-xtop-x-matters" class="level1" data-number="98">
+<h1 data-number="98"><span class="header-section-number">98</span> Why <span class="math inline">\(X^\top X\)</span> matters</h1>
+<p>For any vector <span class="math inline">\(c\)</span>,</p>
+<p><span class="math display">\[
+c^\top X^\top Xc
+=
+(Xc)^\top(Xc)
+=
+\|Xc\|^2.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+c^\top X^\top Xc\geq0.
+\]</span></p>
+<p>So <span class="math inline">\(X^\top X\)</span> is positive semidefinite.</p>
+<p>If <span class="math inline">\(X\)</span> has full column rank, then</p>
+<p><span class="math display">\[
+Xc\neq0
+\]</span></p>
+<p>whenever</p>
+<p><span class="math display">\[
+c\neq0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\|Xc\|^2&gt;0
+\]</span></p>
+<p>for every non-zero <span class="math inline">\(c\)</span>.</p>
+<p>Hence,</p>
+<p><span class="math display">\[
+\boxed{
+X^\top X\text{ is positive definite if }X\text{ has full column rank}.
+}
+\]</span></p>
+<p>This gives another way of seeing why full column rank is so important.</p>
+<hr>
+</section>
+<section id="matrix-norms" class="level1" data-number="99">
+<h1 data-number="99"><span class="header-section-number">99</span> Matrix norms</h1>
+<p>A norm measures the size of a mathematical object.</p>
+<p>For a vector,</p>
+<p><span class="math display">\[
+\|x\|
+=
+\sqrt{x^\top x}.
+\]</span></p>
+<p>Matrices can also be assigned norms.</p>
+<p>One common matrix norm is the <strong>Frobenius norm</strong>:</p>
+<p><span class="math display">\[
+\|A\|_F
+=
+\sqrt{
+\sum_i\sum_j a_{ij}^2
+}.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\|A\|_F
+=
+\sqrt{\operatorname{tr}(A^\top A)}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+A=
+\begin{pmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{pmatrix}
+\]</span></p>
+<p>has</p>
+<p><span class="math display">\[
+\|A\|_F
+=
+\sqrt{1^2+2^2+3^2+4^2}
+=
+\sqrt{30}.
+\]</span></p>
+<p>The Frobenius norm is useful for measuring the overall size of a matrix.</p>
+<hr>
+</section>
+<section id="matrix-multiplication-identities" class="level1" data-number="100">
+<h1 data-number="100"><span class="header-section-number">100</span> Matrix multiplication identities</h1>
+<p>The following identities are particularly useful.</p>
+<p>For compatible matrices,</p>
+<p><span class="math display">\[
+A(B+C)=AB+AC,
+\]</span></p>
+<p><span class="math display">\[
+(A+B)C=AC+BC,
+\]</span></p>
+<p><span class="math display">\[
+(AB)C=A(BC),
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+c(AB)=(cA)B=A(cB).
+\]</span></p>
+<p>For transposes,</p>
+<p><span class="math display">\[
+(A+B)^\top=A^\top+B^\top,
+\]</span></p>
+<p><span class="math display">\[
+(cA)^\top=cA^\top,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(AB)^\top=B^\top A^\top.
+\]</span></p>
+<p>For inverses,</p>
+<p><span class="math display">\[
+(AB)^{-1}=B^{-1}A^{-1},
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(A^\top)^{-1}=(A^{-1})^\top.
+\]</span></p>
+<p>The order-reversal rules are particularly important:</p>
+<p><span class="math display">\[
+\boxed{
+(AB)^\top=B^\top A^\top
+}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boxed{
+(AB)^{-1}=B^{-1}A^{-1}.
+}
+\]</span></p>
+<hr>
+</section>
+<section id="common-matrix-mistakes" class="level1" data-number="101">
+<h1 data-number="101"><span class="header-section-number">101</span> Common matrix mistakes</h1>
+<p>Matrix algebra has a few traps that are worth identifying early.</p>
+<section id="assuming-multiplication-is-commutative" class="level3" data-number="101.0.1">
+<h3 data-number="101.0.1" class="anchored" data-anchor-id="assuming-multiplication-is-commutative"><span class="header-section-number">101.0.1</span> Assuming multiplication is commutative</h3>
+<p>Generally,</p>
+<p><span class="math display">\[
+AB\neq BA.
+\]</span></p>
+</section>
+<section id="multiplying-corresponding-entries" class="level3" data-number="101.0.2">
+<h3 data-number="101.0.2" class="anchored" data-anchor-id="multiplying-corresponding-entries"><span class="header-section-number">101.0.2</span> Multiplying corresponding entries</h3>
+<p>Standard matrix multiplication is not</p>
+<p><span class="math display">\[
+a_{ij}b_{ij}.
+\]</span></p>
+<p>Instead, each output entry is a row-column dot product.</p>
+</section>
+<section id="ignoring-dimensions" class="level3" data-number="101.0.3">
+<h3 data-number="101.0.3" class="anchored" data-anchor-id="ignoring-dimensions"><span class="header-section-number">101.0.3</span> Ignoring dimensions</h3>
+<p>Always check that the inner dimensions match.</p>
+</section>
+<section id="forgetting-transpose-order" class="level3" data-number="101.0.4">
+<h3 data-number="101.0.4" class="anchored" data-anchor-id="forgetting-transpose-order"><span class="header-section-number">101.0.4</span> Forgetting transpose order</h3>
+<p>The correct identity is</p>
+<p><span class="math display">\[
+(AB)^\top=B^\top A^\top.
+\]</span></p>
+</section>
+<section id="treating-every-square-matrix-as-invertible" class="level3" data-number="101.0.5">
+<h3 data-number="101.0.5" class="anchored" data-anchor-id="treating-every-square-matrix-as-invertible"><span class="header-section-number">101.0.5</span> Treating every square matrix as invertible</h3>
+<p>A square matrix may be singular.</p>
+<p>The inverse exists only when</p>
+<p><span class="math display">\[
+\det(A)\neq0.
+\]</span></p>
+</section>
+<section id="assuming-atop-aaatop" class="level3" data-number="101.0.6">
+<h3 data-number="101.0.6" class="anchored" data-anchor-id="assuming-atop-aaatop"><span class="header-section-number">101.0.6</span> Assuming <span class="math inline">\(A^\top A=AA^\top\)</span></h3>
+<p>These matrices generally have different dimensions and are not generally equal.</p>
+<p>If</p>
+<p><span class="math display">\[
+A\in\mathbb R^{n\times p},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+A^\top A\in\mathbb R^{p\times p}
+\]</span></p>
+<p>while</p>
+<p><span class="math display">\[
+AA^\top\in\mathbb R^{n\times n}.
+\]</span></p>
+<hr>
+</section>
+</section>
+<section id="matrix-identities-worth-remembering" class="level1" data-number="102">
+<h1 data-number="102"><span class="header-section-number">102</span> Matrix identities worth remembering</h1>
+<p>For Linear Models, the following identities are particularly useful:</p>
+<p><span class="math display">\[
+(A+B)^\top=A^\top+B^\top
+\]</span></p>
+<p><span class="math display">\[
+(AB)^\top=B^\top A^\top
+\]</span></p>
+<p><span class="math display">\[
+(A^{-1})^\top=(A^\top)^{-1}
+\]</span></p>
+<p><span class="math display">\[
+(AB)^{-1}=B^{-1}A^{-1}
+\]</span></p>
+<p><span class="math display">\[
+x^\top y=y^\top x
+\]</span></p>
+<p><span class="math display">\[
+\|x\|^2=x^\top x
+\]</span></p>
+<p><span class="math display">\[
+X^\top X=(X^\top X)^\top
+\]</span></p>
+<p><span class="math display">\[
+P_X=X(X^\top X)^{-1}X^\top
+\]</span></p>
+<p><span class="math display">\[
+P_X^2=P_X
+\]</span></p>
+<p><span class="math display">\[
+P_X^\top=P_X
+\]</span></p>
+<p><span class="math display">\[
+M_X=I-P_X
+\]</span></p>
+<p><span class="math display">\[
+M_X^2=M_X
+\]</span></p>
+<p><span class="math display">\[
+M_X^\top=M_X
+\]</span></p>
+<p>and, for ordinary least squares with full column rank,</p>
+<p><span class="math display">\[
+\hat\beta=(X^\top X)^{-1}X^\top y.
+\]</span></p>
+<hr>
+</section>
+<section id="dimension-reference" class="level1" data-number="103">
+<h1 data-number="103"><span class="header-section-number">103</span> Dimension reference</h1>
+<p>Suppose</p>
+<p><span class="math display">\[
+X\in\mathbb R^{n\times p},
+\qquad
+\beta\in\mathbb R^{p},
+\qquad
+y\in\mathbb R^n.
+\]</span></p>
+<p>Then:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Expression</th>
+<th>Dimensions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(X\)</span></td>
+<td><span class="math inline">\(n\times p\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X^\top\)</span></td>
+<td><span class="math inline">\(p\times n\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\beta\)</span></td>
+<td><span class="math inline">\(p\times1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y\)</span></td>
+<td><span class="math inline">\(n\times1\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(X\beta\)</span></td>
+<td><span class="math inline">\(n\times1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X^\top y\)</span></td>
+<td><span class="math inline">\(p\times1\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(X^\top X\)</span></td>
+<td><span class="math inline">\(p\times p\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\((X^\top X)^{-1}\)</span></td>
+<td><span class="math inline">\(p\times p\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\((X^\top X)^{-1}X^\top\)</span></td>
+<td><span class="math inline">\(p\times n\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\hat\beta\)</span></td>
+<td><span class="math inline">\(p\times1\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\hat y=X\hat\beta\)</span></td>
+<td><span class="math inline">\(n\times1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e=y-\hat y\)</span></td>
+<td><span class="math inline">\(n\times1\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(P_X\)</span></td>
+<td><span class="math inline">\(n\times n\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(M_X\)</span></td>
+<td><span class="math inline">\(n\times n\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>This table is worth keeping nearby when manipulating matrix expressions.</p>
+<hr>
+</section>
+<section id="linear-models-matrix-map" class="level1" data-number="104">
+<h1 data-number="104"><span class="header-section-number">104</span> Linear Models matrix map</h1>
+<p>The main matrix concepts connect to Linear Models as follows:</p>
+<p><span class="math display">\[
+X
+\longrightarrow
+\text{design matrix}
+\]</span></p>
+<p><span class="math display">\[
+X\beta
+\longrightarrow
+\text{fitted linear predictor}
+\]</span></p>
+<p><span class="math display">\[
+X^\top X
+\longrightarrow
+\text{Gram matrix}
+\]</span></p>
+<p><span class="math display">\[
+(X^\top X)^{-1}X^\top
+\longrightarrow
+\text{least-squares coefficient operator}
+\]</span></p>
+<p><span class="math display">\[
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y
+\]</span></p>
+<p><span class="math display">\[
+X\hat\beta
+\longrightarrow
+\text{projection of }y\text{ onto }\operatorname{Col}(X)
+\]</span></p>
+<p><span class="math display">\[
+P_X
+=
+X(X^\top X)^{-1}X^\top
+\longrightarrow
+\text{projection matrix}
+\]</span></p>
+<p><span class="math display">\[
+M_X=I-P_X
+\longrightarrow
+\text{residual-maker matrix}
+\]</span></p>
+<p><span class="math display">\[
+e=M_Xy
+\longrightarrow
+\text{residual vector}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+X^\top e=0
+\]</span></p>
+<p>expresses the orthogonality of the residuals to the model space.</p>
+<hr>
+</section>
+<section id="what-you-should-know-before-moving-to-the-core-material" class="level1" data-number="105">
+<h1 data-number="105"><span class="header-section-number">105</span> What you should know before moving to the Core material</h1>
+<p>For the purposes of a Linear Models course, you should be comfortable with the following.</p>
+<section id="essential" class="level2" data-number="105.1">
+<h2 data-number="105.1" class="anchored" data-anchor-id="essential"><span class="header-section-number">105.1</span> Essential</h2>
+<p>You should be able to:</p>
+<ul>
+<li>identify matrix dimensions,</li>
+<li>extract rows and columns,</li>
+<li>perform matrix addition and scalar multiplication,</li>
+<li>perform matrix multiplication,</li>
+<li>perform matrix-vector multiplication,</li>
+<li>use transposes,</li>
+<li>understand <span class="math inline">\(X^\top X\)</span> and <span class="math inline">\(X^\top y\)</span>,</li>
+<li>understand linear combinations of matrix columns,</li>
+<li>understand column space,</li>
+<li>understand linear independence,</li>
+<li>understand rank,</li>
+<li>solve basic systems of equations,</li>
+<li>understand the null space,</li>
+<li>understand matrix inverses,</li>
+<li>understand orthogonality,</li>
+<li>understand projections,</li>
+<li>understand projection matrices,</li>
+<li>and follow the dimensions in a matrix expression.</li>
+</ul>
+</section>
+<section id="important-for-linear-models" class="level2" data-number="105.2">
+<h2 data-number="105.2" class="anchored" data-anchor-id="important-for-linear-models"><span class="header-section-number">105.2</span> Important for Linear Models</h2>
+<p>You should understand:</p>
+<p><span class="math display">\[
+X\beta
+\]</span></p>
+<p>as a linear combination of the columns of <span class="math inline">\(X\)</span>,</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>as a Gram matrix,</p>
+<p><span class="math display">\[
+X^\top X\hat\beta=X^\top y
+\]</span></p>
+<p>as the normal equations,</p>
+<p>and</p>
+<p><span class="math display">\[
+\hat y=P_Xy
+\]</span></p>
+<p>as the projection of <span class="math inline">\(y\)</span> onto the column space of <span class="math inline">\(X\)</span>.</p>
+</section>
+<section id="useful-but-not-necessarily-central" class="level2" data-number="105.3">
+<h2 data-number="105.3" class="anchored" data-anchor-id="useful-but-not-necessarily-central"><span class="header-section-number">105.3</span> Useful but not necessarily central</h2>
+<p>You should recognize:</p>
+<ul>
+<li>determinants,</li>
+<li>positive semidefinite matrices,</li>
+<li>positive definite matrices,</li>
+<li>orthogonal matrices,</li>
+<li>idempotent matrices,</li>
+<li>quadratic forms,</li>
+<li>matrix norms,</li>
+<li>row reduction,</li>
+<li>and rank-nullity.</li>
+</ul>
+<p>You do not necessarily need to become an expert in all of these before starting the Linear Models material.</p>
+<hr>
+</section>
+</section>
+<section id="quick-reference" class="level1" data-number="106">
+<h1 data-number="106"><span class="header-section-number">106</span> Quick reference</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key idea</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Matrix</td>
+<td>Rectangular array of numbers</td>
+</tr>
+<tr class="even">
+<td>Dimension</td>
+<td>Rows <span class="math inline">\(\times\)</span> columns</td>
+</tr>
+<tr class="odd">
+<td>Matrix multiplication</td>
+<td>Row-column dot products</td>
+</tr>
+<tr class="even">
+<td>Transpose</td>
+<td>Exchange rows and columns</td>
+</tr>
+<tr class="odd">
+<td>Symmetric matrix</td>
+<td><span class="math inline">\(A^\top=A\)</span></td>
+</tr>
+<tr class="even">
+<td>Identity matrix</td>
+<td><span class="math inline">\(AI=IA=A\)</span></td>
+</tr>
+<tr class="odd">
+<td>Inverse</td>
+<td><span class="math inline">\(AA^{-1}=A^{-1}A=I\)</span></td>
+</tr>
+<tr class="even">
+<td>Rank</td>
+<td>Dimension of column space</td>
+</tr>
+<tr class="odd">
+<td>Null space</td>
+<td><span class="math inline">\(\{x:Ax=0\}\)</span></td>
+</tr>
+<tr class="even">
+<td>Full column rank</td>
+<td><span class="math inline">\(\operatorname{rank}(X)=p\)</span></td>
+</tr>
+<tr class="odd">
+<td>Orthogonal vectors</td>
+<td><span class="math inline">\(x^\top y=0\)</span></td>
+</tr>
+<tr class="even">
+<td>Orthonormal vectors</td>
+<td>Orthogonal and unit length</td>
+</tr>
+<tr class="odd">
+<td>Orthogonal matrix</td>
+<td><span class="math inline">\(Q^\top Q=I\)</span></td>
+</tr>
+<tr class="even">
+<td>Projection matrix</td>
+<td>Maps vectors onto a subspace</td>
+</tr>
+<tr class="odd">
+<td>Idempotent matrix</td>
+<td><span class="math inline">\(P^2=P\)</span></td>
+</tr>
+<tr class="even">
+<td>Positive semidefinite</td>
+<td><span class="math inline">\(x^\top Ax\geq0\)</span></td>
+</tr>
+<tr class="odd">
+<td>Positive definite</td>
+<td><span class="math inline">\(x^\top Ax&gt;0\)</span> for <span class="math inline">\(x\neq0\)</span></td>
+</tr>
+<tr class="even">
+<td>Gram matrix</td>
+<td><span class="math inline">\(X^\top X\)</span></td>
+</tr>
+<tr class="odd">
+<td>Design matrix</td>
+<td><span class="math inline">\(X\)</span> in a linear model</td>
+</tr>
+<tr class="even">
+<td>Normal equations</td>
+<td><span class="math inline">\(X^\top X\hat\beta=X^\top y\)</span></td>
+</tr>
+<tr class="odd">
+<td>Projection matrix in OLS</td>
+<td><span class="math inline">\(P_X=X(X^\top X)^{-1}X^\top\)</span></td>
+</tr>
+<tr class="even">
+<td>Residual-maker</td>
+<td><span class="math inline">\(M_X=I-P_X\)</span></td>
+</tr>
+<tr class="odd">
+<td>OLS estimator</td>
+<td><span class="math inline">\(\hat\beta=(X^\top X)^{-1}X^\top y\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="summary" class="level1" data-number="107">
+<h1 data-number="107"><span class="header-section-number">107</span> Summary</h1>
+<p>Matrices provide the compact algebraic language used to express Linear Models.</p>
+<p>The most important operations are matrix addition, scalar multiplication, matrix multiplication, and transposition.</p>
+<p>Matrix multiplication connects directly to vectors:</p>
+<p><span class="math display">\[
+Ax
+\]</span></p>
+<p>can be interpreted as a linear combination of the columns of <span class="math inline">\(A\)</span>.</p>
+<p>This leads naturally to the column space:</p>
+<p><span class="math display">\[
+\operatorname{Col}(A)
+=
+\{Ax:x\in\mathbb R^n\}.
+\]</span></p>
+<p>Rank measures the dimension of this space and therefore measures the number of independent directions represented by the matrix.</p>
+<p>The equation</p>
+<p><span class="math display">\[
+Ax=b
+\]</span></p>
+<p>provides the general framework for systems of linear equations, while</p>
+<p><span class="math display">\[
+Ax=0
+\]</span></p>
+<p>defines the null space and connects directly to linear independence.</p>
+<p>For Linear Models, the central object is the design matrix <span class="math inline">\(X\)</span>.</p>
+<p>The model</p>
+<p><span class="math display">\[
+y=X\beta+\varepsilon
+\]</span></p>
+<p>uses matrix-vector multiplication to represent all observations simultaneously.</p>
+<p>The matrix</p>
+<p><span class="math display">\[
+X^\top X
+\]</span></p>
+<p>contains the pairwise inner products between the columns of <span class="math inline">\(X\)</span> and is therefore a Gram matrix.</p>
+<p>When <span class="math inline">\(X\)</span> has full column rank, <span class="math inline">\(X^\top X\)</span> is invertible and the least-squares estimator is</p>
+<p><span class="math display">\[
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y.
+\]</span></p>
+<p>The fitted values are</p>
+<p><span class="math display">\[
+\hat y=X\hat\beta
+\]</span></p>
+<p>and can be interpreted geometrically as the orthogonal projection of <span class="math inline">\(y\)</span> onto the column space of <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+\hat y=P_Xy,
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+P_X
+=
+X(X^\top X)^{-1}X^\top.
+\]</span></p>
+<p>The residual vector is</p>
+<p><span class="math display">\[
+e=y-\hat y,
+\]</span></p>
+<p>and it satisfies</p>
+<p><span class="math display">\[
+X^\top e=0.
+\]</span></p>
+<p>Thus the key conceptual chain is:</p>
+<p><span class="math display">\[
+\boxed{
+\text{vectors}
+\rightarrow
+\text{matrices}
+\rightarrow
+\text{linear transformations}
+\rightarrow
+\text{linear combinations}
+\rightarrow
+\text{column spaces}
+\rightarrow
+\text{projections}
+\rightarrow
+\text{least squares}
+}
+\]</span></p>
+<p>This is the bridge from the Linear Algebra prerequisite material into the mathematical core of Linear Models.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,3148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Vectors, vector operations, geometry, norms, inner products, orthogonality, and their role in Linear Models.">
+
+<title>Vectors – Linear Models</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Linear Models</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Intro/syllabus.html"> 
+<span class="menu-text">Intro</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Core/01-linear-model.qmd"> 
+<span class="menu-text">Core</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../Prerequisites/Linear-Algebra/vectors.html"> 
+<span class="menu-text">Prerequisites</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Prerequisites</li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/vectors.html">Linear Algebra</a></li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/vectors.html">Vectors</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Intro</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Intro/syllabus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Intro/exam-map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">exam-map</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Intro/notation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">notation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Core</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Core/01-Gauss-Markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gauss-Markov Set-up</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Prerequisites</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Linear Algebra</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Prerequisites/Linear-Algebra/vectors.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Prerequisites/Linear-Algebra/matrices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matrices</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text">Statistics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Prerequisites/Statistics/expectation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">expectation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#vectors" id="toc-vectors" class="nav-link active" data-scroll-target="#vectors"><span class="header-section-number">1</span> Vectors</a></li>
+  <li><a href="#why-vectors-matter" id="toc-why-vectors-matter" class="nav-link" data-scroll-target="#why-vectors-matter"><span class="header-section-number">2</span> Why vectors matter</a></li>
+  <li><a href="#what-is-a-vector" id="toc-what-is-a-vector" class="nav-link" data-scroll-target="#what-is-a-vector"><span class="header-section-number">3</span> What is a vector?</a></li>
+  <li><a href="#scalars-versus-vectors" id="toc-scalars-versus-vectors" class="nav-link" data-scroll-target="#scalars-versus-vectors"><span class="header-section-number">4</span> Scalars versus vectors</a></li>
+  <li><a href="#equality-of-vectors" id="toc-equality-of-vectors" class="nav-link" data-scroll-target="#equality-of-vectors"><span class="header-section-number">5</span> Equality of vectors</a></li>
+  <li><a href="#the-zero-vector" id="toc-the-zero-vector" class="nav-link" data-scroll-target="#the-zero-vector"><span class="header-section-number">6</span> The zero vector</a></li>
+  <li><a href="#adding-vectors" id="toc-adding-vectors" class="nav-link" data-scroll-target="#adding-vectors"><span class="header-section-number">7</span> Adding vectors</a></li>
+  <li><a href="#subtracting-vectors" id="toc-subtracting-vectors" class="nav-link" data-scroll-target="#subtracting-vectors"><span class="header-section-number">8</span> Subtracting vectors</a></li>
+  <li><a href="#scalar-multiplication" id="toc-scalar-multiplication" class="nav-link" data-scroll-target="#scalar-multiplication"><span class="header-section-number">9</span> Scalar multiplication</a></li>
+  <li><a href="#linear-combinations" id="toc-linear-combinations" class="nav-link" data-scroll-target="#linear-combinations"><span class="header-section-number">10</span> Linear combinations</a></li>
+  <li><a href="#span" id="toc-span" class="nav-link" data-scroll-target="#span"><span class="header-section-number">11</span> Span</a></li>
+  <li><a href="#linear-independence" id="toc-linear-independence" class="nav-link" data-scroll-target="#linear-independence"><span class="header-section-number">12</span> Linear independence</a></li>
+  <li><a href="#geometric-interpretation" id="toc-geometric-interpretation" class="nav-link" data-scroll-target="#geometric-interpretation"><span class="header-section-number">13</span> Geometric interpretation</a></li>
+  <li><a href="#the-norm" id="toc-the-norm" class="nav-link" data-scroll-target="#the-norm"><span class="header-section-number">14</span> The norm</a></li>
+  <li><a href="#squared-norm" id="toc-squared-norm" class="nav-link" data-scroll-target="#squared-norm"><span class="header-section-number">15</span> Squared norm</a></li>
+  <li><a href="#distance-between-vectors" id="toc-distance-between-vectors" class="nav-link" data-scroll-target="#distance-between-vectors"><span class="header-section-number">16</span> Distance between vectors</a></li>
+  <li><a href="#unit-vectors" id="toc-unit-vectors" class="nav-link" data-scroll-target="#unit-vectors"><span class="header-section-number">17</span> Unit vectors</a></li>
+  <li><a href="#the-dot-product" id="toc-the-dot-product" class="nav-link" data-scroll-target="#the-dot-product"><span class="header-section-number">18</span> The dot product</a></li>
+  <li><a href="#geometric-interpretation-of-the-dot-product" id="toc-geometric-interpretation-of-the-dot-product" class="nav-link" data-scroll-target="#geometric-interpretation-of-the-dot-product"><span class="header-section-number">19</span> Geometric interpretation of the dot product</a></li>
+  <li><a href="#orthogonality" id="toc-orthogonality" class="nav-link" data-scroll-target="#orthogonality"><span class="header-section-number">20</span> Orthogonality</a></li>
+  <li><a href="#orthogonal-decomposition" id="toc-orthogonal-decomposition" class="nav-link" data-scroll-target="#orthogonal-decomposition"><span class="header-section-number">21</span> Orthogonal decomposition</a></li>
+  <li><a href="#important-norm-identities" id="toc-important-norm-identities" class="nav-link" data-scroll-target="#important-norm-identities"><span class="header-section-number">22</span> Important norm identities</a></li>
+  <li><a href="#cauchy-schwarz-inequality" id="toc-cauchy-schwarz-inequality" class="nav-link" data-scroll-target="#cauchy-schwarz-inequality"><span class="header-section-number">23</span> Cauchy-Schwarz inequality</a></li>
+  <li><a href="#the-standard-basis" id="toc-the-standard-basis" class="nav-link" data-scroll-target="#the-standard-basis"><span class="header-section-number">24</span> The standard basis</a></li>
+  <li><a href="#vectors-as-data" id="toc-vectors-as-data" class="nav-link" data-scroll-target="#vectors-as-data"><span class="header-section-number">25</span> Vectors as data</a></li>
+  <li><a href="#vectors-in-linear-models" id="toc-vectors-in-linear-models" class="nav-link" data-scroll-target="#vectors-in-linear-models"><span class="header-section-number">26</span> Vectors in Linear Models</a></li>
+  <li><a href="#the-geometry-of-least-squares" id="toc-the-geometry-of-least-squares" class="nav-link" data-scroll-target="#the-geometry-of-least-squares"><span class="header-section-number">27</span> The geometry of least squares</a></li>
+  <li><a href="#vector-notation-worth-recognizing" id="toc-vector-notation-worth-recognizing" class="nav-link" data-scroll-target="#vector-notation-worth-recognizing"><span class="header-section-number">28</span> Vector notation worth recognizing</a></li>
+  <li><a href="#vectors-and-summation-notation" id="toc-vectors-and-summation-notation" class="nav-link" data-scroll-target="#vectors-and-summation-notation"><span class="header-section-number">29</span> Vectors and summation notation</a></li>
+  <li><a href="#the-transpose" id="toc-the-transpose" class="nav-link" data-scroll-target="#the-transpose"><span class="header-section-number">30</span> The transpose</a></li>
+  <li><a href="#inner-product" id="toc-inner-product" class="nav-link" data-scroll-target="#inner-product"><span class="header-section-number">31</span> Inner product</a>
+  <ul class="collapse">
+  <li><a href="#symmetry" id="toc-symmetry" class="nav-link" data-scroll-target="#symmetry"><span class="header-section-number">31.0.1</span> Symmetry</a></li>
+  <li><a href="#linearity" id="toc-linearity" class="nav-link" data-scroll-target="#linearity"><span class="header-section-number">31.0.2</span> Linearity</a></li>
+  <li><a href="#positive-definiteness" id="toc-positive-definiteness" class="nav-link" data-scroll-target="#positive-definiteness"><span class="header-section-number">31.0.3</span> Positive definiteness</a></li>
+  </ul></li>
+  <li><a href="#orthogonal-vectors-and-orthogonal-sets" id="toc-orthogonal-vectors-and-orthogonal-sets" class="nav-link" data-scroll-target="#orthogonal-vectors-and-orthogonal-sets"><span class="header-section-number">32</span> Orthogonal vectors and orthogonal sets</a></li>
+  <li><a href="#the-zero-vector-and-orthogonality" id="toc-the-zero-vector-and-orthogonality" class="nav-link" data-scroll-target="#the-zero-vector-and-orthogonality"><span class="header-section-number">33</span> The zero vector and orthogonality</a></li>
+  <li><a href="#projection-onto-a-vector" id="toc-projection-onto-a-vector" class="nav-link" data-scroll-target="#projection-onto-a-vector"><span class="header-section-number">34</span> Projection onto a vector</a></li>
+  <li><a href="#decomposing-a-vector-into-parallel-and-orthogonal-components" id="toc-decomposing-a-vector-into-parallel-and-orthogonal-components" class="nav-link" data-scroll-target="#decomposing-a-vector-into-parallel-and-orthogonal-components"><span class="header-section-number">35</span> Decomposing a vector into parallel and orthogonal components</a></li>
+  <li><a href="#projection-and-least-squares" id="toc-projection-and-least-squares" class="nav-link" data-scroll-target="#projection-and-least-squares"><span class="header-section-number">36</span> Projection and least squares</a></li>
+  <li><a href="#vector-norms-and-least-squares-objectives" id="toc-vector-norms-and-least-squares-objectives" class="nav-link" data-scroll-target="#vector-norms-and-least-squares-objectives"><span class="header-section-number">37</span> Vector norms and least-squares objectives</a></li>
+  <li><a href="#a-useful-geometric-identity" id="toc-a-useful-geometric-identity" class="nav-link" data-scroll-target="#a-useful-geometric-identity"><span class="header-section-number">38</span> A useful geometric identity</a></li>
+  <li><a href="#vector-valued-random-variables" id="toc-vector-valued-random-variables" class="nav-link" data-scroll-target="#vector-valued-random-variables"><span class="header-section-number">39</span> Vector-valued random variables</a></li>
+  <li><a href="#coordinate-vectors" id="toc-coordinate-vectors" class="nav-link" data-scroll-target="#coordinate-vectors"><span class="header-section-number">40</span> Coordinate vectors</a></li>
+  <li><a href="#vector-operations-a-compact-reference" id="toc-vector-operations-a-compact-reference" class="nav-link" data-scroll-target="#vector-operations-a-compact-reference"><span class="header-section-number">41</span> Vector operations: a compact reference</a>
+  <ul class="collapse">
+  <li><a href="#addition" id="toc-addition" class="nav-link" data-scroll-target="#addition"><span class="header-section-number">41.0.1</span> Addition</a></li>
+  <li><a href="#scalar-multiplication-1" id="toc-scalar-multiplication-1" class="nav-link" data-scroll-target="#scalar-multiplication-1"><span class="header-section-number">41.0.2</span> Scalar multiplication</a></li>
+  <li><a href="#negative" id="toc-negative" class="nav-link" data-scroll-target="#negative"><span class="header-section-number">41.0.3</span> Negative</a></li>
+  <li><a href="#subtraction" id="toc-subtraction" class="nav-link" data-scroll-target="#subtraction"><span class="header-section-number">41.0.4</span> Subtraction</a></li>
+  <li><a href="#dot-product" id="toc-dot-product" class="nav-link" data-scroll-target="#dot-product"><span class="header-section-number">41.0.5</span> Dot product</a></li>
+  <li><a href="#norm" id="toc-norm" class="nav-link" data-scroll-target="#norm"><span class="header-section-number">41.0.6</span> Norm</a></li>
+  <li><a href="#squared-norm-1" id="toc-squared-norm-1" class="nav-link" data-scroll-target="#squared-norm-1"><span class="header-section-number">41.0.7</span> Squared norm</a></li>
+  <li><a href="#distance" id="toc-distance" class="nav-link" data-scroll-target="#distance"><span class="header-section-number">41.0.8</span> Distance</a></li>
+  <li><a href="#orthogonality-1" id="toc-orthogonality-1" class="nav-link" data-scroll-target="#orthogonality-1"><span class="header-section-number">41.0.9</span> Orthogonality</a></li>
+  <li><a href="#projection-onto-x" id="toc-projection-onto-x" class="nav-link" data-scroll-target="#projection-onto-x"><span class="header-section-number">41.0.10</span> Projection onto <span class="math inline">\(x\)</span></a></li>
+  </ul></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes"><span class="header-section-number">42</span> Common mistakes</a>
+  <ul class="collapse">
+  <li><a href="#confusing-vectors-and-scalars" id="toc-confusing-vectors-and-scalars" class="nav-link" data-scroll-target="#confusing-vectors-and-scalars"><span class="header-section-number">42.1</span> Confusing vectors and scalars</a></li>
+  <li><a href="#confusing-xtop-y-and-xytop" id="toc-confusing-xtop-y-and-xytop" class="nav-link" data-scroll-target="#confusing-xtop-y-and-xytop"><span class="header-section-number">42.2</span> Confusing <span class="math inline">\(x^\top y\)</span> and <span class="math inline">\(xy^\top\)</span></a></li>
+  <li><a href="#forgetting-the-square-root-in-the-norm" id="toc-forgetting-the-square-root-in-the-norm" class="nav-link" data-scroll-target="#forgetting-the-square-root-in-the-norm"><span class="header-section-number">42.3</span> Forgetting the square root in the norm</a></li>
+  <li><a href="#assuming-orthogonality-means-vectors-have-equal-length" id="toc-assuming-orthogonality-means-vectors-have-equal-length" class="nav-link" data-scroll-target="#assuming-orthogonality-means-vectors-have-equal-length"><span class="header-section-number">42.4</span> Assuming orthogonality means vectors have equal length</a></li>
+  <li><a href="#forgetting-that-the-zero-vector-has-no-direction" id="toc-forgetting-that-the-zero-vector-has-no-direction" class="nav-link" data-scroll-target="#forgetting-that-the-zero-vector-has-no-direction"><span class="header-section-number">42.5</span> Forgetting that the zero vector has no direction</a></li>
+  </ul></li>
+  <li><a href="#essential-results-to-remember" id="toc-essential-results-to-remember" class="nav-link" data-scroll-target="#essential-results-to-remember"><span class="header-section-number">43</span> Essential results to remember</a>
+  <ul class="collapse">
+  <li><a href="#vector-norm" id="toc-vector-norm" class="nav-link" data-scroll-target="#vector-norm"><span class="header-section-number">43.0.1</span> Vector norm</a></li>
+  <li><a href="#squared-norm-2" id="toc-squared-norm-2" class="nav-link" data-scroll-target="#squared-norm-2"><span class="header-section-number">43.0.2</span> Squared norm</a></li>
+  <li><a href="#distance-1" id="toc-distance-1" class="nav-link" data-scroll-target="#distance-1"><span class="header-section-number">43.0.3</span> Distance</a></li>
+  <li><a href="#dot-product-and-angle" id="toc-dot-product-and-angle" class="nav-link" data-scroll-target="#dot-product-and-angle"><span class="header-section-number">43.0.4</span> Dot product and angle</a></li>
+  <li><a href="#orthogonality-2" id="toc-orthogonality-2" class="nav-link" data-scroll-target="#orthogonality-2"><span class="header-section-number">43.0.5</span> Orthogonality</a></li>
+  <li><a href="#projection-onto-a-vector-1" id="toc-projection-onto-a-vector-1" class="nav-link" data-scroll-target="#projection-onto-a-vector-1"><span class="header-section-number">43.0.6</span> Projection onto a vector</a></li>
+  <li><a href="#least-squares-objective" id="toc-least-squares-objective" class="nav-link" data-scroll-target="#least-squares-objective"><span class="header-section-number">43.0.7</span> Least-squares objective</a></li>
+  <li><a href="#residual" id="toc-residual" class="nav-link" data-scroll-target="#residual"><span class="header-section-number">43.0.8</span> Residual</a></li>
+  <li><a href="#orthogonality-of-least-squares-residuals" id="toc-orthogonality-of-least-squares-residuals" class="nav-link" data-scroll-target="#orthogonality-of-least-squares-residuals"><span class="header-section-number">43.0.9</span> Orthogonality of least-squares residuals</a></li>
+  </ul></li>
+  <li><a href="#what-you-should-be-able-to-do" id="toc-what-you-should-be-able-to-do" class="nav-link" data-scroll-target="#what-you-should-be-able-to-do"><span class="header-section-number">44</span> What you should be able to do</a></li>
+  <li><a href="#connection-to-the-rest-of-linear-algebra" id="toc-connection-to-the-rest-of-linear-algebra" class="nav-link" data-scroll-target="#connection-to-the-rest-of-linear-algebra"><span class="header-section-number">45</span> Connection to the rest of Linear Algebra</a></li>
+  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference"><span class="header-section-number">46</span> Quick reference</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">47</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Prerequisites</li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/vectors.html">Linear Algebra</a></li><li class="breadcrumb-item"><a href="../../Prerequisites/Linear-Algebra/vectors.html">Vectors</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Vectors</h1>
+<p class="subtitle lead">Linear Algebra Prerequisite</p>
+</div>
+
+<div>
+  <div class="description">
+    Vectors, vector operations, geometry, norms, inner products, orthogonality, and their role in Linear Models.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="vectors" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Vectors</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Topic status
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Category:</strong> Prerequisite<br>
+<strong>Course relevance:</strong> Supporting<br>
+<strong>Recommended depth:</strong> 3 · Derive / Apply</p>
+<p>This topic provides the basic language needed throughout Linear Models.</p>
+<p>You should be comfortable with vectors as both algebraic objects and geometric objects. In particular, you should understand vector addition, scalar multiplication, linear combinations, norms, dot products, orthogonality, and projections.</p>
+<p>The more abstract theory of vector spaces is treated separately.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="why-vectors-matter" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Why vectors matter</h1>
+<p>Linear Models is fundamentally built around vectors and matrices.</p>
+<p>A typical linear model is written as</p>
+<p><span class="math display">\[y = X\beta + \varepsilon,\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+y \in \mathbb{R}^n,
+\qquad
+\beta \in \mathbb{R}^p,
+\qquad
+\varepsilon \in \mathbb{R}^n.
+\]</span></p>
+<p>Here:</p>
+<ul>
+<li><span class="math inline">\(y\)</span> is a vector containing observed responses,</li>
+<li><span class="math inline">\(\beta\)</span> is a vector containing unknown model parameters,</li>
+<li><span class="math inline">\(\varepsilon\)</span> is a vector containing random errors,</li>
+<li><span class="math inline">\(X\)</span> is a matrix that maps the parameter vector <span class="math inline">\(\beta\)</span> into the observation space.</li>
+</ul>
+<p>Understanding the geometry of vectors makes many results in Linear Models much easier to interpret.</p>
+<p>For example, the least-squares problem</p>
+<p><span class="math display">\[
+\min_\beta \|y-X\beta\|^2
+\]</span></p>
+<p>can be understood geometrically as finding the point <span class="math inline">\(X\beta\)</span> closest to <span class="math inline">\(y\)</span>.</p>
+<p>That interpretation eventually leads to orthogonal projections, the normal equations, the hat matrix, residuals, and many other central ideas.</p>
+<hr>
+</section>
+<section id="what-is-a-vector" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> What is a vector?</h1>
+<p>A vector is an ordered collection of numbers.</p>
+<p>A vector with <span class="math inline">\(n\)</span> components can be written as</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+\in \mathbb{R}^n.
+\]</span></p>
+<p>The notation</p>
+<p><span class="math display">\[
+x \in \mathbb{R}^n
+\]</span></p>
+<p>means that <span class="math inline">\(x\)</span> has <span class="math inline">\(n\)</span> real-valued components.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+2\\
+-1\\
+4
+\end{pmatrix}
+\]</span></p>
+<p>is a vector in <span class="math inline">\(\mathbb{R}^3\)</span>.</p>
+<p>We can also write vectors horizontally:</p>
+<p><span class="math display">\[
+x^\top =
+\begin{pmatrix}
+2 &amp; -1 &amp; 4
+\end{pmatrix}.
+\]</span></p>
+<p>The superscript <span class="math inline">\({}^\top\)</span> denotes the <strong>transpose</strong>. Transposition converts a column vector into a row vector and vice versa.</p>
+<p>Thus</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+2\\
+-1\\
+4
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+x^\top =
+\begin{pmatrix}
+2 &amp; -1 &amp; 4
+\end{pmatrix}
+\]</span></p>
+<p>contain exactly the same components, but have different orientations.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Column vectors are the default
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In Linear Models, vectors are usually treated as <strong>column vectors</strong> unless explicitly stated otherwise.</p>
+<p>Thus</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+\]</span></p>
+<p>is the standard representation.</p>
+<p>This becomes important when multiplying vectors and matrices.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="scalars-versus-vectors" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Scalars versus vectors</h1>
+<p>A <strong>scalar</strong> is a single number.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+a=5
+\]</span></p>
+<p>is a scalar.</p>
+<p>A vector contains multiple components:</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+2\\
+4\\
+7
+\end{pmatrix}.
+\]</span></p>
+<p>Scalars and vectors play different roles.</p>
+<p>A scalar can multiply a vector:</p>
+<p><span class="math display">\[
+3
+\begin{pmatrix}
+2\\
+4\\
+7
+\end{pmatrix}
+=
+\begin{pmatrix}
+6\\
+12\\
+21
+\end{pmatrix}.
+\]</span></p>
+<p>The scalar changes the magnitude of the vector and, if negative, reverses its direction.</p>
+<hr>
+</section>
+<section id="equality-of-vectors" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Equality of vectors</h1>
+<p>Two vectors are equal if and only if they have the same dimension and their corresponding components are equal.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+y =
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+x=y
+\]</span></p>
+<p>if and only if</p>
+<p><span class="math display">\[
+x_i=y_i
+\]</span></p>
+<p>for every <span class="math inline">\(i=1,\ldots,n\)</span>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+2\\
+-1\\
+5
+\end{pmatrix}
+=
+\begin{pmatrix}
+2\\
+-1\\
+5
+\end{pmatrix},
+\]</span></p>
+<p>but</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+2\\
+-1\\
+5
+\end{pmatrix}
+\neq
+\begin{pmatrix}
+2\\
+5\\
+-1
+\end{pmatrix}.
+\]</span></p>
+<p>The ordering of components matters.</p>
+<hr>
+</section>
+<section id="the-zero-vector" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> The zero vector</h1>
+<p>The <strong>zero vector</strong> in <span class="math inline">\(\mathbb R^n\)</span> is</p>
+<p><span class="math display">\[
+0 =
+\begin{pmatrix}
+0\\
+0\\
+\vdots\\
+0
+\end{pmatrix}.
+\]</span></p>
+<p>Sometimes the dimension is made explicit:</p>
+<p><span class="math display">\[
+0_n \in \mathbb R^n.
+\]</span></p>
+<p>The zero vector is the additive identity because</p>
+<p><span class="math display">\[
+x+0=x
+\]</span></p>
+<p>for every <span class="math inline">\(x\in\mathbb R^n\)</span>.</p>
+<hr>
+</section>
+<section id="adding-vectors" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Adding vectors</h1>
+<p>Two vectors can be added only when they have the same dimension.</p>
+<p>If</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+y =
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+x+y
+=
+\begin{pmatrix}
+x_1+y_1\\
+x_2+y_2\\
+\vdots\\
+x_n+y_n
+\end{pmatrix}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1\\
+2\\
+3
+\end{pmatrix}
++
+\begin{pmatrix}
+4\\
+-1\\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+5\\
+1\\
+5
+\end{pmatrix}.
+\]</span></p>
+<p>Vector addition is <strong>componentwise</strong>.</p>
+<hr>
+</section>
+<section id="subtracting-vectors" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Subtracting vectors</h1>
+<p>Vector subtraction is also componentwise:</p>
+<p><span class="math display">\[
+x-y
+=
+\begin{pmatrix}
+x_1-y_1\\
+x_2-y_2\\
+\vdots\\
+x_n-y_n
+\end{pmatrix}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+5\\
+3
+\end{pmatrix}
+-
+\begin{pmatrix}
+2\\
+7
+\end{pmatrix}
+=
+\begin{pmatrix}
+3\\
+-4
+\end{pmatrix}.
+\]</span></p>
+<p>Subtraction can also be viewed as addition of the negative vector:</p>
+<p><span class="math display">\[
+x-y=x+(-y).
+\]</span></p>
+<hr>
+</section>
+<section id="scalar-multiplication" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Scalar multiplication</h1>
+<p>If <span class="math inline">\(a\in\mathbb R\)</span> and <span class="math inline">\(x\in\mathbb R^n\)</span>, then</p>
+<p><span class="math display">\[
+ax
+\]</span></p>
+<p>is the vector obtained by multiplying every component of <span class="math inline">\(x\)</span> by <span class="math inline">\(a\)</span>.</p>
+<p>Thus</p>
+<p><span class="math display">\[
+a
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+ax_1\\
+ax_2\\
+\vdots\\
+ax_n
+\end{pmatrix}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+-2
+\begin{pmatrix}
+1\\
+-3\\
+4
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2\\
+6\\
+-8
+\end{pmatrix}.
+\]</span></p>
+<p>Special cases:</p>
+<p><span class="math display">\[
+1x=x,
+\]</span></p>
+<p><span class="math display">\[
+0x=0,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(-1)x=-x.
+\]</span></p>
+<hr>
+</section>
+<section id="linear-combinations" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Linear combinations</h1>
+<p>A <strong>linear combination</strong> of vectors is an expression of the form</p>
+<p><span class="math display">\[
+a_1x_1+a_2x_2+\cdots+a_kx_k,
+\]</span></p>
+<p>where <span class="math inline">\(a_1,\ldots,a_k\)</span> are scalars.</p>
+<p>For example, if</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+3\\
+-1
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+2x-3y
+\]</span></p>
+<p>is a linear combination of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p>Calculating,</p>
+<p><span class="math display">\[
+2x
+=
+\begin{pmatrix}
+2\\
+4
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+3y
+=
+\begin{pmatrix}
+9\\
+-3
+\end{pmatrix},
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+2x-3y
+=
+\begin{pmatrix}
+2\\
+4
+\end{pmatrix}
+-
+\begin{pmatrix}
+9\\
+-3
+\end{pmatrix}
+=
+\begin{pmatrix}
+-7\\
+7
+\end{pmatrix}.
+\]</span></p>
+<p>Linear combinations are one of the most important ideas in linear algebra.</p>
+<p>Much of Linear Models can be understood in terms of asking:</p>
+<blockquote class="blockquote">
+<p>Which vectors can be constructed as linear combinations of other vectors?</p>
+</blockquote>
+<hr>
+</section>
+<section id="span" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Span</h1>
+<p>The <strong>span</strong> of a collection of vectors is the set of every vector that can be formed as a linear combination of them.</p>
+<p>For vectors <span class="math inline">\(x_1,\ldots,x_k\)</span>, their span is</p>
+<p><span class="math display">\[
+\operatorname{span}(x_1,\ldots,x_k)
+=
+\left\{
+a_1x_1+\cdots+a_kx_k
+:
+a_1,\ldots,a_k\in\mathbb R
+\right\}.
+\]</span></p>
+<p>For example, consider</p>
+<p><span class="math display">\[
+x_1=
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix},
+\qquad
+x_2=
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}.
+\]</span></p>
+<p>Any vector</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+a\\
+b
+\end{pmatrix}
+\]</span></p>
+<p>can be written as</p>
+<p><span class="math display">\[
+a
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix}
++
+b
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\operatorname{span}(x_1,x_2)=\mathbb R^2.
+\]</span></p>
+<p>The span tells us what part of the surrounding space can be reached using the given vectors.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Connection to Linear Models
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suppose the columns of a design matrix <span class="math inline">\(X\)</span> are</p>
+<p><span class="math display">\[
+x_1,\ldots,x_p.
+\]</span></p>
+<p>Then every vector of the form</p>
+<p><span class="math display">\[
+X\beta
+\]</span></p>
+<p>is a linear combination of those columns.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\{X\beta:\beta\in\mathbb R^p\}
+=
+\operatorname{span}(x_1,\ldots,x_p).
+\]</span></p>
+<p>This set is the <strong>column space</strong> of <span class="math inline">\(X\)</span>, written</p>
+<p><span class="math display">\[
+\mathcal C(X).
+\]</span></p>
+<p>This is central to least squares.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="linear-independence" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> Linear independence</h1>
+<p>Vectors <span class="math inline">\(x_1,\ldots,x_k\)</span> are <strong>linearly independent</strong> if the only solution to</p>
+<p><span class="math display">\[
+a_1x_1+\cdots+a_kx_k=0
+\]</span></p>
+<p>is</p>
+<p><span class="math display">\[
+a_1=a_2=\cdots=a_k=0.
+\]</span></p>
+<p>In other words, none of the vectors can be constructed as a linear combination of the others.</p>
+<p>If there exists a non-zero set of coefficients such that</p>
+<p><span class="math display">\[
+a_1x_1+\cdots+a_kx_k=0,
+\]</span></p>
+<p>then the vectors are <strong>linearly dependent</strong>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x_1=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+x_2=
+\begin{pmatrix}
+2\\
+4
+\end{pmatrix}
+\]</span></p>
+<p>are linearly dependent because</p>
+<p><span class="math display">\[
+x_2=2x_1.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+2x_1-x_2=0
+\]</span></p>
+<p>is a non-trivial linear combination equal to zero.</p>
+<hr>
+</section>
+<section id="geometric-interpretation" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Geometric interpretation</h1>
+<p>Vectors can be interpreted geometrically as directed quantities.</p>
+<p>In <span class="math inline">\(\mathbb R^2\)</span>, a vector</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}
+\]</span></p>
+<p>can be represented as an arrow from the origin to the point</p>
+<p><span class="math display">\[
+(x_1,x_2).
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+3\\
+2
+\end{pmatrix}
+\]</span></p>
+<p>corresponds to an arrow from</p>
+<p><span class="math display">\[
+(0,0)
+\]</span></p>
+<p>to</p>
+<p><span class="math display">\[
+(3,2).
+\]</span></p>
+<p>The vector has two important geometric properties:</p>
+<ul>
+<li><strong>direction</strong></li>
+<li><strong>magnitude</strong></li>
+</ul>
+<p>The algebraic representation allows us to manipulate these quantities exactly.</p>
+<hr>
+</section>
+<section id="the-norm" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> The norm</h1>
+<p>The <strong>Euclidean norm</strong>, or length, of a vector</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+\]</span></p>
+<p>is</p>
+<p><span class="math display">\[
+\|x\|
+=
+\sqrt{x_1^2+x_2^2+\cdots+x_n^2}.
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+\boxed{
+\|x\|=\sqrt{x^\top x}
+}
+\]</span></p>
+<p>because</p>
+<p><span class="math display">\[
+x^\top x
+=
+\begin{pmatrix}
+x_1 &amp; \cdots &amp; x_n
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+=
+x_1^2+\cdots+x_n^2.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+3\\
+4
+\end{pmatrix}
+\]</span></p>
+<p>has norm</p>
+<p><span class="math display">\[
+\|x\|
+=
+\sqrt{3^2+4^2}
+=
+5.
+\]</span></p>
+<p>The norm measures the distance of the vector from the origin.</p>
+<hr>
+</section>
+<section id="squared-norm" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Squared norm</h1>
+<p>The squared norm is</p>
+<p><span class="math display">\[
+\|x\|^2=x^\top x.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+\|x\|^2
+=
+x_1^2+\cdots+x_n^2.
+\]</span></p>
+<p>The squared norm appears constantly in Linear Models.</p>
+<p>For example, the least-squares objective is</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2.
+\]</span></p>
+<p>This is the squared Euclidean distance between <span class="math inline">\(y\)</span> and <span class="math inline">\(X\beta\)</span>.</p>
+<p>It is also commonly written as</p>
+<p><span class="math display">\[
+(y-X\beta)^\top(y-X\beta).
+\]</span></p>
+<p>These are the same quantity.</p>
+<hr>
+</section>
+<section id="distance-between-vectors" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Distance between vectors</h1>
+<p>The distance between two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is defined by</p>
+<p><span class="math display">\[
+d(x,y)=\|x-y\|.
+\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[
+d(x,y)
+=
+\sqrt{
+(x_1-y_1)^2+\cdots+(x_n-y_n)^2
+}.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+4\\
+6
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+x-y=
+\begin{pmatrix}
+-3\\
+-4
+\end{pmatrix}
+\]</span></p>
+<p>and therefore</p>
+<p><span class="math display">\[
+d(x,y)=5.
+\]</span></p>
+<p>In least squares,</p>
+<p><span class="math display">\[
+\|y-X\beta\|
+\]</span></p>
+<p>measures how far the fitted vector <span class="math inline">\(X\beta\)</span> is from the observed vector <span class="math inline">\(y\)</span>.</p>
+<hr>
+</section>
+<section id="unit-vectors" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> Unit vectors</h1>
+<p>A <strong>unit vector</strong> is a vector with norm equal to <span class="math inline">\(1\)</span>.</p>
+<p>If <span class="math inline">\(x\neq0\)</span>, then the corresponding unit vector in the direction of <span class="math inline">\(x\)</span> is</p>
+<p><span class="math display">\[
+\frac{x}{\|x\|}.
+\]</span></p>
+<p>Indeed,</p>
+<p><span class="math display">\[
+\left\|
+\frac{x}{\|x\|}
+\right\|
+=
+\frac{\|x\|}{\|x\|}
+=
+1.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+3\\
+4
+\end{pmatrix}
+\]</span></p>
+<p>has norm <span class="math inline">\(5\)</span>, so the unit vector in its direction is</p>
+<p><span class="math display">\[
+\frac{x}{\|x\|}
+=
+\begin{pmatrix}
+3/5\\
+4/5
+\end{pmatrix}.
+\]</span></p>
+<p>Unit vectors are useful when separating a vector’s <strong>direction</strong> from its <strong>magnitude</strong>.</p>
+<hr>
+</section>
+<section id="the-dot-product" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> The dot product</h1>
+<p>For vectors</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+y=
+\begin{pmatrix}
+y_1\\
+\vdots\\
+y_n
+\end{pmatrix},
+\]</span></p>
+<p>their <strong>dot product</strong>, or inner product in the standard Euclidean setting, is</p>
+<p><span class="math display">\[
+x^\top y
+=
+x_1y_1+\cdots+x_ny_n.
+\]</span></p>
+<p>The result is a scalar.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+1\\
+2\\
+3
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+4\\
+-1\\
+2
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+x^\top y
+=
+1(4)+2(-1)+3(2)
+=
+4-2+6
+=
+8.
+\]</span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Vector versus scalar
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice that</p>
+<p><span class="math display">\[
+x^\top y
+\]</span></p>
+<p>is a scalar, not a vector.</p>
+<p>If <span class="math inline">\(x,y\in\mathbb R^n\)</span>, then</p>
+<p><span class="math display">\[
+x^\top y\in\mathbb R.
+\]</span></p>
+<p>This distinction becomes extremely important when manipulating matrix expressions.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="geometric-interpretation-of-the-dot-product" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> Geometric interpretation of the dot product</h1>
+<p>The dot product can also be expressed in terms of the angle between two non-zero vectors:</p>
+<p><span class="math display">\[
+\boxed{
+x^\top y
+=
+\|x\|\|y\|\cos\theta
+}
+\]</span></p>
+<p>where <span class="math inline">\(\theta\)</span> is the angle between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\cos\theta
+=
+\frac{x^\top y}{\|x\|\|y\|}.
+\]</span></p>
+<p>This connects the algebraic and geometric viewpoints.</p>
+<p>The sign of the dot product tells us about the angle:</p>
+<p><span class="math display">\[
+x^\top y&gt;0
+\quad\Longrightarrow\quad
+\theta&lt;90^\circ,
+\]</span></p>
+<p><span class="math display">\[
+x^\top y=0
+\quad\Longrightarrow\quad
+\theta=90^\circ,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+x^\top y&lt;0
+\quad\Longrightarrow\quad
+\theta&gt;90^\circ.
+\]</span></p>
+<hr>
+</section>
+<section id="orthogonality" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Orthogonality</h1>
+<p>Two vectors are <strong>orthogonal</strong> if their dot product is zero.</p>
+<p>Thus,</p>
+<p><span class="math display">\[
+x\perp y
+\]</span></p>
+<p>if and only if</p>
+<p><span class="math display">\[
+x^\top y=0.
+\]</span></p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+2\\
+-1
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+x^\top y
+=
+1(2)+2(-1)
+=
+0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+x\perp y.
+\]</span></p>
+<p>Geometrically, non-zero orthogonal vectors meet at a right angle.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why this matters for Linear Models
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Orthogonality is everywhere in Linear Models.</p>
+<p>In least squares, the residual vector is orthogonal to the column space of the design matrix.</p>
+<p>If</p>
+<p><span class="math display">\[
+e=y-X\hat\beta,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+X^\top e=0.
+\]</span></p>
+<p>This single equation is one of the fundamental geometric facts behind least squares.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="orthogonal-decomposition" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> Orthogonal decomposition</h1>
+<p>Suppose a vector <span class="math inline">\(y\)</span> can be written as</p>
+<p><span class="math display">\[
+y=u+v
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+u\perp v.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\|y\|^2
+=
+\|u+v\|^2.
+\]</span></p>
+<p>Using the dot product,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\|u+v\|^2
+&amp;=(u+v)^\top(u+v)\\
+&amp;=u^\top u+2u^\top v+v^\top v.
+\end{aligned}
+\]</span></p>
+<p>Since <span class="math inline">\(u^\top v=0\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+\|u+v\|^2
+=
+\|u\|^2+\|v\|^2
+}
+\]</span></p>
+<p>which is the vector form of the Pythagorean theorem.</p>
+<p>This identity will later appear repeatedly in least-squares decompositions.</p>
+<hr>
+</section>
+<section id="important-norm-identities" class="level1" data-number="22">
+<h1 data-number="22"><span class="header-section-number">22</span> Important norm identities</h1>
+<p>For vectors <span class="math inline">\(x,y\)</span> and scalar <span class="math inline">\(a\)</span>,</p>
+<p><span class="math display">\[
+\|x\|\geq0,
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\|x\|=0
+\iff
+x=0.
+\]</span></p>
+<p>The norm is homogeneous:</p>
+<p><span class="math display">\[
+\|ax\|=|a|\|x\|.
+\]</span></p>
+<p>The triangle inequality states</p>
+<p><span class="math display">\[
+\|x+y\|\leq\|x\|+\|y\|.
+\]</span></p>
+<p>The squared norm satisfies</p>
+<p><span class="math display">\[
+\|x+y\|^2
+=
+\|x\|^2+2x^\top y+\|y\|^2.
+\]</span></p>
+<p>Similarly,</p>
+<p><span class="math display">\[
+\|x-y\|^2
+=
+\|x\|^2-2x^\top y+\|y\|^2.
+\]</span></p>
+<p>These identities are worth knowing because they appear frequently when manipulating least-squares objectives.</p>
+<hr>
+</section>
+<section id="cauchy-schwarz-inequality" class="level1" data-number="23">
+<h1 data-number="23"><span class="header-section-number">23</span> Cauchy-Schwarz inequality</h1>
+<p>For any <span class="math inline">\(x,y\in\mathbb R^n\)</span>,</p>
+<p><span class="math display">\[
+\boxed{
+|x^\top y|
+\leq
+\|x\|\|y\|
+}
+\]</span></p>
+<p>This is the <strong>Cauchy-Schwarz inequality</strong>.</p>
+<p>Equality occurs exactly when <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are linearly dependent, assuming neither is zero.</p>
+<p>The geometric formula</p>
+<p><span class="math display">\[
+x^\top y
+=
+\|x\|\|y\|\cos\theta
+\]</span></p>
+<p>makes the inequality intuitive because</p>
+<p><span class="math display">\[
+|\cos\theta|\leq1.
+\]</span></p>
+<p>Cauchy-Schwarz is fundamental in analysis and probability and will reappear in more advanced statistical theory.</p>
+<p>For the basic Linear Models material, knowing the statement and interpretation is generally more important than memorizing a proof unless your course explicitly requires the proof.</p>
+<hr>
+</section>
+<section id="the-standard-basis" class="level1" data-number="24">
+<h1 data-number="24"><span class="header-section-number">24</span> The standard basis</h1>
+<p>The standard basis vectors of <span class="math inline">\(\mathbb R^n\)</span> are</p>
+<p><span class="math display">\[
+e_1,e_2,\ldots,e_n,
+\]</span></p>
+<p>where <span class="math inline">\(e_i\)</span> has a <span class="math inline">\(1\)</span> in position <span class="math inline">\(i\)</span> and zeros elsewhere.</p>
+<p>For <span class="math inline">\(\mathbb R^3\)</span>,</p>
+<p><span class="math display">\[
+e_1=
+\begin{pmatrix}
+1\\
+0\\
+0
+\end{pmatrix},
+\qquad
+e_2=
+\begin{pmatrix}
+0\\
+1\\
+0
+\end{pmatrix},
+\qquad
+e_3=
+\begin{pmatrix}
+0\\
+0\\
+1
+\end{pmatrix}.
+\]</span></p>
+<p>Every vector in <span class="math inline">\(\mathbb R^n\)</span> can be expressed as a linear combination of the standard basis vectors.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+2\\
+-3\\
+5
+\end{pmatrix}
+=
+2e_1-3e_2+5e_3.
+\]</span></p>
+<p>The standard basis provides the simplest coordinate system for Euclidean space.</p>
+<p>A more general treatment of bases and dimension belongs in the <strong>Vector Spaces</strong> prerequisite section.</p>
+<hr>
+</section>
+<section id="vectors-as-data" class="level1" data-number="25">
+<h1 data-number="25"><span class="header-section-number">25</span> Vectors as data</h1>
+<p>A vector does not have to represent a physical arrow.</p>
+<p>In statistics, a vector often represents a collection of observations.</p>
+<p>Suppose <span class="math inline">\(n\)</span> observations of a response variable are</p>
+<p><span class="math display">\[
+y_1,y_2,\ldots,y_n.
+\]</span></p>
+<p>They can be represented as the response vector</p>
+<p><span class="math display">\[
+y=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+\]</span></p>
+<p>Likewise, the observations of a predictor <span class="math inline">\(x\)</span> can be represented by</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}.
+\]</span></p>
+<p>This is one reason vectors are so useful in statistics: a vector provides a compact mathematical representation of an entire variable.</p>
+<hr>
+</section>
+<section id="vectors-in-linear-models" class="level1" data-number="26">
+<h1 data-number="26"><span class="header-section-number">26</span> Vectors in Linear Models</h1>
+<p>Consider a simple linear regression model</p>
+<p><span class="math display">\[
+y_i=\beta_0+\beta_1x_i+\varepsilon_i,
+\qquad i=1,\ldots,n.
+\]</span></p>
+<p>We can collect all observations into vectors.</p>
+<p>The response vector is</p>
+<p><span class="math display">\[
+y=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix},
+\]</span></p>
+<p>and the error vector is</p>
+<p><span class="math display">\[
+\varepsilon=
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+\]</span></p>
+<p>The parameters can be represented as</p>
+<p><span class="math display">\[
+\beta=
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+\]</span></p>
+<p>The design matrix is</p>
+<p><span class="math display">\[
+X=
+\begin{pmatrix}
+1 &amp; x_1\\
+1 &amp; x_2\\
+\vdots &amp; \vdots\\
+1 &amp; x_n
+\end{pmatrix}.
+\]</span></p>
+<p>The model becomes</p>
+<p><span class="math display">\[
+\boxed{
+y=X\beta+\varepsilon
+}
+\]</span></p>
+<p>This is the fundamental vector-matrix representation of a linear model.</p>
+<p>The fitted values are</p>
+<p><span class="math display">\[
+\hat y=X\hat\beta.
+\]</span></p>
+<p>The residual vector is</p>
+<p><span class="math display">\[
+e=y-\hat y.
+\]</span></p>
+<p>Thus, several of the most important objects in Linear Models are vectors.</p>
+<hr>
+</section>
+<section id="the-geometry-of-least-squares" class="level1" data-number="27">
+<h1 data-number="27"><span class="header-section-number">27</span> The geometry of least squares</h1>
+<p>The vector formulation reveals a geometric interpretation.</p>
+<p>Given</p>
+<p><span class="math display">\[
+y=X\beta+\varepsilon,
+\]</span></p>
+<p>the set of all possible fitted-value vectors is</p>
+<p><span class="math display">\[
+\{X\beta:\beta\in\mathbb R^p\}.
+\]</span></p>
+<p>This set is the column space of <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+\mathcal C(X)
+=
+\{X\beta:\beta\in\mathbb R^p\}.
+\]</span></p>
+<p>The least-squares estimator chooses <span class="math inline">\(\hat\beta\)</span> so that</p>
+<p><span class="math display">\[
+X\hat\beta
+\]</span></p>
+<p>is the point in <span class="math inline">\(\mathcal C(X)\)</span> closest to <span class="math inline">\(y\)</span>.</p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\hat y=X\hat\beta
+\]</span></p>
+<p>is the orthogonal projection of <span class="math inline">\(y\)</span> onto the column space of <span class="math inline">\(X\)</span>.</p>
+<p>The residual</p>
+<p><span class="math display">\[
+e=y-\hat y
+\]</span></p>
+<p>is perpendicular to that column space.</p>
+<p>This gives the fundamental picture:</p>
+<pre class="text"><code>                     y
+                     ●
+                    /|
+                   / |
+                  /  | e
+                 /   |
+                /    |
+               ●-----┘
+              ŷ
+              │
+              │
+        Column space of X</code></pre>
+</section>
+<section id="vector-notation-worth-recognizing" class="level1" data-number="28">
+<h1 data-number="28"><span class="header-section-number">28</span> Vector notation worth recognizing</h1>
+<p>You will encounter several equivalent ways of writing vector expressions.</p>
+<p>For a vector <span class="math inline">\(x\)</span>, the column-vector notation</p>
+<p><span class="math display">\[
+x =
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+\]</span></p>
+<p>may also be written as</p>
+<p><span class="math display">\[
+x=(x_1,\ldots,x_n)^\top.
+\]</span></p>
+<p>The dot product can be written as</p>
+<p><span class="math display">\[
+x^\top y
+\]</span></p>
+<p>or, in inner-product notation,</p>
+<p><span class="math display">\[
+\langle x,y\rangle.
+\]</span></p>
+<p>In the standard Euclidean setting these represent the same operation.</p>
+<p>The Euclidean norm can be written as</p>
+<p><span class="math display">\[
+\|x\|
+\]</span></p>
+<p>and satisfies</p>
+<p><span class="math display">\[
+\|x\|=\sqrt{\langle x,x\rangle}.
+\]</span></p>
+<p>Because the standard inner product is given by the dot product,</p>
+<p><span class="math display">\[
+\langle x,x\rangle=x^\top x,
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+\boxed{\|x\|=\sqrt{x^\top x}}.
+\]</span></p>
+<p>Consequently,</p>
+<p><span class="math display">\[
+\boxed{\|x\|^2=x^\top x}.
+\]</span></p>
+<p>These expressions are worth recognizing immediately because Linear Models uses all of them.</p>
+<hr>
+</section>
+<section id="vectors-and-summation-notation" class="level1" data-number="29">
+<h1 data-number="29"><span class="header-section-number">29</span> Vectors and summation notation</h1>
+<p>It is often convenient to write vectors and their operations using summation notation.</p>
+<p>Suppose</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+\]</span></p>
+<p>Then their dot product is</p>
+<p><span class="math display">\[
+x^\top y
+=
+\sum_{i=1}^n x_i y_i.
+\]</span></p>
+<p>Their squared norm is</p>
+<p><span class="math display">\[
+\|x\|^2
+=
+\sum_{i=1}^n x_i^2.
+\]</span></p>
+<p>Their squared distance is</p>
+<p><span class="math display">\[
+\|x-y\|^2
+=
+\sum_{i=1}^n (x_i-y_i)^2.
+\]</span></p>
+<p>This notation becomes especially useful in statistics because many statistical quantities are sums over observations.</p>
+<p>For example, the sum of squared residuals can be written as</p>
+<p><span class="math display">\[
+\sum_{i=1}^n e_i^2
+\]</span></p>
+<p>or, using vector notation,</p>
+<p><span class="math display">\[
+e^\top e
+=
+\|e\|^2.
+\]</span></p>
+<p>These are exactly the same quantity.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why vector notation is useful
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A scalar expression such as</p>
+<p><span class="math display">\[
+\sum_{i=1}^n (y_i-\hat y_i)^2
+\]</span></p>
+<p>can become cumbersome when many operations are involved.</p>
+<p>Vector notation compresses the same expression into</p>
+<p><span class="math display">\[
+\|y-\hat y\|^2.
+\]</span></p>
+<p>This is one reason linear algebra is so powerful in statistical modelling: complicated collections of scalar equations can often be expressed as a small number of vector and matrix operations.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-transpose" class="level1" data-number="30">
+<h1 data-number="30"><span class="header-section-number">30</span> The transpose</h1>
+<p>The <strong>transpose</strong> changes a column vector into a row vector and a row vector into a column vector.</p>
+<p>If</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix},
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+x^\top
+=
+\begin{pmatrix}
+x_1 &amp; x_2 &amp; \cdots &amp; x_n
+\end{pmatrix}.
+\]</span></p>
+<p>Applying the transpose twice returns the original vector:</p>
+<p><span class="math display">\[
+(x^\top)^\top=x.
+\]</span></p>
+<p>The transpose is particularly important because it allows vector multiplication.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x^\top y
+\]</span></p>
+<p>is valid when <span class="math inline">\(x,y\in\mathbb R^n\)</span>.</p>
+<p>The dimensions are</p>
+<p><span class="math display">\[
+x^\top\in\mathbb R^{1\times n},
+\qquad
+y\in\mathbb R^{n\times1},
+\]</span></p>
+<p>so</p>
+<p><span class="math display">\[
+x^\top y\in\mathbb R^{1\times1}.
+\]</span></p>
+<p>A <span class="math inline">\(1\times1\)</span> matrix is identified with a scalar, giving the dot product.</p>
+<p>On the other hand,</p>
+<p><span class="math display">\[
+xy^\top
+\]</span></p>
+<p>has dimensions</p>
+<p><span class="math display">\[
+(n\times1)(1\times n)
+=
+n\times n,
+\]</span></p>
+<p>so it produces a matrix rather than a scalar.</p>
+<p>This distinction becomes extremely important once matrices are introduced.</p>
+<hr>
+</section>
+<section id="inner-product" class="level1" data-number="31">
+<h1 data-number="31"><span class="header-section-number">31</span> Inner product</h1>
+<p>The dot product is an example of an <strong>inner product</strong>.</p>
+<p>For vectors <span class="math inline">\(x,y\in\mathbb R^n\)</span>, the standard inner product is</p>
+<p><span class="math display">\[
+\langle x,y\rangle=x^\top y.
+\]</span></p>
+<p>An inner product is a function that assigns a scalar to two vectors and satisfies certain properties.</p>
+<p>For the standard Euclidean inner product:</p>
+<section id="symmetry" class="level3" data-number="31.0.1">
+<h3 data-number="31.0.1" class="anchored" data-anchor-id="symmetry"><span class="header-section-number">31.0.1</span> Symmetry</h3>
+<p><span class="math display">\[
+\langle x,y\rangle
+=
+\langle y,x\rangle.
+\]</span></p>
+</section>
+<section id="linearity" class="level3" data-number="31.0.2">
+<h3 data-number="31.0.2" class="anchored" data-anchor-id="linearity"><span class="header-section-number">31.0.2</span> Linearity</h3>
+<p>For scalars <span class="math inline">\(a,b\)</span>,</p>
+<p><span class="math display">\[
+\langle ax+by,z\rangle
+=
+a\langle x,z\rangle
++
+b\langle y,z\rangle.
+\]</span></p>
+</section>
+<section id="positive-definiteness" class="level3" data-number="31.0.3">
+<h3 data-number="31.0.3" class="anchored" data-anchor-id="positive-definiteness"><span class="header-section-number">31.0.3</span> Positive definiteness</h3>
+<p><span class="math display">\[
+\langle x,x\rangle\geq0,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\langle x,x\rangle=0
+\iff
+x=0.
+\]</span></p>
+<p>The Euclidean norm is induced by the inner product:</p>
+<p><span class="math display">\[
+\|x\|=\sqrt{\langle x,x\rangle}.
+\]</span></p>
+<p>The general theory of inner-product spaces will be covered separately in the prerequisite material on vector spaces and inner products.</p>
+<p>For the present topic, the important point is:</p>
+<p><span class="math display">\[
+\boxed{\text{dot product} \longrightarrow \text{norm} \longrightarrow \text{geometry}}
+\]</span></p>
+<hr>
+</section>
+</section>
+<section id="orthogonal-vectors-and-orthogonal-sets" class="level1" data-number="32">
+<h1 data-number="32"><span class="header-section-number">32</span> Orthogonal vectors and orthogonal sets</h1>
+<p>Two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are orthogonal when</p>
+<p><span class="math display">\[
+x^\top y=0.
+\]</span></p>
+<p>A collection of vectors is <strong>pairwise orthogonal</strong> if every pair of distinct vectors is orthogonal.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x_1=
+\begin{pmatrix}
+1\\
+0\\
+0
+\end{pmatrix},
+\qquad
+x_2=
+\begin{pmatrix}
+0\\
+1\\
+0
+\end{pmatrix},
+\qquad
+x_3=
+\begin{pmatrix}
+0\\
+0\\
+1
+\end{pmatrix}
+\]</span></p>
+<p>satisfy</p>
+<p><span class="math display">\[
+x_i^\top x_j=0
+\]</span></p>
+<p>whenever <span class="math inline">\(i\neq j\)</span>.</p>
+<p>An orthogonal set of non-zero vectors is automatically linearly independent.</p>
+<p>To see why, suppose</p>
+<p><span class="math display">\[
+a_1x_1+\cdots+a_kx_k=0
+\]</span></p>
+<p>and suppose the vectors are pairwise orthogonal.</p>
+<p>Take the inner product with <span class="math inline">\(x_j\)</span>:</p>
+<p><span class="math display">\[
+x_j^\top
+\left(
+a_1x_1+\cdots+a_kx_k
+\right)
+=
+x_j^\top0.
+\]</span></p>
+<p>By linearity,</p>
+<p><span class="math display">\[
+a_1x_j^\top x_1+\cdots+a_kx_j^\top x_k=0.
+\]</span></p>
+<p>Because the vectors are orthogonal, every term except the <span class="math inline">\(j\)</span>th disappears:</p>
+<p><span class="math display">\[
+a_jx_j^\top x_j=0.
+\]</span></p>
+<p>Since <span class="math inline">\(x_j\neq0\)</span>,</p>
+<p><span class="math display">\[
+x_j^\top x_j=\|x_j\|^2&gt;0.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+a_j=0.
+\]</span></p>
+<p>Since this holds for every <span class="math inline">\(j\)</span>, all coefficients must be zero.</p>
+<p>Thus:</p>
+<p><span class="math display">\[
+\boxed{
+\text{non-zero orthogonal vectors are linearly independent}
+}
+\]</span></p>
+<p>This fact will become useful when studying orthogonal bases and least-squares geometry.</p>
+<hr>
+</section>
+<section id="the-zero-vector-and-orthogonality" class="level1" data-number="33">
+<h1 data-number="33"><span class="header-section-number">33</span> The zero vector and orthogonality</h1>
+<p>The zero vector requires a small caveat.</p>
+<p>For any vector <span class="math inline">\(x\)</span>,</p>
+<p><span class="math display">\[
+x^\top0=0.
+\]</span></p>
+<p>Therefore, technically,</p>
+<p><span class="math display">\[
+x\perp0.
+\]</span></p>
+<p>However, geometric discussions of angles between vectors generally assume that both vectors are non-zero, because the zero vector has no direction.</p>
+<p>So when talking about the angle between vectors, it is normally understood that</p>
+<p><span class="math display">\[
+x\neq0,
+\qquad
+y\neq0.
+\]</span></p>
+<hr>
+</section>
+<section id="projection-onto-a-vector" class="level1" data-number="34">
+<h1 data-number="34"><span class="header-section-number">34</span> Projection onto a vector</h1>
+<p>Suppose <span class="math inline">\(x\neq0\)</span> and we want to find the component of another vector <span class="math inline">\(y\)</span> that lies in the direction of <span class="math inline">\(x\)</span>.</p>
+<p>The <strong>projection of <span class="math inline">\(y\)</span> onto <span class="math inline">\(x\)</span></strong> is</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+x^\top x=\|x\|^2,
+\]</span></p>
+<p>this can also be written as</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{\|x\|^2}x.
+\]</span></p>
+<p>The scalar</p>
+<p><span class="math display">\[
+\frac{x^\top y}{x^\top x}
+\]</span></p>
+<p>tells us how much of <span class="math inline">\(x\)</span> is required to obtain the projection.</p>
+<p>Thus the projection has the form</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)=cx
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+c=\frac{x^\top y}{x^\top x}.
+\]</span></p>
+<p>The residual component is</p>
+<p><span class="math display">\[
+y-\operatorname{proj}_x(y).
+\]</span></p>
+<p>A key property is that this residual is orthogonal to <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[
+x^\top
+\left(
+y-\operatorname{proj}_x(y)
+\right)
+=0.
+\]</span></p>
+<p>To verify this,</p>
+<p><span class="math display">\[
+\begin{aligned}
+x^\top
+\left(
+y-\frac{x^\top y}{x^\top x}x
+\right)
+&amp;=
+x^\top y
+-
+\frac{x^\top y}{x^\top x}x^\top x\\
+&amp;=
+x^\top y-x^\top y\\
+&amp;=0.
+\end{aligned}
+\]</span></p>
+<p>This is the basic idea behind orthogonal projection.</p>
+<p>The more general theory of projection onto a subspace will be developed separately.</p>
+<hr>
+</section>
+<section id="decomposing-a-vector-into-parallel-and-orthogonal-components" class="level1" data-number="35">
+<h1 data-number="35"><span class="header-section-number">35</span> Decomposing a vector into parallel and orthogonal components</h1>
+<p>The projection formula gives a useful decomposition.</p>
+<p>For <span class="math inline">\(x\neq0\)</span>,</p>
+<p><span class="math display">\[
+y
+=
+\operatorname{proj}_x(y)
++
+\left(
+y-\operatorname{proj}_x(y)
+\right).
+\]</span></p>
+<p>The first component is parallel to <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)\in\operatorname{span}(x).
+\]</span></p>
+<p>The second component is orthogonal to $x:</p>
+<p><span class="math display">\[
+x^\top
+\left(
+y-\operatorname{proj}_x(y)
+\right)
+=0.
+\]</span></p>
+<p>Thus every vector <span class="math inline">\(y\)</span> can be decomposed into</p>
+<p><span class="math display">\[
+\boxed{
+y=
+\text{component parallel to }x
++
+\text{component orthogonal to }x
+}
+\]</span></p>
+<p>This simple idea becomes a central principle of least squares.</p>
+<hr>
+</section>
+<section id="projection-and-least-squares" class="level1" data-number="36">
+<h1 data-number="36"><span class="header-section-number">36</span> Projection and least squares</h1>
+<p>The previous section considered projection onto a single direction.</p>
+<p>Linear Models generalizes this idea.</p>
+<p>Suppose <span class="math inline">\(X\)</span> is a matrix whose columns are</p>
+<p><span class="math display">\[
+x_1,\ldots,x_p.
+\]</span></p>
+<p>Every vector of the form</p>
+<p><span class="math display">\[
+X\beta
+\]</span></p>
+<p>is a linear combination of these columns.</p>
+<p>Therefore, the set</p>
+<p><span class="math display">\[
+\{X\beta:\beta\in\mathbb R^p\}
+\]</span></p>
+<p>is the column space of <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+\mathcal C(X).
+\]</span></p>
+<p>Given an observed vector <span class="math inline">\(y\)</span>, the least-squares problem is</p>
+<p><span class="math display">\[
+\min_\beta \|y-X\beta\|^2.
+\]</span></p>
+<p>The solution chooses the vector</p>
+<p><span class="math display">\[
+\hat y=X\hat\beta
+\]</span></p>
+<p>in the column space of <span class="math inline">\(X\)</span> that is closest to <span class="math inline">\(y\)</span>.</p>
+<p>Geometrically,</p>
+<p><span class="math display">\[
+\hat y
+\]</span></p>
+<p>is the orthogonal projection of <span class="math inline">\(y\)</span> onto <span class="math inline">\(\mathcal C(X)\)</span>.</p>
+<p>The residual</p>
+<p><span class="math display">\[
+e=y-\hat y
+\]</span></p>
+<p>is therefore orthogonal to the column space:</p>
+<p><span class="math display">\[
+e\perp\mathcal C(X).
+\]</span></p>
+<p>Equivalently,</p>
+<p><span class="math display">\[
+X^\top e=0.
+\]</span></p>
+<p>This equation will later become the <strong>normal equations</strong>.</p>
+<p>So the chain is:</p>
+<p><span class="math display">\[
+\boxed{
+\text{vectors}
+\rightarrow
+\text{dot products}
+\rightarrow
+\text{orthogonality}
+\rightarrow
+\text{projection}
+\rightarrow
+\text{least squares}
+}
+\]</span></p>
+<p>This is one of the most important conceptual chains in Linear Models.</p>
+<hr>
+</section>
+<section id="vector-norms-and-least-squares-objectives" class="level1" data-number="37">
+<h1 data-number="37"><span class="header-section-number">37</span> Vector norms and least-squares objectives</h1>
+<p>Consider the least-squares objective</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2.
+\]</span></p>
+<p>Using the definition of the squared norm,</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2
+=
+(y-X\beta)^\top(y-X\beta).
+\]</span></p>
+<p>Expanding,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\|y-X\beta\|^2
+&amp;=
+y^\top y
+-y^\top X\beta
+-\beta^\top X^\top y
++\beta^\top X^\top X\beta.
+\end{aligned}
+\]</span></p>
+<p>Since <span class="math inline">\(y^\top X\beta\)</span> is a scalar,</p>
+<p><span class="math display">\[
+y^\top X\beta
+=
+\beta^\top X^\top y.
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\boxed{
+\|y-X\beta\|^2
+=
+y^\top y
+-
+2\beta^\top X^\top y
++
+\beta^\top X^\top X\beta
+}
+\]</span></p>
+<p>This expression is central when deriving the least-squares estimator.</p>
+<p>The vector concepts introduced in this chapter therefore directly support the calculus and matrix algebra used later.</p>
+<hr>
+</section>
+<section id="a-useful-geometric-identity" class="level1" data-number="38">
+<h1 data-number="38"><span class="header-section-number">38</span> A useful geometric identity</h1>
+<p>Suppose <span class="math inline">\(y\)</span> is decomposed into two orthogonal components:</p>
+<p><span class="math display">\[
+y=u+v,
+\qquad
+u^\top v=0.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\|y\|^2
+=
+\|u\|^2+\|v\|^2.
+\]</span></p>
+<p>In least squares, take</p>
+<p><span class="math display">\[
+y=\hat y+e
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\hat y\perp e.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+\boxed{
+\|y\|^2
+=
+\|\hat y\|^2+\|e\|^2
+}
+\]</span></p>
+<p>because</p>
+<p><span class="math display">\[
+\hat y^\top e=0.
+\]</span></p>
+<p>This is the geometric origin of several important sums-of-squares decompositions in statistical models.</p>
+<p>The exact statistical interpretation depends on the model and on additional assumptions, but the underlying geometry is simply the Pythagorean theorem applied to orthogonal vectors.</p>
+<hr>
+</section>
+<section id="vector-valued-random-variables" class="level1" data-number="39">
+<h1 data-number="39"><span class="header-section-number">39</span> Vector-valued random variables</h1>
+<p>In statistics, vectors can themselves be random.</p>
+<p>A <strong>random vector</strong> is a vector whose components are random variables.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+Y=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}.
+\]</span></p>
+<p>Each <span class="math inline">\(Y_i\)</span> is a random variable, so <span class="math inline">\(Y\)</span> is a random vector.</p>
+<p>In a linear model,</p>
+<p><span class="math display">\[
+Y=X\beta+\varepsilon,
+\]</span></p>
+<p>the response vector <span class="math inline">\(Y\)</span> and error vector <span class="math inline">\(\varepsilon\)</span> are typically random, while <span class="math inline">\(X\)</span> and <span class="math inline">\(\beta\)</span> may be treated as fixed depending on the modelling framework.</p>
+<p>The expectation of a random vector is defined componentwise:</p>
+<p><span class="math display">\[
+E[Y]
+=
+\begin{pmatrix}
+E[Y_1]\\
+E[Y_2]\\
+\vdots\\
+E[Y_n]
+\end{pmatrix}.
+\]</span></p>
+<p>The covariance matrix of a random vector is treated in the probability/statistics prerequisites.</p>
+<p>This is one place where the vector language of linear algebra meets the probabilistic language of statistics.</p>
+<hr>
+</section>
+<section id="coordinate-vectors" class="level1" data-number="40">
+<h1 data-number="40"><span class="header-section-number">40</span> Coordinate vectors</h1>
+<p>A vector can be described by its coordinates relative to a chosen basis.</p>
+<p>For example, consider the standard basis of <span class="math inline">\(\mathbb R^2\)</span>:</p>
+<p><span class="math display">\[
+e_1=
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix},
+\qquad
+e_2=
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+3\\
+5
+\end{pmatrix}
+\]</span></p>
+<p>can be written as</p>
+<p><span class="math display">\[
+x=3e_1+5e_2.
+\]</span></p>
+<p>The numbers <span class="math inline">\(3\)</span> and <span class="math inline">\(5\)</span> are the coordinates of <span class="math inline">\(x\)</span> relative to this basis.</p>
+<p>More generally, if</p>
+<p><span class="math display">\[
+\mathcal B=\{b_1,\ldots,b_n\}
+\]</span></p>
+<p>is a basis, then a vector can be expressed as</p>
+<p><span class="math display">\[
+x=a_1b_1+\cdots+a_nb_n.
+\]</span></p>
+<p>The coefficients</p>
+<p><span class="math display">\[
+a_1,\ldots,a_n
+\]</span></p>
+<p>are the coordinates of <span class="math inline">\(x\)</span> relative to <span class="math inline">\(\mathcal B\)</span>.</p>
+<p>The general theory of bases and coordinates is developed in the vector-spaces section.</p>
+<hr>
+</section>
+<section id="vector-operations-a-compact-reference" class="level1" data-number="41">
+<h1 data-number="41"><span class="header-section-number">41</span> Vector operations: a compact reference</h1>
+<p>For <span class="math inline">\(x,y\in\mathbb R^n\)</span> and <span class="math inline">\(a\in\mathbb R\)</span>:</p>
+<section id="addition" class="level3" data-number="41.0.1">
+<h3 data-number="41.0.1" class="anchored" data-anchor-id="addition"><span class="header-section-number">41.0.1</span> Addition</h3>
+<p><span class="math display">\[
+x+y
+=
+\begin{pmatrix}
+x_1+y_1\\
+\vdots\\
+x_n+y_n
+\end{pmatrix}.
+\]</span></p>
+</section>
+<section id="scalar-multiplication-1" class="level3" data-number="41.0.2">
+<h3 data-number="41.0.2" class="anchored" data-anchor-id="scalar-multiplication-1"><span class="header-section-number">41.0.2</span> Scalar multiplication</h3>
+<p><span class="math display">\[
+ax
+=
+\begin{pmatrix}
+ax_1\\
+\vdots\\
+ax_n
+\end{pmatrix}.
+\]</span></p>
+</section>
+<section id="negative" class="level3" data-number="41.0.3">
+<h3 data-number="41.0.3" class="anchored" data-anchor-id="negative"><span class="header-section-number">41.0.3</span> Negative</h3>
+<p><span class="math display">\[
+-x
+=
+(-1)x.
+\]</span></p>
+</section>
+<section id="subtraction" class="level3" data-number="41.0.4">
+<h3 data-number="41.0.4" class="anchored" data-anchor-id="subtraction"><span class="header-section-number">41.0.4</span> Subtraction</h3>
+<p><span class="math display">\[
+x-y=x+(-y).
+\]</span></p>
+</section>
+<section id="dot-product" class="level3" data-number="41.0.5">
+<h3 data-number="41.0.5" class="anchored" data-anchor-id="dot-product"><span class="header-section-number">41.0.5</span> Dot product</h3>
+<p><span class="math display">\[
+x^\top y
+=
+\sum_{i=1}^n x_i y_i.
+\]</span></p>
+</section>
+<section id="norm" class="level3" data-number="41.0.6">
+<h3 data-number="41.0.6" class="anchored" data-anchor-id="norm"><span class="header-section-number">41.0.6</span> Norm</h3>
+<p><span class="math display">\[
+\|x\|
+=
+\sqrt{x^\top x}.
+\]</span></p>
+</section>
+<section id="squared-norm-1" class="level3" data-number="41.0.7">
+<h3 data-number="41.0.7" class="anchored" data-anchor-id="squared-norm-1"><span class="header-section-number">41.0.7</span> Squared norm</h3>
+<p><span class="math display">\[
+\|x\|^2=x^\top x.
+\]</span></p>
+</section>
+<section id="distance" class="level3" data-number="41.0.8">
+<h3 data-number="41.0.8" class="anchored" data-anchor-id="distance"><span class="header-section-number">41.0.8</span> Distance</h3>
+<p><span class="math display">\[
+d(x,y)=\|x-y\|.
+\]</span></p>
+</section>
+<section id="orthogonality-1" class="level3" data-number="41.0.9">
+<h3 data-number="41.0.9" class="anchored" data-anchor-id="orthogonality-1"><span class="header-section-number">41.0.9</span> Orthogonality</h3>
+<p><span class="math display">\[
+x\perp y
+\iff
+x^\top y=0.
+\]</span></p>
+</section>
+<section id="projection-onto-x" class="level3" data-number="41.0.10">
+<h3 data-number="41.0.10" class="anchored" data-anchor-id="projection-onto-x"><span class="header-section-number">41.0.10</span> Projection onto <span class="math inline">\(x\)</span></h3>
+<p><span class="math display">\[
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+\]</span></p>
+<hr>
+</section>
+</section>
+<section id="common-mistakes" class="level1" data-number="42">
+<h1 data-number="42"><span class="header-section-number">42</span> Common mistakes</h1>
+<section id="confusing-vectors-and-scalars" class="level2" data-number="42.1">
+<h2 data-number="42.1" class="anchored" data-anchor-id="confusing-vectors-and-scalars"><span class="header-section-number">42.1</span> Confusing vectors and scalars</h2>
+<p>If</p>
+<p><span class="math display">\[
+x\in\mathbb R^n,
+\]</span></p>
+<p>then <span class="math inline">\(x\)</span> is a vector.</p>
+<p>But</p>
+<p><span class="math display">\[
+x^\top x
+\]</span></p>
+<p>is a scalar.</p>
+<p>Similarly,</p>
+<p><span class="math display">\[
+\|x\|
+\]</span></p>
+<p>is a scalar.</p>
+<p>Keeping track of whether an expression produces a scalar, vector, or matrix becomes increasingly important as the course progresses.</p>
+<hr>
+</section>
+<section id="confusing-xtop-y-and-xytop" class="level2" data-number="42.2">
+<h2 data-number="42.2" class="anchored" data-anchor-id="confusing-xtop-y-and-xytop"><span class="header-section-number">42.2</span> Confusing <span class="math inline">\(x^\top y\)</span> and <span class="math inline">\(xy^\top\)</span></h2>
+<p>These expressions have completely different dimensions.</p>
+<p>If</p>
+<p><span class="math display">\[
+x,y\in\mathbb R^n,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+x^\top y
+\]</span></p>
+<p>is a scalar, whereas</p>
+<p><span class="math display">\[
+xy^\top
+\]</span></p>
+<p>is an <span class="math inline">\(n\times n\)</span> matrix.</p>
+<p>The first is an inner product.</p>
+<p>The second is an outer product.</p>
+<p>Outer products will become relevant later when working with matrices, covariance matrices, and quadratic forms.</p>
+<hr>
+</section>
+<section id="forgetting-the-square-root-in-the-norm" class="level2" data-number="42.3">
+<h2 data-number="42.3" class="anchored" data-anchor-id="forgetting-the-square-root-in-the-norm"><span class="header-section-number">42.3</span> Forgetting the square root in the norm</h2>
+<p>Remember:</p>
+<p><span class="math display">\[
+\|x\|=\sqrt{x^\top x}
+\]</span></p>
+<p>whereas</p>
+<p><span class="math display">\[
+\|x\|^2=x^\top x.
+\]</span></p>
+<p>If a least-squares objective is written as</p>
+<p><span class="math display">\[
+\|y-X\beta\|,
+\]</span></p>
+<p>it represents Euclidean distance.</p>
+<p>If it is written as</p>
+<p><span class="math display">\[
+\|y-X\beta\|^2,
+\]</span></p>
+<p>it represents squared Euclidean distance.</p>
+<p>Both are minimized by the same <span class="math inline">\(\beta\)</span>, but the squared version is algebraically much easier to work with.</p>
+<hr>
+</section>
+<section id="assuming-orthogonality-means-vectors-have-equal-length" class="level2" data-number="42.4">
+<h2 data-number="42.4" class="anchored" data-anchor-id="assuming-orthogonality-means-vectors-have-equal-length"><span class="header-section-number">42.4</span> Assuming orthogonality means vectors have equal length</h2>
+<p>Orthogonality concerns the dot product:</p>
+<p><span class="math display">\[
+x^\top y=0.
+\]</span></p>
+<p>It says nothing about the lengths of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p>For example,</p>
+<p><span class="math display">\[
+x=
+\begin{pmatrix}
+100\\
+0
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+0\\
+0.001
+\end{pmatrix}
+\]</span></p>
+<p>are orthogonal even though their lengths differ dramatically.</p>
+<hr>
+</section>
+<section id="forgetting-that-the-zero-vector-has-no-direction" class="level2" data-number="42.5">
+<h2 data-number="42.5" class="anchored" data-anchor-id="forgetting-that-the-zero-vector-has-no-direction"><span class="header-section-number">42.5</span> Forgetting that the zero vector has no direction</h2>
+<p>The zero vector satisfies</p>
+<p><span class="math display">\[
+x^\top0=0
+\]</span></p>
+<p>for every <span class="math inline">\(x\)</span>.</p>
+<p>However, it does not have a meaningful direction or angle.</p>
+<p>Thus geometric statements involving angles normally assume the vectors are non-zero.</p>
+<hr>
+</section>
+</section>
+<section id="essential-results-to-remember" class="level1" data-number="43">
+<h1 data-number="43"><span class="header-section-number">43</span> Essential results to remember</h1>
+<p>For Linear Models, the following results should become familiar.</p>
+<section id="vector-norm" class="level3" data-number="43.0.1">
+<h3 data-number="43.0.1" class="anchored" data-anchor-id="vector-norm"><span class="header-section-number">43.0.1</span> Vector norm</h3>
+<p><span class="math display">\[
+\boxed{
+\|x\|=\sqrt{x^\top x}
+}
+\]</span></p>
+</section>
+<section id="squared-norm-2" class="level3" data-number="43.0.2">
+<h3 data-number="43.0.2" class="anchored" data-anchor-id="squared-norm-2"><span class="header-section-number">43.0.2</span> Squared norm</h3>
+<p><span class="math display">\[
+\boxed{
+\|x\|^2=x^\top x
+}
+\]</span></p>
+</section>
+<section id="distance-1" class="level3" data-number="43.0.3">
+<h3 data-number="43.0.3" class="anchored" data-anchor-id="distance-1"><span class="header-section-number">43.0.3</span> Distance</h3>
+<p><span class="math display">\[
+\boxed{
+d(x,y)=\|x-y\|
+}
+\]</span></p>
+</section>
+<section id="dot-product-and-angle" class="level3" data-number="43.0.4">
+<h3 data-number="43.0.4" class="anchored" data-anchor-id="dot-product-and-angle"><span class="header-section-number">43.0.4</span> Dot product and angle</h3>
+<p><span class="math display">\[
+\boxed{
+x^\top y
+=
+\|x\|\|y\|\cos\theta
+}
+\]</span></p>
+</section>
+<section id="orthogonality-2" class="level3" data-number="43.0.5">
+<h3 data-number="43.0.5" class="anchored" data-anchor-id="orthogonality-2"><span class="header-section-number">43.0.5</span> Orthogonality</h3>
+<p><span class="math display">\[
+\boxed{
+x\perp y
+\iff
+x^\top y=0
+}
+\]</span></p>
+</section>
+<section id="projection-onto-a-vector-1" class="level3" data-number="43.0.6">
+<h3 data-number="43.0.6" class="anchored" data-anchor-id="projection-onto-a-vector-1"><span class="header-section-number">43.0.6</span> Projection onto a vector</h3>
+<p><span class="math display">\[
+\boxed{
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x
+}
+\]</span></p>
+</section>
+<section id="least-squares-objective" class="level3" data-number="43.0.7">
+<h3 data-number="43.0.7" class="anchored" data-anchor-id="least-squares-objective"><span class="header-section-number">43.0.7</span> Least-squares objective</h3>
+<p><span class="math display">\[
+\boxed{
+\min_\beta\|y-X\beta\|^2
+}
+\]</span></p>
+</section>
+<section id="residual" class="level3" data-number="43.0.8">
+<h3 data-number="43.0.8" class="anchored" data-anchor-id="residual"><span class="header-section-number">43.0.8</span> Residual</h3>
+<p><span class="math display">\[
+\boxed{
+e=y-X\hat\beta
+}
+\]</span></p>
+</section>
+<section id="orthogonality-of-least-squares-residuals" class="level3" data-number="43.0.9">
+<h3 data-number="43.0.9" class="anchored" data-anchor-id="orthogonality-of-least-squares-residuals"><span class="header-section-number">43.0.9</span> Orthogonality of least-squares residuals</h3>
+<p><span class="math display">\[
+\boxed{
+X^\top e=0
+}
+\]</span></p>
+<p>The final result belongs formally to the Linear Models material, but it is included here because it shows exactly why the vector concepts in this prerequisite matter.</p>
+<hr>
+</section>
+</section>
+<section id="what-you-should-be-able-to-do" class="level1" data-number="44">
+<h1 data-number="44"><span class="header-section-number">44</span> What you should be able to do</h1>
+<p>Before moving on from vectors, you should be able to do the following without having to relearn the definitions.</p>
+<ul>
+<li>Add and subtract vectors.</li>
+<li>Multiply a vector by a scalar.</li>
+<li>Recognize and construct linear combinations.</li>
+<li>Determine whether vectors are linearly dependent or independent in simple cases.</li>
+<li>Interpret the span of a collection of vectors.</li>
+<li>Calculate a dot product.</li>
+<li>Calculate a vector norm.</li>
+<li>Calculate the distance between two vectors.</li>
+<li>Determine whether two vectors are orthogonal.</li>
+<li>Interpret vectors geometrically.</li>
+<li>Move comfortably between component notation and matrix notation.</li>
+<li>Recognize expressions such as <span class="math inline">\(x^\top y\)</span>, <span class="math inline">\(x^\top x\)</span>, and <span class="math inline">\(\|x\|^2\)</span>.</li>
+<li>Understand the relationship between dot products and angles.</li>
+<li>Understand the basic idea of projecting one vector onto another.</li>
+<li>Understand why least squares can be interpreted geometrically.</li>
+</ul>
+<p>You do <strong>not</strong> need to memorize every derivation in this chapter. The important goal is that the notation and basic operations become familiar enough that they do not interrupt your understanding of the Linear Models material.</p>
+<hr>
+</section>
+<section id="connection-to-the-rest-of-linear-algebra" class="level1" data-number="45">
+<h1 data-number="45"><span class="header-section-number">45</span> Connection to the rest of Linear Algebra</h1>
+<p>The ideas in this chapter lead naturally into the next prerequisite topics.</p>
+<p>The dependency structure is approximately:</p>
+<pre class="text"><code>Vectors
+   │
+   ├── Linear combinations
+   │       │
+   │       ├── Span
+   │       └── Linear independence
+   │
+   ├── Dot product
+   │       │
+   │       ├── Norm
+   │       ├── Distance
+   │       └── Orthogonality
+   │
+   └── Geometry
+           │
+           └── Projection</code></pre>
+</section>
+<section id="quick-reference" class="level1" data-number="46">
+<h1 data-number="46"><span class="header-section-number">46</span> Quick reference</h1>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Vector</td>
+<td>An ordered collection of scalars</td>
+</tr>
+<tr class="even">
+<td>Scalar</td>
+<td>A single number</td>
+</tr>
+<tr class="odd">
+<td>Linear combination</td>
+<td><span class="math inline">\(\sum_i a_i x_i\)</span></td>
+</tr>
+<tr class="even">
+<td>Span</td>
+<td>All linear combinations of a set of vectors</td>
+</tr>
+<tr class="odd">
+<td>Linear independence</td>
+<td>Only the trivial combination equals zero</td>
+</tr>
+<tr class="even">
+<td>Dot product</td>
+<td><span class="math inline">\(x^\top y\)</span></td>
+</tr>
+<tr class="odd">
+<td>Norm</td>
+<td><span class="math inline">\(\|x\|=\sqrt{x^\top x}\)</span></td>
+</tr>
+<tr class="even">
+<td>Squared norm</td>
+<td><span class="math inline">\(\|x\|^2=x^\top x\)</span></td>
+</tr>
+<tr class="odd">
+<td>Distance</td>
+<td><span class="math inline">\(\|x-y\|\)</span></td>
+</tr>
+<tr class="even">
+<td>Orthogonality</td>
+<td><span class="math inline">\(x^\top y=0\)</span></td>
+</tr>
+<tr class="odd">
+<td>Projection onto <span class="math inline">\(x\)</span></td>
+<td><span class="math inline">\(\frac{x^\top y}{x^\top x}x\)</span></td>
+</tr>
+<tr class="even">
+<td>Least-squares objective</td>
+<td><span class="math inline">\(\|y-X\beta\|^2\)</span></td>
+</tr>
+<tr class="odd">
+<td>Residual</td>
+<td><span class="math inline">\(y-X\hat\beta\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="summary" class="level1" data-number="47">
+<h1 data-number="47"><span class="header-section-number">47</span> Summary</h1>
+<p>Vectors provide the basic language for expressing data, parameters, errors, fitted values, and many other objects in Linear Models.</p>
+<p>The central algebraic operations are vector addition, scalar multiplication, and linear combination. These lead naturally to the ideas of span and linear independence.</p>
+<p>The dot product introduces geometry:</p>
+<p><span class="math display">\[
+x^\top y
+=
+\|x\|\|y\|\cos\theta.
+\]</span></p>
+<p>From the dot product we obtain the Euclidean norm,</p>
+<p><span class="math display">\[
+\|x\|=\sqrt{x^\top x},
+\]</span></p>
+<p>and the concept of orthogonality,</p>
+<p><span class="math display">\[
+x^\top y=0.
+\]</span></p>
+<p>Orthogonality allows vectors to be decomposed into independent geometric components. Projection formalizes the process of finding the component of one vector lying within a particular direction or subspace.</p>
+<p>This becomes the geometric foundation of least squares.</p>
+<p>Given a design matrix <span class="math inline">\(X\)</span>, the fitted vector</p>
+<p><span class="math display">\[
+\hat y=X\hat\beta
+\]</span></p>
+<p>lies in the column space of <span class="math inline">\(X\)</span>, while the residual</p>
+<p><span class="math display">\[
+e=y-\hat y
+\]</span></p>
+<p>is orthogonal to that space:</p>
+<p><span class="math display">\[
+X^\top e=0.
+\]</span></p>
+<p>Thus, although vectors are elementary objects, they provide the language for one of the central ideas of Linear Models:</p>
+<p><span class="math display">\[
+\boxed{
+\text{Least squares is fundamentally a problem of geometry in vector space.}
+}
+\]</span></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
