@@ -1,0 +1,236 @@
+# Syllabus
+
+## Course Overview
+
+This course develops the theory and application of **linear models**, beginning with the Gauss-Markov framework and ordinary least squares estimation, and progressing through regression analysis, analysis of variance, analysis of covariance, and model checking.
+
+The course emphasizes both the mathematical foundations of linear estimation and the practical analysis of fitted models. Particular attention is given to estimation, hypothesis testing, model matrices, variance components, and diagnostic methods for assessing the adequacy of model assumptions.
+
+The major topics covered in the course are:
+
+1. **Gauss-Markov set-up**
+2. **Regression analysis**
+3. **Analysis of variance**
+4. **Model checking**
+
+---
+
+## 1. Gauss-Markov Set-up
+
+The Gauss-Markov framework provides the theoretical foundation for linear estimation. This section introduces linear estimators, estimability, least squares estimation, and the Gauss-Markov theorem.
+
+### Topics
+
+* Theory of linear estimation
+* Estimability of linear parametric functions
+* Method of least squares
+* Gauss-Markov theorem
+* Estimation of error variance
+
+The general linear model may be written as
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon},
+$$
+
+where $\mathbf{Y}$ is the vector of observations, $\mathbf{X}$ is the model matrix, $\boldsymbol{\beta}$ is the vector of unknown parameters, and $\boldsymbol{\varepsilon}$ is the vector of random errors.
+
+The least squares framework provides the basis for estimating $\boldsymbol{\beta}$ and studying the properties of linear estimators.
+
+---
+
+## 2. Regression Analysis
+
+Regression analysis studies the relationship between a response variable and one or more explanatory variables. The course covers both simple and multiple regression models, including estimation, hypothesis testing, and the role of the model matrix.
+
+### Topics
+
+* Simple regression analysis
+* Estimation in simple regression models
+* Hypothesis testing in simple regression models
+* Estimation in multiple regression models
+* Hypothesis testing in multiple regression models
+* Concept of the model matrix
+* Use of the model matrix in estimation
+
+A simple linear regression model can be expressed as
+
+$$
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i,
+$$
+
+while a multiple regression model takes the form
+
+$$
+Y_i
+===
+
+\beta_0
++
+\beta_1 X_{i1}
++
+\beta_2 X_{i2}
++
+\cdots
++
+\beta_p X_{ip}
++
+\varepsilon_i.
+$$
+
+In matrix notation, these models are represented by
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+$$
+
+The model matrix $\mathbf{X}$ plays a central role in estimation and provides a unified way of representing a wide range of linear models.
+
+---
+
+## 3. Analysis of Variance
+
+Analysis of variance (ANOVA) extends the linear model framework to the analysis of data classified according to one or more factors. This section introduces fixed, random, and mixed effect models and develops methods for analysis of variance and covariance.
+
+### Topics
+
+* Definitions of fixed effect models
+* Definitions of random effect models
+* Definitions of mixed effect models
+* Analysis of variance and covariance in one-way classified data for fixed effect models
+* Analysis of variance and covariance in two-way classified data with one observation per cell
+* Analysis of variance and covariance in two-way classified data with an equal number of observations per cell
+* Two-way analysis for fixed, random, and mixed effect models
+* Analysis of covariance in a two-way layout
+
+### One-Way Classification
+
+For one-way classified data, the observations can be represented using a model such as
+
+$$
+Y_{ij} = \mu + \alpha_i + \varepsilon_{ij},
+$$
+
+where $\mu$ represents the overall mean, $\alpha_i$ represents the effect associated with the $i$-th level of the factor, and $\varepsilon_{ij}$ represents the random error.
+
+The analysis separates the total variation into components attributable to the factor and to random error.
+
+### Two-Way Classification
+
+Two-way classified data involve two factors and may be analyzed under different assumptions concerning the effects. Depending on the model, the effects may be treated as fixed, random, or mixed.
+
+The analysis considers designs with:
+
+* One observation per cell
+* An equal number of observations per cell
+
+The corresponding variance and covariance decompositions allow hypotheses concerning the effects to be tested within the linear model framework.
+
+### Analysis of Covariance
+
+Analysis of covariance (ANCOVA) combines features of regression and analysis of variance. In a two-way layout, covariates can be incorporated into the model to account for additional sources of systematic variation.
+
+---
+
+## 4. Model Checking
+
+A fitted linear model should not be accepted solely because its parameter estimates can be computed. The assumptions underlying the model must also be examined.
+
+This section focuses on prediction from fitted models and diagnostic methods for detecting violations of common assumptions.
+
+### Topics
+
+* Prediction from a fitted model
+* Violation of the assumption of normality
+* Violation of the assumption of homoscedasticity
+* Violation of the assumption of collinearity
+* Diagnostics using quantile-quantile plots
+
+Important assumptions and issues considered in model checking include:
+
+### Normality
+
+The error terms are commonly assumed to follow a normal distribution:
+
+$$
+\varepsilon_i \sim N(0,\sigma^2).
+$$
+
+Departures from normality can affect inference, particularly in small samples.
+
+### Homoscedasticity
+
+The errors are assumed to have constant variance:
+
+$$
+\operatorname{Var}(\varepsilon_i) = \sigma^2.
+$$
+
+When the variance changes with the level of the fitted values or explanatory variables, the assumption of homoscedasticity is violated.
+
+### Collinearity
+
+In multiple regression, strong relationships among explanatory variables can lead to **collinearity** or **multicollinearity**. This can make individual parameter estimates unstable and complicate interpretation and hypothesis testing.
+
+### Quantile-Quantile Plots
+
+Quantile-quantile (Q-Q) plots provide a graphical method for assessing whether observed residuals are consistent with a specified theoretical distribution, particularly the normal distribution.
+
+A Q-Q plot is therefore an important diagnostic tool for examining the normality assumption of a fitted linear model.
+
+---
+
+## Summary of the Syllabus
+
+The course progresses from the theoretical foundations of linear estimation to increasingly general applications of the linear model:
+
+$$
+\boxed{
+\text{Gauss-Markov Theory}
+;\longrightarrow;
+\text{Regression}
+;\longrightarrow;
+\text{ANOVA/ANCOVA}
+;\longrightarrow;
+\text{Model Checking}
+}
+$$
+
+The central theme throughout the course is the general linear model
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+$$
+
+Understanding this framework provides a common foundation for least squares estimation, regression, analysis of variance, analysis of covariance, hypothesis testing, and model diagnostics.
+
+---
+
+## Quick Reference
+
+| Unit                     | Main Focus                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------------ |
+| **Gauss-Markov Set-up**  | Linear estimation, estimability, least squares, Gauss-Markov theorem, error variance |
+| **Regression Analysis**  | Simple and multiple regression, estimation, hypothesis testing, model matrix         |
+| **Analysis of Variance** | Fixed, random and mixed effects, one-way and two-way ANOVA, ANCOVA                   |
+| **Model Checking**       | Prediction, normality, homoscedasticity, collinearity, Q-Q plots                     |
+
+### Core Model
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
+$$
+
+### Core Estimation Idea
+
+$$
+\widehat{\boldsymbol{\beta}}
+============================
+
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y},
+$$
+
+when $\mathbf{X}^{\mathsf T}\mathbf{X}$ is nonsingular.
+
+The subsequent chapters develop these ideas in detail, moving from the underlying theory to practical model construction, inference, and diagnostics.

@@ -1,0 +1,5341 @@
+---
+title: "Matrices"
+subtitle: "Linear Algebra Prerequisite"
+description: "Matrices, matrix operations, matrix-vector multiplication, and the fundamental matrix structures used in Linear Models."
+---
+
+# Topic status
+
+::: {.callout-note}
+## Prerequisite information
+
+**Category:** Prerequisite  
+**Course relevance:** Supporting / Core prerequisite  
+**Recommended depth:** 3 · Apply / Derive
+
+Matrices are one of the central languages of Linear Models.
+
+You should become comfortable with matrix notation, dimensions, matrix addition and multiplication, transposes, special matrices, and the interpretation of matrix-vector multiplication.
+
+Later sections will develop matrix inverses, determinants, rank, linear systems, subspaces, and other concepts that are particularly important for least squares.
+:::
+
+---
+
+# What is a matrix?
+
+A **matrix** is a rectangular array of numbers arranged into rows and columns.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{pmatrix}
+$$
+
+is a matrix with two rows and three columns.
+
+Matrices are useful because they allow many related numbers and operations to be represented compactly.
+
+In Linear Models, matrices are used to represent:
+
+- collections of observations,
+- explanatory variables,
+- linear transformations,
+- systems of equations,
+- covariance structures,
+- projections,
+- and relationships between vectors.
+
+The most important matrix in a basic linear model is the **design matrix**.
+
+For a simple linear regression,
+
+$$
+y_i=\beta_0+\beta_1x_i+\varepsilon_i,
+$$
+
+the model can be written as
+
+$$
+y=X\beta+\varepsilon,
+$$
+
+where
+
+$$
+X=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}.
+$$
+
+Understanding matrices therefore becomes essential once Linear Models is written in its standard vector-matrix form.
+
+---
+
+# Matrix notation
+
+Matrices are usually represented by uppercase letters:
+
+$$
+A,\ B,\ X,\ Y,\ M.
+$$
+
+The entries of a matrix are usually represented by lowercase letters with subscripts.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{pmatrix}.
+$$
+
+The notation $a_{ij}$ means:
+
+- $i$ identifies the row,
+- $j$ identifies the column.
+
+Thus:
+
+$$
+a_{11}
+$$
+
+is the entry in row $1$, column $1$,
+
+while
+
+$$
+a_{23}
+$$
+
+is the entry in row $2$, column $3$.
+
+A matrix can therefore be written compactly as
+
+$$
+A=(a_{ij}).
+$$
+
+If the matrix has $m$ rows and $n$ columns, we can write
+
+$$
+A=(a_{ij})_{m\times n}.
+$$
+
+---
+
+# Dimensions of a matrix
+
+The **dimensions** of a matrix describe its number of rows and columns.
+
+If a matrix has $m$ rows and $n$ columns, we say that it is an
+
+$$
+m\times n
+$$
+
+matrix.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{pmatrix}
+$$
+
+has $2$ rows and $3$ columns.
+
+Therefore,
+
+$$
+A\in\mathbb R^{2\times3}.
+$$
+
+The dimensions are always written as
+
+$$
+\boxed{\text{rows}\times\text{columns}}.
+$$
+
+This convention is extremely important.
+
+A $2\times3$ matrix is **not** the same shape as a $3\times2$ matrix.
+
+---
+
+# Rows and columns
+
+Consider
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{pmatrix}.
+$$
+
+The first row is
+
+$$
+\begin{pmatrix}
+1 & 2 & 3
+\end{pmatrix}.
+$$
+
+The second row is
+
+$$
+\begin{pmatrix}
+4 & 5 & 6
+\end{pmatrix}.
+$$
+
+The first column is
+
+$$
+\begin{pmatrix}
+1\\
+4
+\end{pmatrix}.
+$$
+
+The second column is
+
+$$
+\begin{pmatrix}
+2\\
+5
+\end{pmatrix}.
+$$
+
+The third column is
+
+$$
+\begin{pmatrix}
+3\\
+6
+\end{pmatrix}.
+$$
+
+Thus a matrix can be viewed either as a collection of rows or as a collection of columns.
+
+This becomes particularly important in Linear Models because the **columns of the design matrix represent predictors and their associated basis vectors**.
+
+---
+
+# Matrix entries
+
+For
+
+$$
+A=
+\begin{pmatrix}
+2 & 5 & -1\\
+0 & 3 & 7
+\end{pmatrix},
+$$
+
+we have
+
+$$
+a_{11}=2,
+$$
+
+$$
+a_{12}=5,
+$$
+
+$$
+a_{13}=-1,
+$$
+
+$$
+a_{21}=0,
+$$
+
+$$
+a_{22}=3,
+$$
+
+and
+
+$$
+a_{23}=7.
+$$
+
+The first subscript always refers to the row and the second to the column.
+
+Thus
+
+$$
+a_{ij}
+$$
+
+means "the entry in row $i$, column $j$."
+
+---
+
+# Matrix dimensions and indexing
+
+If
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+then its entries are indexed by
+
+$$
+a_{ij},
+\qquad
+i=1,\ldots,m,
+\qquad
+j=1,\ldots,n.
+$$
+
+The first index ranges over the rows:
+
+$$
+i=1,\ldots,m.
+$$
+
+The second index ranges over the columns:
+
+$$
+j=1,\ldots,n.
+$$
+
+For example, if
+
+$$
+A\in\mathbb R^{4\times7},
+$$
+
+then
+
+$$
+a_{37}
+$$
+
+exists because row $3$ and column $7$ exist.
+
+However,
+
+$$
+a_{57}
+$$
+
+does not exist because there is no fifth row.
+
+---
+
+# Column vectors as matrices
+
+A vector can be viewed as a matrix with exactly one column.
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+x_3
+\end{pmatrix}
+$$
+
+is a
+
+$$
+3\times1
+$$
+
+matrix.
+
+Thus,
+
+$$
+x\in\mathbb R^{3\times1}.
+$$
+
+More generally,
+
+$$
+x\in\mathbb R^n
+$$
+
+is usually interpreted as an
+
+$$
+n\times1
+$$
+
+column matrix.
+
+This is why vector and matrix notation fit together so naturally.
+
+---
+
+# Row vectors
+
+A row vector is a matrix with exactly one row.
+
+For example,
+
+$$
+x^\top=
+\begin{pmatrix}
+x_1 & x_2 & x_3
+\end{pmatrix}
+$$
+
+is a
+
+$$
+1\times3
+$$
+
+matrix.
+
+If
+
+$$
+x\in\mathbb R^{3\times1},
+$$
+
+then
+
+$$
+x^\top\in\mathbb R^{1\times3}.
+$$
+
+The transpose operation converts one into the other.
+
+---
+
+# Matrix equality
+
+Two matrices are equal if and only if:
+
+1. They have the same dimensions.
+2. Every corresponding entry is equal.
+
+Suppose
+
+$$
+A=(a_{ij})
+$$
+
+and
+
+$$
+B=(b_{ij}).
+$$
+
+Then
+
+$$
+A=B
+$$
+
+if and only if
+
+$$
+a_{ij}=b_{ij}
+$$
+
+for every valid pair $(i,j)$.
+
+For example,
+
+$$
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}.
+$$
+
+But
+
+$$
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}
+\neq
+\begin{pmatrix}
+1 & 3\\
+2 & 4
+\end{pmatrix}.
+$$
+
+Even though both matrices contain the same numbers, the numbers occupy different positions.
+
+---
+
+# The zero matrix
+
+The **zero matrix** is a matrix whose entries are all zero.
+
+For example,
+
+$$
+0_{2\times3}
+=
+\begin{pmatrix}
+0 & 0 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+$$
+
+The dimensions of the zero matrix must be understood from context.
+
+For example,
+
+$$
+0_{2\times3}
+$$
+
+and
+
+$$
+0_{3\times2}
+$$
+
+are different matrices.
+
+The zero matrix acts as the additive identity:
+
+$$
+A+0=A.
+$$
+
+---
+
+# Matrix addition
+
+Two matrices can be added only when they have the same dimensions.
+
+Suppose
+
+$$
+A=(a_{ij})
+$$
+
+and
+
+$$
+B=(b_{ij})
+$$
+
+are both $m\times n$ matrices.
+
+Then
+
+$$
+A+B
+$$
+
+is defined componentwise:
+
+$$
+A+B=(a_{ij}+b_{ij}).
+$$
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}
+$$
+
+and
+
+$$
+B=
+\begin{pmatrix}
+5 & 6\\
+7 & 8
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+A+B
+=
+\begin{pmatrix}
+1+5 & 2+6\\
+3+7 & 4+8
+\end{pmatrix}
+=
+\begin{pmatrix}
+6 & 8\\
+10 & 12
+\end{pmatrix}.
+$$
+
+Matrix addition is therefore simply componentwise addition.
+
+---
+
+# Matrix subtraction
+
+Matrix subtraction is also performed componentwise.
+
+If $A$ and $B$ have the same dimensions, then
+
+$$
+A-B
+$$
+
+is defined by
+
+$$
+A-B=(a_{ij}-b_{ij}).
+$$
+
+Equivalently,
+
+$$
+A-B=A+(-B).
+$$
+
+For example,
+
+$$
+\begin{pmatrix}
+5 & 7\\
+2 & 9
+\end{pmatrix}
+-
+\begin{pmatrix}
+1 & 3\\
+4 & 2
+\end{pmatrix}
+=
+\begin{pmatrix}
+4 & 4\\
+-2 & 7
+\end{pmatrix}.
+$$
+
+---
+
+# Scalar multiplication of matrices
+
+A scalar can multiply every entry of a matrix.
+
+If $c\in\mathbb R$ and
+
+$$
+A=(a_{ij}),
+$$
+
+then
+
+$$
+cA=(ca_{ij}).
+$$
+
+For example,
+
+$$
+3
+\begin{pmatrix}
+1 & 2\\
+-1 & 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 & 6\\
+-3 & 12
+\end{pmatrix}.
+$$
+
+The same idea appeared with vectors.
+
+In fact, vectors can be viewed as a special case of matrices, so the operations are consistent.
+
+---
+
+# Matrix subtraction and scalar multiplication
+
+Scalar multiplication can be combined with addition and subtraction.
+
+For example,
+
+$$
+2A-3B
+$$
+
+means
+
+$$
+2A+(-3B).
+$$
+
+If
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix},
+\qquad
+B=
+\begin{pmatrix}
+2 & 0\\
+1 & 3
+\end{pmatrix},
+$$
+
+then
+
+$$
+2A
+=
+\begin{pmatrix}
+2 & 4\\
+6 & 8
+\end{pmatrix}
+$$
+
+and
+
+$$
+3B
+=
+\begin{pmatrix}
+6 & 0\\
+3 & 9
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+2A-3B
+=
+\begin{pmatrix}
+-4 & 4\\
+3 & -1
+\end{pmatrix}.
+$$
+
+---
+
+# Matrix multiplication
+
+Matrix multiplication is different from matrix addition.
+
+Unlike addition, matrices do **not** need to have the same dimensions to be multiplied.
+
+Suppose
+
+$$
+A\in\mathbb R^{m\times n}
+$$
+
+and
+
+$$
+B\in\mathbb R^{n\times p}.
+$$
+
+Then the product
+
+$$
+AB
+$$
+
+is defined and has dimensions
+
+$$
+AB\in\mathbb R^{m\times p}.
+$$
+
+The important dimension rule is therefore
+
+$$
+\boxed{
+(m\times n)(n\times p)=m\times p
+}
+$$
+
+The inner dimensions must match.
+
+The outer dimensions determine the dimensions of the result.
+
+---
+
+# The dimension rule
+
+When multiplying matrices,
+
+$$
+A_{m\times n}B_{r\times p},
+$$
+
+the product is defined only when
+
+$$
+n=r.
+$$
+
+If the dimensions match, then
+
+$$
+AB
+$$
+
+has dimensions
+
+$$
+m\times p.
+$$
+
+For example,
+
+$$
+A_{2\times3}B_{3\times4}
+$$
+
+is valid and produces
+
+$$
+AB_{2\times4}.
+$$
+
+But
+
+$$
+A_{2\times3}B_{2\times4}
+$$
+
+is not defined because the inner dimensions $3$ and $2$ do not match.
+
+A useful mental model is:
+
+$$
+\boxed{
+\text{inner dimensions must match; outer dimensions survive}
+}
+$$
+
+---
+
+# Computing a matrix product
+
+Suppose
+
+$$
+A=
+\begin{pmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{pmatrix}
+$$
+
+and
+
+$$
+B=
+\begin{pmatrix}
+b_{11} & b_{12}\\
+b_{21} & b_{22}
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+AB
+=
+\begin{pmatrix}
+a_{11}b_{11}+a_{12}b_{21}
+&
+a_{11}b_{12}+a_{12}b_{22}
+\\
+a_{21}b_{11}+a_{22}b_{21}
+&
+a_{21}b_{12}+a_{22}b_{22}
+\end{pmatrix}.
+$$
+
+Each entry of the product is obtained by taking a **row from the first matrix** and a **column from the second matrix**, then computing their dot product.
+
+For example, the $(1,2)$ entry is
+
+$$
+(AB)_{12}
+=
+a_{11}b_{12}+a_{12}b_{22}.
+$$
+
+This row-column rule is the fundamental definition of ordinary matrix multiplication.
+
+---
+
+# Matrix multiplication as dot products
+
+The row-column rule can be understood directly using vectors.
+
+Suppose the first row of $A$ is
+
+$$
+\begin{pmatrix}
+a_{11} & a_{12} & a_{13}
+\end{pmatrix}
+$$
+
+and the first column of $B$ is
+
+$$
+\begin{pmatrix}
+b_{11}\\
+b_{21}\\
+b_{31}
+\end{pmatrix}.
+$$
+
+Then the corresponding entry of $AB$ is
+
+$$
+a_{11}b_{11}
++
+a_{12}b_{21}
++
+a_{13}b_{31}.
+$$
+
+This is exactly the dot product
+
+$$
+\begin{pmatrix}
+a_{11} & a_{12} & a_{13}
+\end{pmatrix}
+\begin{pmatrix}
+b_{11}\\
+b_{21}\\
+b_{31}
+\end{pmatrix}.
+$$
+
+Therefore:
+
+$$
+\boxed{
+\text{Each entry of a matrix product is a row-column dot product.}
+}
+$$
+
+This connection is extremely useful because it links matrix multiplication directly to the vector concepts introduced previously.
+
+---
+
+# A numerical matrix multiplication example
+
+Let
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}
+$$
+
+and
+
+$$
+B=
+\begin{pmatrix}
+5 & 6\\
+7 & 8
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+AB
+=
+\begin{pmatrix}
+1(5)+2(7) & 1(6)+2(8)\\
+3(5)+4(7) & 3(6)+4(8)
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+AB
+=
+\begin{pmatrix}
+19 & 22\\
+43 & 50
+\end{pmatrix}.
+$$
+
+Notice that the multiplication is **not** performed by multiplying corresponding entries.
+
+That operation,
+
+$$
+\begin{pmatrix}
+a_{11}b_{11} & a_{12}b_{12}\\
+a_{21}b_{21} & a_{22}b_{22}
+\end{pmatrix},
+$$
+
+is a different operation called the **Hadamard product**.
+
+Standard matrix multiplication uses row-column dot products.
+
+---
+
+# Matrix multiplication is not commutative
+
+For ordinary numbers,
+
+$$
+ab=ba.
+$$
+
+Matrix multiplication generally does **not** have this property.
+
+In general,
+
+$$
+\boxed{
+AB\neq BA
+}
+$$
+
+even when both products are defined.
+
+Using
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix},
+\qquad
+B=
+\begin{pmatrix}
+5 & 6\\
+7 & 8
+\end{pmatrix},
+$$
+
+we found
+
+$$
+AB=
+\begin{pmatrix}
+19 & 22\\
+43 & 50
+\end{pmatrix}.
+$$
+
+But
+
+$$
+BA
+=
+\begin{pmatrix}
+23 & 34\\
+31 & 46
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+AB\neq BA.
+$$
+
+This is one of the most important differences between ordinary scalar algebra and matrix algebra.
+
+---
+
+# Matrix-vector multiplication
+
+A vector can be multiplied by a matrix.
+
+Suppose
+
+$$
+A\in\mathbb R^{m\times n}
+$$
+
+and
+
+$$
+x\in\mathbb R^n.
+$$
+
+Viewing $x$ as an $n\times1$ column matrix,
+
+$$
+Ax
+$$
+
+is defined and produces an $m\times1$ vector.
+
+In dimensions,
+
+$$
+(m\times n)(n\times1)
+=
+m\times1.
+$$
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix},
+\qquad
+x=
+\begin{pmatrix}
+5\\
+6
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+Ax
+=
+\begin{pmatrix}
+1(5)+2(6)\\
+3(5)+4(6)
+\end{pmatrix}
+=
+\begin{pmatrix}
+17\\
+39
+\end{pmatrix}.
+$$
+
+Thus matrix-vector multiplication produces another vector.
+
+---
+
+# Matrix-vector multiplication as linear combinations
+
+There is a particularly important way to interpret $Ax$.
+
+Suppose
+
+$$
+A=
+\begin{pmatrix}
+| & | & & |\\
+a_1 & a_2 & \cdots & a_n\\
+| & | & & |
+\end{pmatrix}
+$$
+
+where $a_1,\ldots,a_n$ are the columns of $A$.
+
+Let
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+Ax
+=
+x_1a_1+x_2a_2+\cdots+x_na_n.
+$$
+
+Therefore, **matrix-vector multiplication is a linear combination of the columns of the matrix**.
+
+This is one of the most important interpretations of matrices for Linear Models.
+
+::: {.callout-important}
+## Key idea
+
+If
+
+$$
+X=
+\begin{pmatrix}
+| & | & & |\\
+x_1 & x_2 & \cdots & x_p\\
+| & | & & |
+\end{pmatrix}
+$$
+
+and
+
+$$
+\beta=
+\begin{pmatrix}
+\beta_1\\
+\beta_2\\
+\vdots\\
+\beta_p
+\end{pmatrix},
+$$
+
+then
+
+$$
+X\beta
+=
+\beta_1x_1+\beta_2x_2+\cdots+\beta_px_p.
+$$
+
+Thus $X\beta$ is a linear combination of the columns of $X$.
+:::
+
+---
+
+# Matrix multiplication and Linear Models
+
+The linear model
+
+$$
+y=X\beta+\varepsilon
+$$
+
+contains a matrix-vector multiplication:
+
+$$
+X\beta.
+$$
+
+Suppose
+
+$$
+X=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}
+$$
+
+and
+
+$$
+\beta=
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+X\beta
+=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+$$
+
+Multiplying gives
+
+$$
+X\beta
+=
+\begin{pmatrix}
+\beta_0+\beta_1x_1\\
+\beta_0+\beta_1x_2\\
+\vdots\\
+\beta_0+\beta_1x_n
+\end{pmatrix}.
+$$
+
+Thus the matrix-vector product contains all of the fitted values simultaneously.
+
+This is the reason matrix notation is so powerful in Linear Models.
+
+---
+
+# Matrix multiplication as a linear transformation
+
+A matrix
+
+$$
+A\in\mathbb R^{m\times n}
+$$
+
+defines a function
+
+$$
+T:\mathbb R^n\rightarrow\mathbb R^m
+$$
+
+given by
+
+$$
+T(x)=Ax.
+$$
+
+This function is a **linear transformation** because
+
+$$
+A(x+y)=Ax+Ay
+$$
+
+and
+
+$$
+A(cx)=c(Ax)
+$$
+
+for vectors $x,y$ and scalar $c$.
+
+Thus matrix multiplication is not merely an algebraic procedure.
+
+A matrix can be understood as an object that takes vectors as inputs and produces transformed vectors as outputs.
+
+The detailed theory of linear transformations will be developed separately.
+
+---
+
+# Important properties of matrix multiplication
+
+Whenever the dimensions are compatible, matrix multiplication satisfies:
+
+### Associativity
+
+$$
+(AB)C=A(BC).
+$$
+
+### Distributivity over addition
+
+$$
+A(B+C)=AB+AC.
+$$
+
+Similarly,
+
+$$
+(A+B)C=AC+BC.
+$$
+
+### Compatibility with scalar multiplication
+
+$$
+c(AB)=(cA)B=A(cB).
+$$
+
+However, matrix multiplication is generally **not commutative**:
+
+$$
+AB\neq BA.
+$$
+
+This distinction should always be kept in mind.
+
+---
+
+# The identity matrix
+
+The **identity matrix** is the matrix equivalent of the scalar number $1$.
+
+The $n\times n$ identity matrix is denoted by
+
+$$
+I_n
+$$
+
+and has ones on the main diagonal and zeros everywhere else.
+
+For example,
+
+$$
+I_3=
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{pmatrix}.
+$$
+
+For a compatible matrix $A$,
+
+$$
+AI=A
+$$
+
+and
+
+$$
+IA=A.
+$$
+
+Thus the identity matrix acts as the multiplicative identity.
+
+For a vector $x$,
+
+$$
+I_nx=x.
+$$
+
+---
+
+# Identity matrix and standard basis vectors
+
+The identity matrix can also be understood through its columns.
+
+For example,
+
+$$
+I_3=
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+| & | & |\\
+e_1 & e_2 & e_3\\
+| & | & |
+\end{pmatrix}.
+$$
+
+Its columns are the standard basis vectors.
+
+Therefore,
+
+$$
+I_nx=x
+$$
+
+because multiplying by the identity leaves every coordinate unchanged.
+
+---
+
+# Diagonal matrices
+
+A square matrix is **diagonal** if all entries outside the main diagonal are zero.
+
+For example,
+
+$$
+D=
+\begin{pmatrix}
+2 & 0 & 0\\
+0 & 5 & 0\\
+0 & 0 & -1
+\end{pmatrix}.
+$$
+
+A diagonal matrix can be written as
+
+$$
+D=
+\operatorname{diag}(d_1,\ldots,d_n).
+$$
+
+For example,
+
+$$
+D=\operatorname{diag}(2,5,-1).
+$$
+
+Multiplying a vector by a diagonal matrix simply scales each coordinate:
+
+$$
+Dx
+=
+\begin{pmatrix}
+d_1x_1\\
+d_2x_2\\
+\vdots\\
+d_nx_n
+\end{pmatrix}.
+$$
+
+Diagonal matrices are particularly useful because many matrix operations become much simpler for them.
+
+---
+
+# Scalar matrices
+
+A **scalar matrix** is a diagonal matrix whose diagonal entries are all equal.
+
+For example,
+
+$$
+3I_3
+=
+\begin{pmatrix}
+3 & 0 & 0\\
+0 & 3 & 0\\
+0 & 0 & 3
+\end{pmatrix}.
+$$
+
+A scalar matrix behaves like multiplication by a scalar:
+
+$$
+(3I_3)x=3x.
+$$
+
+The identity matrix is the special case where the scalar is $1$.
+
+---
+
+# Triangular matrices
+
+A square matrix is **upper triangular** if all entries below the main diagonal are zero.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+0 & 4 & 5\\
+0 & 0 & 6
+\end{pmatrix}.
+$$
+
+A square matrix is **lower triangular** if all entries above the main diagonal are zero.
+
+For example,
+
+$$
+B=
+\begin{pmatrix}
+1 & 0 & 0\\
+2 & 4 & 0\\
+3 & 5 & 6
+\end{pmatrix}.
+$$
+
+Triangular matrices become particularly useful when solving systems of equations and studying determinants and eigenvalues.
+
+---
+
+# Symmetric matrices
+
+A square matrix $A$ is **symmetric** if
+
+$$
+A^\top=A.
+$$
+
+This means
+
+$$
+a_{ij}=a_{ji}
+$$
+
+for all $i,j$.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+2 & 4 & 5\\
+3 & 5 & 6
+\end{pmatrix}
+$$
+
+is symmetric.
+
+The entries mirror each other across the main diagonal.
+
+Symmetric matrices are extremely important in statistics.
+
+For example,
+
+$$
+X^\top X
+$$
+
+is always symmetric because
+
+$$
+(X^\top X)^\top
+=
+X^\top(X^\top)^\top
+=
+X^\top X.
+$$
+
+Similarly, covariance matrices are symmetric.
+
+Symmetric matrices will therefore appear repeatedly in Linear Models.
+
+---
+
+# The trace
+
+For a square matrix
+
+$$
+A=
+\begin{pmatrix}
+a_{11} & \cdots & a_{1n}\\
+\vdots & \ddots & \vdots\\
+a_{n1} & \cdots & a_{nn}
+\end{pmatrix},
+$$
+
+the **trace** is the sum of the diagonal entries:
+
+$$
+\operatorname{tr}(A)
+=
+\sum_{i=1}^n a_{ii}.
+$$
+
+Thus,
+
+$$
+\operatorname{tr}(A)
+=
+a_{11}+a_{22}+\cdots+a_{nn}.
+$$
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+2 & 4 & 1\\
+0 & 3 & 5\\
+7 & 1 & -2
+\end{pmatrix}
+$$
+
+has trace
+
+$$
+\operatorname{tr}(A)
+=
+2+3-2
+=
+3.
+$$
+
+The trace becomes useful later when working with quadratic forms, covariance matrices, expectations, and matrix decompositions.
+
+For basic Linear Models, you mainly need to recognize the definition and notation.
+
+---
+
+# Matrix transpose
+
+The **transpose** of a matrix is obtained by exchanging its rows and columns.
+
+If
+
+$$
+A=
+\begin{pmatrix}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{pmatrix},
+$$
+
+then
+
+$$
+A^\top=
+\begin{pmatrix}
+1 & 4\\
+2 & 5\\
+3 & 6
+\end{pmatrix}.
+$$
+
+The first row of $A$ becomes the first column of $A^\top$, and the second row becomes the second column.
+
+If
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+then
+
+$$
+A^\top\in\mathbb R^{n\times m}.
+$$
+
+Thus transposition reverses the dimensions:
+
+$$
+\boxed{
+m\times n
+\longrightarrow
+n\times m
+}
+$$
+
+---
+
+# Transpose of an entry
+
+If
+
+$$
+A=(a_{ij}),
+$$
+
+then the entries of the transpose are given by
+
+$$
+(A^\top)_{ij}=a_{ji}.
+$$
+
+In other words, the row and column indices are exchanged.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4\\
+5 & 6
+\end{pmatrix}
+$$
+
+has
+
+$$
+A^\top=
+\begin{pmatrix}
+1 & 3 & 5\\
+2 & 4 & 6
+\end{pmatrix}.
+$$
+
+Notice that
+
+$$
+a_{12}=2
+$$
+
+becomes
+
+$$
+(A^\top)_{21}=2.
+$$
+
+---
+
+# Transpose of a vector
+
+The transpose of a column vector is a row vector.
+
+If
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix},
+$$
+
+then
+
+$$
+x^\top=
+\begin{pmatrix}
+x_1 & x_2 & \cdots & x_n
+\end{pmatrix}.
+$$
+
+Conversely,
+
+$$
+(x^\top)^\top=x.
+$$
+
+This is why the expression
+
+$$
+x^\top y
+$$
+
+is a valid matrix product when $x,y\in\mathbb R^n$.
+
+The dimensions are
+
+$$
+x^\top\in\mathbb R^{1\times n}
+$$
+
+and
+
+$$
+y\in\mathbb R^{n\times1},
+$$
+
+so
+
+$$
+x^\top y\in\mathbb R^{1\times1}.
+$$
+
+This $1\times1$ matrix is identified with the scalar dot product.
+
+---
+
+# Transpose of a sum
+
+The transpose distributes over addition:
+
+$$
+\boxed{
+(A+B)^\top=A^\top+B^\top
+}
+$$
+
+provided the matrices have compatible dimensions.
+
+For example,
+
+$$
+(A+B)^\top
+$$
+
+can be obtained either by adding first and then transposing, or by transposing each matrix and then adding.
+
+---
+
+# Transpose and scalar multiplication
+
+For a scalar $c$,
+
+$$
+\boxed{
+(cA)^\top=cA^\top
+}
+$$
+
+The scalar is unaffected by transposition.
+
+For example,
+
+$$
+\left(
+3
+\begin{pmatrix}
+1 & 2\\
+4 & 5
+\end{pmatrix}
+\right)^\top
+=
+3
+\begin{pmatrix}
+1 & 4\\
+2 & 5
+\end{pmatrix}.
+$$
+
+---
+
+# Transpose of a matrix product
+
+One of the most important transpose rules is
+
+$$
+\boxed{
+(AB)^\top=B^\top A^\top
+}
+$$
+
+Notice that the order reverses.
+
+This is crucial.
+
+It is **not**
+
+$$
+(AB)^\top=A^\top B^\top.
+$$
+
+Instead,
+
+$$
+\boxed{
+(AB)^\top=B^\top A^\top
+}
+$$
+
+For example, if
+
+$$
+A\in\mathbb R^{m\times n}
+$$
+
+and
+
+$$
+B\in\mathbb R^{n\times p},
+$$
+
+then
+
+$$
+AB\in\mathbb R^{m\times p}.
+$$
+
+Therefore,
+
+$$
+(AB)^\top\in\mathbb R^{p\times m}.
+$$
+
+On the other hand,
+
+$$
+B^\top\in\mathbb R^{p\times n}
+$$
+
+and
+
+$$
+A^\top\in\mathbb R^{n\times m},
+$$
+
+so
+
+$$
+B^\top A^\top\in\mathbb R^{p\times m}.
+$$
+
+The dimensions confirm the rule.
+
+---
+
+# Transpose of multiple matrix products
+
+The same rule extends to more than two matrices.
+
+For example,
+
+$$
+(ABC)^\top
+=
+C^\top B^\top A^\top.
+$$
+
+The order is completely reversed.
+
+More generally,
+
+$$
+(A_1A_2\cdots A_k)^\top
+=
+A_k^\top\cdots A_2^\top A_1^\top.
+$$
+
+This becomes particularly important when manipulating expressions such as
+
+$$
+X^\top X
+$$
+
+and
+
+$$
+(X^\top X)^\top.
+$$
+
+---
+
+# Transpose and the dot product
+
+For vectors $x,y$,
+
+$$
+x^\top y
+$$
+
+is a scalar.
+
+Since a scalar is equal to its own transpose,
+
+$$
+(x^\top y)^\top=x^\top y.
+$$
+
+Using the product transpose rule,
+
+$$
+(x^\top y)^\top
+=
+y^\top(x^\top)^\top.
+$$
+
+Therefore,
+
+$$
+x^\top y=y^\top x.
+$$
+
+This recovers the symmetry of the dot product from matrix algebra.
+
+---
+
+# Symmetric matrices
+
+A square matrix $A$ is symmetric when
+
+$$
+A^\top=A.
+$$
+
+Equivalently,
+
+$$
+a_{ij}=a_{ji}
+$$
+
+for all $i,j$.
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+2 & 4 & -1\\
+4 & 3 & 5\\
+-1 & 5 & 7
+\end{pmatrix}
+$$
+
+is symmetric.
+
+Symmetric matrices are especially important in statistics because many important matrices have this property.
+
+For example,
+
+$$
+X^\top X
+$$
+
+is always symmetric.
+
+Indeed,
+
+$$
+(X^\top X)^\top
+=
+X^\top(X^\top)^\top
+=
+X^\top X.
+$$
+
+---
+
+# The matrix $X^\top X$
+
+The expression
+
+$$
+X^\top X
+$$
+
+appears constantly in Linear Models.
+
+Suppose
+
+$$
+X\in\mathbb R^{n\times p}.
+$$
+
+Then
+
+$$
+X^\top\in\mathbb R^{p\times n},
+$$
+
+so
+
+$$
+X^\top X
+\in\mathbb R^{p\times p}.
+$$
+
+Thus an $n\times p$ design matrix produces a $p\times p$ matrix when multiplied by its transpose.
+
+The entries of $X^\top X$ are dot products between columns of $X$.
+
+If the columns of $X$ are
+
+$$
+x_1,\ldots,x_p,
+$$
+
+then
+
+$$
+X^\top X
+=
+\begin{pmatrix}
+x_1^\top x_1 & x_1^\top x_2 & \cdots & x_1^\top x_p\\
+x_2^\top x_1 & x_2^\top x_2 & \cdots & x_2^\top x_p\\
+\vdots & \vdots & \ddots & \vdots\\
+x_p^\top x_1 & x_p^\top x_2 & \cdots & x_p^\top x_p
+\end{pmatrix}.
+$$
+
+Thus the diagonal entries contain squared lengths of the columns, while the off-diagonal entries contain pairwise dot products.
+
+---
+
+# The Gram matrix
+
+A matrix of the form
+
+$$
+X^\top X
+$$
+
+is called a **Gram matrix**.
+
+If the columns of $X$ are
+
+$$
+x_1,\ldots,x_p,
+$$
+
+then
+
+$$
+(X^\top X)_{ij}=x_i^\top x_j.
+$$
+
+Therefore the Gram matrix records all pairwise inner products among the columns of $X.
+
+For example,
+
+$$
+X^\top X
+=
+\begin{pmatrix}
+\|x_1\|^2 & x_1^\top x_2\\
+x_2^\top x_1 & \|x_2\|^2
+\end{pmatrix}.
+$$
+
+This gives a useful interpretation:
+
+$$
+\boxed{
+X^\top X
+\text{ records the geometry of the columns of }X.
+}
+$$
+
+The Gram matrix will appear repeatedly in least squares.
+
+---
+
+# Positive semidefinite matrices
+
+A symmetric matrix $A$ is **positive semidefinite** if
+
+$$
+x^\top Ax\geq0
+$$
+
+for every vector $x$.
+
+A particularly important example is
+
+$$
+A=X^\top X.
+$$
+
+For any vector $x$,
+
+$$
+x^\top X^\top Xx
+=
+(Xx)^\top(Xx).
+$$
+
+But
+
+$$
+(Xx)^\top(Xx)
+=
+\|Xx\|^2
+\geq0.
+$$
+
+Therefore,
+
+$$
+\boxed{
+X^\top X
+\text{ is always positive semidefinite.}
+}
+$$
+
+This property is important in optimization and least-squares theory.
+
+The full theory of positive semidefinite matrices is covered in more advanced linear algebra material, but the definition is worth recognizing.
+
+---
+
+# Quadratic forms
+
+An expression of the form
+
+$$
+x^\top Ax
+$$
+
+is called a **quadratic form**.
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix},
+\qquad
+A=
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix},
+$$
+
+gives
+
+$$
+x^\top Ax.
+$$
+
+First,
+
+$$
+Ax
+=
+\begin{pmatrix}
+ax_1+bx_2\\
+cx_1+dx_2
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+x^\top Ax
+=
+x_1(ax_1+bx_2)
++
+x_2(cx_1+dx_2).
+$$
+
+So
+
+$$
+x^\top Ax
+=
+ax_1^2+(b+c)x_1x_2+dx_2^2.
+$$
+
+Quadratic forms appear naturally in least squares because
+
+$$
+\|y-X\beta\|^2
+$$
+
+can be expanded into a quadratic function of $\beta$.
+
+---
+
+# Matrix-vector multiplication and rows
+
+There are two useful ways to understand matrix-vector multiplication.
+
+Suppose
+
+$$
+A=
+\begin{pmatrix}
+\text{--- }a_1^\top\text{ ---}\\
+\text{--- }a_2^\top\text{ ---}\\
+\vdots\\
+\text{--- }a_m^\top\text{ ---}
+\end{pmatrix}
+$$
+
+and
+
+$$
+x\in\mathbb R^n.
+$$
+
+Then
+
+$$
+Ax
+=
+\begin{pmatrix}
+a_1^\top x\\
+a_2^\top x\\
+\vdots\\
+a_m^\top x
+\end{pmatrix}.
+$$
+
+Thus each output coordinate is the dot product of one row of $A$ with $x$.
+
+So there are two complementary interpretations:
+
+$$
+\boxed{
+Ax=\text{linear combination of the columns of }A
+}
+$$
+
+and
+
+$$
+\boxed{
+Ax=\text{collection of dot products between rows of }A\text{ and }x.
+}
+$$
+
+Both viewpoints are useful.
+
+---
+
+# Column interpretation of a matrix
+
+Suppose
+
+$$
+A=
+\begin{pmatrix}
+| & | & |\\
+a_1 & a_2 & a_3\\
+| & | & |
+\end{pmatrix}.
+$$
+
+Then the columns $a_1,a_2,a_3$ are vectors.
+
+For
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+x_3
+\end{pmatrix},
+$$
+
+we have
+
+$$
+Ax=x_1a_1+x_2a_2+x_3a_3.
+$$
+
+Therefore every vector produced by $Ax$ belongs to the span of the columns:
+
+$$
+Ax\in\operatorname{span}(a_1,a_2,a_3).
+$$
+
+Consequently,
+
+$$
+\{Ax:x\in\mathbb R^3\}
+=
+\operatorname{span}(a_1,a_2,a_3).
+$$
+
+This set is called the **column space** of $A$.
+
+---
+
+# Column space
+
+The **column space** of a matrix $A$ is the span of its columns.
+
+If
+
+$$
+A=
+\begin{pmatrix}
+| & | & & |\\
+a_1 & a_2 & \cdots & a_n\\
+| & | & & |
+\end{pmatrix},
+$$
+
+then
+
+$$
+\operatorname{Col}(A)
+=
+\operatorname{span}(a_1,\ldots,a_n).
+$$
+
+Equivalently,
+
+$$
+\operatorname{Col}(A)
+=
+\{Ax:x\in\mathbb R^n\}.
+$$
+
+The column space is a subspace of the output space.
+
+If
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+then
+
+$$
+\operatorname{Col}(A)\subseteq\mathbb R^m.
+$$
+
+This is important in Linear Models because the fitted values
+
+$$
+X\hat\beta
+$$
+
+belong to
+
+$$
+\operatorname{Col}(X).
+$$
+
+---
+
+# Row space
+
+The **row space** of a matrix is the span of its rows.
+
+If the rows of $A$ are
+
+$$
+r_1^\top,\ldots,r_m^\top,
+$$
+
+then
+
+$$
+\operatorname{Row}(A)
+=
+\operatorname{span}(r_1,\ldots,r_m).
+$$
+
+If
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+then
+
+$$
+\operatorname{Row}(A)\subseteq\mathbb R^n.
+$$
+
+The row space and column space are different subspaces in general, although they have the same dimension.
+
+That common dimension is the **rank** of the matrix.
+
+---
+
+# Rank
+
+The **rank** of a matrix is the dimension of its column space.
+
+Equivalently, it is the dimension of its row space.
+
+Thus,
+
+$$
+\boxed{
+\operatorname{rank}(A)
+=
+\dim(\operatorname{Col}(A))
+=
+\dim(\operatorname{Row}(A))
+}
+$$
+
+Rank measures how many linearly independent directions are contained in the matrix.
+
+For a matrix
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+the rank can never exceed either dimension:
+
+$$
+\operatorname{rank}(A)\leq\min(m,n).
+$$
+
+For example, a $3\times5$ matrix can have rank at most
+
+$$
+3.
+$$
+
+A $10\times2$ matrix can have rank at most
+
+$$
+2.
+$$
+
+---
+
+# Full rank
+
+A matrix is said to have **full column rank** if its columns are linearly independent.
+
+If
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+then full column rank means
+
+$$
+\operatorname{rank}(A)=n.
+$$
+
+This is possible only when
+
+$$
+n\leq m.
+$$
+
+Similarly, $A$ has **full row rank** if
+
+$$
+\operatorname{rank}(A)=m.
+$$
+
+This is possible only when
+
+$$
+m\leq n.
+$$
+
+In Linear Models, full column rank of the design matrix $X$ is particularly important because it guarantees uniqueness of the ordinary least-squares coefficient estimate under the usual setup.
+
+---
+
+# Linear dependence of matrix columns
+
+The columns of a matrix
+
+$$
+A=
+\begin{pmatrix}
+| & | & & |\\
+a_1 & a_2 & \cdots & a_n\\
+| & | & & |
+\end{pmatrix}
+$$
+
+are linearly dependent if there exist coefficients
+
+$$
+c_1,\ldots,c_n
+$$
+
+not all zero such that
+
+$$
+c_1a_1+\cdots+c_na_n=0.
+$$
+
+Using matrix notation, this can be written as
+
+$$
+Ac=0
+$$
+
+for some non-zero vector
+
+$$
+c=
+\begin{pmatrix}
+c_1\\
+\vdots\\
+c_n
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\text{The columns of }A\text{ are linearly independent}
+\iff
+Ac=0\text{ has only }c=0.
+}
+$$
+
+This connection between linear independence and matrix equations is fundamental.
+
+---
+
+# Systems of linear equations
+
+A system of linear equations can be written compactly using matrices.
+
+Consider
+
+$$
+\begin{aligned}
+a_{11}x_1+a_{12}x_2&=b_1,\\
+a_{21}x_1+a_{22}x_2&=b_2.
+\end{aligned}
+$$
+
+This can be written as
+
+$$
+\begin{pmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+b_1\\
+b_2
+\end{pmatrix}.
+$$
+
+In compact notation,
+
+$$
+Ax=b.
+$$
+
+This notation is extremely important.
+
+A large system of equations can therefore be represented by a single matrix equation.
+
+---
+
+# The augmented matrix
+
+A system
+
+$$
+Ax=b
+$$
+
+can also be represented using an **augmented matrix**.
+
+For example,
+
+$$
+\begin{aligned}
+x_1+2x_2&=5,\\
+3x_1+4x_2&=7
+\end{aligned}
+$$
+
+has augmented matrix
+
+$$
+\left[
+\begin{array}{cc|c}
+1 & 2 & 5\\
+3 & 4 & 7
+\end{array}
+\right].
+$$
+
+The vertical line separates the coefficient matrix from the right-hand side.
+
+Thus,
+
+$$
+\left[
+\begin{array}{cc|c}
+1 & 2 & 5\\
+3 & 4 & 7
+\end{array}
+\right]
+$$
+
+represents
+
+$$
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+5\\
+7
+\end{pmatrix}.
+$$
+
+---
+
+# Elementary row operations
+
+When solving a system of linear equations, we can perform certain operations on the rows without changing the solution set.
+
+The three elementary row operations are:
+
+1. Swap two rows.
+2. Multiply a row by a non-zero scalar.
+3. Add a multiple of one row to another row.
+
+For example,
+
+$$
+R_2\leftarrow R_2-3R_1
+$$
+
+means replace row $2$ with
+
+$$
+R_2-3R_1.
+$$
+
+These operations form the basis of Gaussian elimination.
+
+---
+
+# Row echelon form
+
+A matrix is in **row echelon form** when it has the appropriate staircase structure:
+
+- all non-zero rows occur above any zero rows,
+- each leading non-zero entry is to the right of the leading entry in the row above,
+- all entries below a leading entry are zero.
+
+For example,
+
+$$
+\begin{pmatrix}
+1 & 2 & 3\\
+0 & 1 & 4\\
+0 & 0 & 2
+\end{pmatrix}
+$$
+
+is in row echelon form.
+
+Row reduction allows us to transform a matrix into this form while preserving the essential information needed to solve a system.
+
+---
+
+# Reduced row echelon form
+
+A matrix is in **reduced row echelon form** when, in addition to being in row echelon form:
+
+- every leading entry is $1$,
+- each leading $1$ is the only non-zero entry in its column.
+
+For example,
+
+$$
+\begin{pmatrix}
+1 & 0 & 3\\
+0 & 1 & -2\\
+0 & 0 & 0
+\end{pmatrix}
+$$
+
+is in reduced row echelon form.
+
+Reduced row echelon form is unique for a given matrix.
+
+This makes it useful for identifying rank, solving systems, and determining linear dependence.
+
+---
+
+# Gaussian elimination
+
+**Gaussian elimination** is the process of using elementary row operations to simplify a system or matrix.
+
+For example, consider
+
+$$
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}.
+$$
+
+We can perform
+
+$$
+R_2\leftarrow R_2-3R_1.
+$$
+
+This gives
+
+$$
+\begin{pmatrix}
+1 & 2\\
+0 & -2
+\end{pmatrix}.
+$$
+
+Further row operations can then be used to solve the associated system.
+
+Gaussian elimination is one of the fundamental computational tools of linear algebra.
+
+---
+
+# Solving a system using row reduction
+
+Consider
+
+$$
+\begin{aligned}
+x+2y&=5,\\
+3x+4y&=11.
+\end{aligned}
+$$
+
+The augmented matrix is
+
+$$
+\left[
+\begin{array}{cc|c}
+1 & 2 & 5\\
+3 & 4 & 11
+\end{array}
+\right].
+$$
+
+Perform
+
+$$
+R_2\leftarrow R_2-3R_1.
+$$
+
+Then
+
+$$
+\left[
+\begin{array}{cc|c}
+1 & 2 & 5\\
+0 & -2 & -4
+\end{array}
+\right].
+$$
+
+Divide the second row by $-2$:
+
+$$
+\left[
+\begin{array}{cc|c}
+1 & 2 & 5\\
+0 & 1 & 2
+\end{array}
+\right].
+$$
+
+Now perform
+
+$$
+R_1\leftarrow R_1-2R_2.
+$$
+
+This gives
+
+$$
+\left[
+\begin{array}{cc|c}
+1 & 0 & 1\\
+0 & 1 & 2
+\end{array}
+\right].
+$$
+
+Therefore,
+
+$$
+x=1,
+\qquad
+y=2.
+$$
+
+---
+
+# Homogeneous systems
+
+A system of the form
+
+$$
+Ax=0
+$$
+
+is called a **homogeneous system**.
+
+It always has at least one solution:
+
+$$
+x=0.
+$$
+
+This is called the **trivial solution**.
+
+The important question is whether there are also non-zero solutions.
+
+If
+
+$$
+Ax=0
+$$
+
+has a non-zero solution, then the columns of $A$ are linearly dependent.
+
+If the only solution is
+
+$$
+x=0,
+$$
+
+then the columns of $A$ are linearly independent.
+
+Thus:
+
+$$
+\boxed{
+Ax=0
+\text{ has only the trivial solution}
+\iff
+\text{columns of }A\text{ are linearly independent}
+}
+$$
+
+---
+
+# Null space
+
+The **null space** or **kernel** of a matrix $A$ is the set of all vectors that are mapped to the zero vector.
+
+It is defined as
+
+$$
+\operatorname{Null}(A)
+=
+\{x:Ax=0\}.
+$$
+
+Thus,
+
+$$
+\operatorname{Null}(A)
+$$
+
+is the set of all solutions to the homogeneous system
+
+$$
+Ax=0.
+$$
+
+The null space is a subspace of the domain of $A$.
+
+If
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+then
+
+$$
+\operatorname{Null}(A)\subseteq\mathbb R^n.
+$$
+
+This is because $x$ must have $n$ entries in order for $Ax$ to be defined.
+
+---
+
+# Rank and nullity
+
+The **nullity** of a matrix is the dimension of its null space:
+
+$$
+\operatorname{nullity}(A)
+=
+\dim(\operatorname{Null}(A)).
+$$
+
+For a matrix
+
+$$
+A\in\mathbb R^{m\times n},
+$$
+
+the rank-nullity theorem states
+
+$$
+\boxed{
+\operatorname{rank}(A)
++
+\operatorname{nullity}(A)
+=
+n
+}
+$$
+
+where $n$ is the number of columns of $A$.
+
+Equivalently,
+
+$$
+\boxed{
+\operatorname{rank}(A)
++
+\dim(\operatorname{Null}(A))
+=
+\text{number of columns of }A
+}
+$$
+
+This theorem connects three important ideas:
+
+$$
+\text{linear independence}
+\longleftrightarrow
+\text{rank}
+\longleftrightarrow
+\text{null space}.
+$$
+
+---
+
+# Invertible matrices
+
+A square matrix $A$ is **invertible** if there exists another matrix $A^{-1}$ such that
+
+$$
+AA^{-1}=I
+$$
+
+and
+
+$$
+A^{-1}A=I.
+$$
+
+The matrix $A^{-1}$ is called the **inverse** of $A$.
+
+The inverse plays the same conceptual role as the reciprocal of a non-zero scalar.
+
+For example,
+
+$$
+5\cdot\frac15=1.
+$$
+
+Similarly,
+
+$$
+AA^{-1}=I.
+$$
+
+Not every matrix has an inverse.
+
+Only square matrices can have a two-sided inverse in the ordinary sense.
+
+---
+
+# Solving $Ax=b$ using an inverse
+
+If $A$ is invertible and
+
+$$
+Ax=b,
+$$
+
+multiply both sides by $A^{-1}$:
+
+$$
+A^{-1}Ax=A^{-1}b.
+$$
+
+Since
+
+$$
+A^{-1}A=I,
+$$
+
+we obtain
+
+$$
+Ix=A^{-1}b.
+$$
+
+Therefore,
+
+$$
+\boxed{
+x=A^{-1}b
+}
+$$
+
+This gives a formal solution to the system.
+
+However, in numerical computation, explicitly calculating $A^{-1}$ is often not the preferred way to solve a system. Methods such as Gaussian elimination or matrix factorizations are generally more efficient and numerically stable.
+
+---
+
+# Conditions related to invertibility
+
+For a square matrix $A$, the following properties are equivalent:
+
+$$
+A\text{ is invertible}
+$$
+
+if and only if
+
+$$
+\operatorname{rank}(A)=n,
+$$
+
+if and only if
+
+$$
+\operatorname{Null}(A)=\{0\},
+$$
+
+if and only if the columns of $A$ are linearly independent,
+
+if and only if the columns of $A$ form a basis of $\mathbb R^n$.
+
+These equivalences are part of the broader theory of invertible matrices.
+
+For Linear Models, one especially important consequence is that if
+
+$$
+X^\top X
+$$
+
+is invertible, then the least-squares estimator can be written as
+
+$$
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y.
+$$
+
+The conditions under which this formula exists and what happens when it does not will be developed later.
+
+---
+
+# Determinant
+
+The **determinant** is a scalar associated with a square matrix.
+
+For a $2\times2$ matrix
+
+$$
+A=
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix},
+$$
+
+the determinant is
+
+$$
+\det(A)=ad-bc.
+$$
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+2 & 3\\
+1 & 4
+\end{pmatrix}
+$$
+
+has
+
+$$
+\det(A)
+=
+2(4)-3(1)
+=
+5.
+$$
+
+The determinant has several interpretations, including geometric scaling and invertibility.
+
+For a square matrix,
+
+$$
+\boxed{
+\det(A)\neq0
+\iff
+A\text{ is invertible}.
+}
+$$
+
+The determinant becomes less convenient as a computational tool for large matrices, but it remains conceptually important.
+
+---
+
+# Determinant and geometric scaling
+
+For a $2\times2$ matrix,
+
+$$
+A=
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix},
+$$
+
+the absolute value
+
+$$
+|\det(A)|
+$$
+
+represents the factor by which the transformation changes areas.
+
+For example, if
+
+$$
+|\det(A)|=3,
+$$
+
+then areas are scaled by a factor of $3$.
+
+The sign of the determinant also records whether orientation is preserved or reversed.
+
+In higher dimensions, the determinant generalizes this idea to volume.
+
+This geometric interpretation is useful for understanding why
+
+$$
+\det(A)=0
+$$
+
+means that the transformation collapses space into a lower-dimensional object.
+
+---
+
+# Determinant and singular matrices
+
+A square matrix is called **singular** if it is not invertible.
+
+Therefore,
+
+$$
+\boxed{
+A\text{ is singular}
+\iff
+\det(A)=0
+}
+$$
+
+and
+
+$$
+\boxed{
+A\text{ is non-singular}
+\iff
+\det(A)\neq0.
+}
+$$
+
+A singular matrix has linearly dependent columns.
+
+Equivalently, there exists a non-zero vector $x$ such that
+
+$$
+Ax=0.
+$$
+
+Thus several ideas are connected:
+
+$$
+\boxed{
+\det(A)=0
+\iff
+A\text{ is singular}
+\iff
+A\text{ is not invertible}
+\iff
+\operatorname{Null}(A)\neq\{0\}
+}
+$$
+
+---
+
+# Why rank matters in Linear Models
+
+Suppose the design matrix is
+
+$$
+X\in\mathbb R^{n\times p}.
+$$
+
+If the columns of $X$ are linearly independent, then
+
+$$
+\operatorname{rank}(X)=p.
+$$
+
+This is called full column rank.
+
+If the columns are not linearly independent, then some predictor columns can be expressed as linear combinations of the others.
+
+For example, suppose
+
+$$
+x_3=2x_1-x_2.
+$$
+
+Then
+
+$$
+2x_1-x_2-x_3=0.
+$$
+
+The columns are therefore linearly dependent.
+
+This creates redundancy in the model and means that the coefficients cannot generally be uniquely identified from the design matrix alone.
+
+This issue is closely connected to multicollinearity and will become important in the Linear Models material.
+
+---
+
+# Matrix dimensions: a Linear Models example
+
+Suppose there are $n$ observations and $p$ predictors.
+
+The design matrix is typically
+
+$$
+X\in\mathbb R^{n\times p}.
+$$
+
+The coefficient vector is
+
+$$
+\beta\in\mathbb R^p.
+$$
+
+The response vector is
+
+$$
+y\in\mathbb R^n.
+$$
+
+The error vector is
+
+$$
+\varepsilon\in\mathbb R^n.
+$$
+
+Then
+
+$$
+X\beta
+$$
+
+has dimensions
+
+$$
+(n\times p)(p\times1)
+=
+n\times1.
+$$
+
+Therefore,
+
+$$
+X\beta\in\mathbb R^n,
+$$
+
+which allows
+
+$$
+y=X\beta+\varepsilon
+$$
+
+to make dimensional sense.
+
+This is a very useful habit:
+
+::: {.callout-important}
+## Always check the dimensions
+
+Whenever you see a matrix expression, check its dimensions.
+
+For example,
+
+$$
+X^\top X
+$$
+
+has dimensions
+
+$$
+(p\times n)(n\times p)
+=
+p\times p,
+$$
+
+while
+
+$$
+X^\top y
+$$
+
+has dimensions
+
+$$
+(p\times n)(n\times1)
+=
+p\times1.
+$$
+
+Therefore,
+
+$$
+(X^\top X)\beta=X^\top y
+$$
+
+has dimensions
+
+$$
+(p\times p)(p\times1)
+=
+p\times1.
+$$
+
+Dimension checking is one of the best ways to catch algebraic mistakes in Linear Models.
+:::
+
+---
+
+# Matrix notation for a simple linear model
+
+Consider
+
+$$
+y_i=\beta_0+\beta_1x_i+\varepsilon_i,
+\qquad
+i=1,\ldots,n.
+$$
+
+The individual equations are
+
+$$
+\begin{aligned}
+y_1&=\beta_0+\beta_1x_1+\varepsilon_1,\\
+y_2&=\beta_0+\beta_1x_2+\varepsilon_2,\\
+&\vdots\\
+y_n&=\beta_0+\beta_1x_n+\varepsilon_n.
+\end{aligned}
+$$
+
+These can be written as
+
+$$
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+$$
+
+Using compact notation,
+
+$$
+\boxed{
+y=X\beta+\varepsilon
+}
+$$
+
+This is the matrix form of the linear model.
+
+---
+
+# Matrix notation for multiple predictors
+
+Suppose there are $p$ predictors.
+
+The model for observation $i$ can be written as
+
+$$
+y_i
+=
+\beta_0
++
+\beta_1x_{i1}
++
+\beta_2x_{i2}
++
+\cdots
++
+\beta_px_{ip}
++
+\varepsilon_i.
+$$
+
+The design matrix can be written as
+
+$$
+X=
+\begin{pmatrix}
+1 & x_{11} & x_{12} & \cdots & x_{1p}\\
+1 & x_{21} & x_{22} & \cdots & x_{2p}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+1 & x_{n1} & x_{n2} & \cdots & x_{np}
+\end{pmatrix}.
+$$
+
+The coefficient vector is
+
+$$
+\beta=
+\begin{pmatrix}
+\beta_0\\
+\beta_1\\
+\vdots\\
+\beta_p
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+X\beta
+$$
+
+contains all fitted linear predictors.
+
+Thus,
+
+$$
+y=X\beta+\varepsilon.
+$$
+
+This notation is the foundation for the matrix treatment of Linear Models.
+
+---
+
+# Matrix inverse
+
+For a square matrix $A$, an inverse $A^{-1}$ is a matrix satisfying
+
+$$
+AA^{-1}=A^{-1}A=I.
+$$
+
+If the inverse exists, $A$ is called **invertible** or **non-singular**.
+
+The inverse is unique.
+
+For example, if
+
+$$
+A=
+\begin{pmatrix}
+2 & 0\\
+0 & 4
+\end{pmatrix},
+$$
+
+then
+
+$$
+A^{-1}
+=
+\begin{pmatrix}
+\frac12 & 0\\
+0 & \frac14
+\end{pmatrix}.
+$$
+
+Indeed,
+
+$$
+AA^{-1}
+=
+\begin{pmatrix}
+2 & 0\\
+0 & 4
+\end{pmatrix}
+\begin{pmatrix}
+\frac12 & 0\\
+0 & \frac14
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 0\\
+0 & 1
+\end{pmatrix}.
+$$
+
+---
+
+# Inverse of a $2\times2$ matrix
+
+For
+
+$$
+A=
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix},
+$$
+
+if
+
+$$
+ad-bc\neq0,
+$$
+
+then
+
+$$
+A^{-1}
+=
+\frac{1}{ad-bc}
+\begin{pmatrix}
+d & -b\\
+-c & a
+\end{pmatrix}.
+$$
+
+Since
+
+$$
+\det(A)=ad-bc,
+$$
+
+this can also be written as
+
+$$
+A^{-1}
+=
+\frac{1}{\det(A)}
+\begin{pmatrix}
+d & -b\\
+-c & a
+\end{pmatrix}.
+$$
+
+The determinant therefore determines whether the inverse exists.
+
+If
+
+$$
+\det(A)=0,
+$$
+
+then $A^{-1}$ does not exist.
+
+---
+
+# Inverse of a product
+
+If $A$ and $B$ are invertible matrices, then
+
+$$
+\boxed{
+(AB)^{-1}=B^{-1}A^{-1}
+}
+$$
+
+The order reverses, just as it does for transposes.
+
+For example,
+
+$$
+(ABC)^{-1}
+=
+C^{-1}B^{-1}A^{-1}.
+$$
+
+This follows because
+
+$$
+(ABC)(C^{-1}B^{-1}A^{-1})
+=
+A(BB^{-1})(CC^{-1})B^{-1}A^{-1},
+$$
+
+which simplifies to
+
+$$
+I.
+$$
+
+The order reversal is important because matrix multiplication is generally not commutative.
+
+---
+
+# Inverse of a transpose
+
+If $A$ is invertible, then
+
+$$
+\boxed{
+(A^\top)^{-1}=(A^{-1})^\top
+}
+$$
+
+This follows from
+
+$$
+AA^{-1}=I.
+$$
+
+Taking transposes gives
+
+$$
+(A^{-1})^\top A^\top=I.
+$$
+
+Thus $(A^{-1})^\top$ is the inverse of $A^\top$.
+
+---
+
+# Inverse and Linear Models
+
+Suppose
+
+$$
+X^\top X
+$$
+
+is invertible.
+
+The ordinary least-squares estimator can then be written as
+
+$$
+\boxed{
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y
+}
+$$
+
+This is one of the most important formulas in the matrix formulation of Linear Models.
+
+However, the formula requires $X^\top X$ to be invertible.
+
+This occurs when the columns of $X$ are linearly independent, assuming the usual real-valued finite-dimensional setting.
+
+Thus:
+
+$$
+\text{full column rank of }X
+\Longrightarrow
+X^\top X\text{ is invertible}.
+$$
+
+This connection between rank and the least-squares estimator will be developed more fully in the Core section.
+
+---
+
+# Orthogonal vectors
+
+Two vectors $x$ and $y$ are **orthogonal** if
+
+$$
+x^\top y=0.
+$$
+
+This is the vector-space version of perpendicularity.
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+2\\
+-1
+\end{pmatrix}
+$$
+
+are orthogonal because
+
+$$
+x^\top y
+=
+1(2)+2(-1)
+=
+0.
+$$
+
+Orthogonality is one of the most important geometric ideas in Linear Models.
+
+---
+
+# Orthogonal matrices
+
+A square matrix $Q$ is called **orthogonal** if
+
+$$
+Q^\top Q=I.
+$$
+
+For a square matrix, this is equivalent to
+
+$$
+QQ^\top=I.
+$$
+
+Therefore,
+
+$$
+\boxed{
+Q^{-1}=Q^\top
+}
+$$
+
+for an orthogonal matrix.
+
+This is an extremely useful property.
+
+Instead of computing a general inverse, the inverse of an orthogonal matrix is obtained simply by transposing it.
+
+---
+
+# Geometric meaning of orthogonal matrices
+
+Orthogonal matrices preserve lengths and angles.
+
+For any vector $x$,
+
+$$
+\|Qx\|^2
+=
+(Qx)^\top(Qx).
+$$
+
+Using the transpose rule,
+
+$$
+(Qx)^\top(Qx)
+=
+x^\top Q^\top Qx.
+$$
+
+Since
+
+$$
+Q^\top Q=I,
+$$
+
+we obtain
+
+$$
+\|Qx\|^2
+=
+x^\top x
+=
+\|x\|^2.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\|Qx\|=\|x\|
+}
+$$
+
+Orthogonal transformations include rotations and reflections.
+
+They change the orientation of vectors without distorting Euclidean geometry.
+
+---
+
+# Orthogonal columns
+
+Suppose the columns of a matrix $Q$ are
+
+$$
+q_1,\ldots,q_p.
+$$
+
+Then
+
+$$
+Q^\top Q
+$$
+
+contains their pairwise dot products.
+
+If
+
+$$
+Q^\top Q=I,
+$$
+
+then
+
+$$
+q_i^\top q_j
+=
+\begin{cases}
+1 & i=j,\\
+0 & i\neq j.
+\end{cases}
+$$
+
+Thus the columns are mutually orthogonal and each has unit length.
+
+Such vectors are called **orthonormal**.
+
+Therefore an orthogonal matrix has orthonormal columns.
+
+---
+
+# Orthonormal vectors
+
+A collection of vectors
+
+$$
+q_1,\ldots,q_k
+$$
+
+is **orthonormal** if
+
+$$
+q_i^\top q_j=0
+\qquad
+\text{for }i\neq j
+$$
+
+and
+
+$$
+q_i^\top q_i=1.
+$$
+
+Equivalently,
+
+$$
+\|q_i\|=1
+$$
+
+and the vectors are pairwise orthogonal.
+
+If the vectors are placed into a matrix,
+
+$$
+Q=
+\begin{pmatrix}
+| & | & & |\\
+q_1 & q_2 & \cdots & q_k\\
+| & | & & |
+\end{pmatrix},
+$$
+
+then
+
+$$
+Q^\top Q=I.
+$$
+
+Orthonormal bases are extremely useful because coordinates with respect to such bases are particularly easy to calculate.
+
+---
+
+# Orthogonal projection
+
+The projection of a vector $y$ onto a non-zero vector $x$ is
+
+$$
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+$$
+
+This can be written as
+
+$$
+\operatorname{proj}_x(y)
+=
+\hat y,
+$$
+
+where $\hat y$ is the component of $y$ lying in the direction of $x$.
+
+The residual
+
+$$
+y-\hat y
+$$
+
+is orthogonal to $x$.
+
+That is,
+
+$$
+x^\top(y-\hat y)=0.
+$$
+
+This fact is central to least squares.
+
+---
+
+# Projection matrix onto a vector
+
+The projection formula can be rewritten as
+
+$$
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+$$
+
+Since scalar multiplication can be rearranged,
+
+$$
+\operatorname{proj}_x(y)
+=
+\left(
+\frac{xx^\top}{x^\top x}
+\right)y.
+$$
+
+Therefore the matrix
+
+$$
+P=
+\frac{xx^\top}{x^\top x}
+$$
+
+is the **projection matrix onto the span of $x$**.
+
+Thus,
+
+$$
+\boxed{
+Py=\operatorname{proj}_x(y)
+}
+$$
+
+This is an important bridge between vector geometry and matrix algebra.
+
+---
+
+# Properties of a projection matrix
+
+For an orthogonal projection matrix $P$, two properties are especially important.
+
+First,
+
+$$
+P^\top=P.
+$$
+
+Thus $P$ is symmetric.
+
+Second,
+
+$$
+P^2=P.
+$$
+
+This property is called **idempotence**.
+
+The equation
+
+$$
+P^2=P
+$$
+
+has a simple interpretation.
+
+Once a vector has been projected onto a subspace, projecting it again does nothing:
+
+$$
+P(Py)=Py.
+$$
+
+Projection matrices therefore encode the idea of "projecting once is enough."
+
+---
+
+# Idempotent matrices
+
+A square matrix $A$ is called **idempotent** if
+
+$$
+A^2=A.
+$$
+
+Projection matrices are important examples of idempotent matrices.
+
+For example,
+
+$$
+P=
+\begin{pmatrix}
+1 & 0\\
+0 & 0
+\end{pmatrix}
+$$
+
+satisfies
+
+$$
+P^2
+=
+\begin{pmatrix}
+1 & 0\\
+0 & 0
+\end{pmatrix}
+=P.
+$$
+
+Geometrically, this matrix projects
+
+$$
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}
+$$
+
+onto the $x$-axis:
+
+$$
+P
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}
+=
+\begin{pmatrix}
+x\\
+0
+\end{pmatrix}.
+$$
+
+Idempotent matrices appear frequently in Linear Models, especially in projection and residual calculations.
+
+---
+
+# Projection onto a subspace
+
+The projection idea extends beyond a single vector.
+
+Suppose the columns of $X$ form a subspace
+
+$$
+\operatorname{Col}(X).
+$$
+
+If $X$ has full column rank, the projection matrix onto this column space is
+
+$$
+\boxed{
+P_X
+=
+X(X^\top X)^{-1}X^\top
+}
+$$
+
+For a vector $y$,
+
+$$
+P_Xy
+$$
+
+is the orthogonal projection of $y$ onto
+
+$$
+\operatorname{Col}(X).
+$$
+
+This matrix is fundamental to least squares.
+
+The fitted values can be written as
+
+$$
+\hat y=P_Xy.
+$$
+
+Thus,
+
+$$
+\boxed{
+\hat y
+=
+X(X^\top X)^{-1}X^\top y
+}
+$$
+
+when $X$ has full column rank.
+
+---
+
+# The residual-maker matrix
+
+If
+
+$$
+P_X
+=
+X(X^\top X)^{-1}X^\top,
+$$
+
+then define
+
+$$
+M_X=I-P_X.
+$$
+
+This matrix is sometimes called the **residual-maker matrix** or **annihilator matrix**.
+
+It projects a vector onto the orthogonal complement of the column space of $X$.
+
+Therefore,
+
+$$
+M_Xy
+$$
+
+is the component of $y$ orthogonal to the fitted-value space.
+
+In ordinary least squares,
+
+$$
+\boxed{
+e=M_Xy
+}
+$$
+
+where $e$ is the residual vector.
+
+Since
+
+$$
+M_X=I-P_X,
+$$
+
+we have
+
+$$
+e
+=
+y-P_Xy
+=
+y-\hat y.
+$$
+
+---
+
+# Orthogonality of least-squares residuals
+
+The least-squares fitted vector lies in
+
+$$
+\operatorname{Col}(X).
+$$
+
+The residual vector is orthogonal to this space.
+
+Therefore,
+
+$$
+X^\top e=0.
+$$
+
+Since
+
+$$
+e=y-X\hat\beta,
+$$
+
+we obtain
+
+$$
+X^\top(y-X\hat\beta)=0.
+$$
+
+Expanding,
+
+$$
+X^\top y-X^\top X\hat\beta=0.
+$$
+
+Therefore,
+
+$$
+\boxed{
+X^\top X\hat\beta=X^\top y
+}
+$$
+
+These are the **normal equations**.
+
+They are one of the most important connections between the linear algebra prerequisite material and the Linear Models course.
+
+---
+
+# Normal equations
+
+The least-squares estimator minimizes
+
+$$
+\|y-X\beta\|^2.
+$$
+
+The resulting first-order condition is
+
+$$
+X^\top X\hat\beta=X^\top y.
+$$
+
+If $X^\top X$ is invertible, then
+
+$$
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y.
+$$
+
+Thus the standard least-squares formula follows from solving the normal equations.
+
+The chain of ideas is:
+
+$$
+\boxed{
+\text{least squares}
+\rightarrow
+\text{orthogonality}
+\rightarrow
+\text{normal equations}
+\rightarrow
+X^\top X\hat\beta=X^\top y
+}
+$$
+
+This chain is worth understanding rather than merely memorising.
+
+---
+
+# Projection matrix properties
+
+For
+
+$$
+P_X=X(X^\top X)^{-1}X^\top,
+$$
+
+assuming $X$ has full column rank, the projection matrix satisfies
+
+$$
+P_X^\top=P_X
+$$
+
+and
+
+$$
+P_X^2=P_X.
+$$
+
+It therefore has two key properties:
+
+$$
+\boxed{
+P_X\text{ is symmetric}
+}
+$$
+
+and
+
+$$
+\boxed{
+P_X\text{ is idempotent}.
+}
+$$
+
+Furthermore,
+
+$$
+P_XX=X.
+$$
+
+This makes sense because the columns of $X$ already belong to the space onto which $P_X$ projects.
+
+---
+
+# Residual-maker matrix properties
+
+Recall
+
+$$
+M_X=I-P_X.
+$$
+
+Because $P_X$ is symmetric,
+
+$$
+M_X^\top=M_X.
+$$
+
+Because $P_X^2=P_X$,
+
+$$
+M_X^2=M_X.
+$$
+
+Therefore $M_X$ is also symmetric and idempotent.
+
+Moreover,
+
+$$
+M_XX=0.
+$$
+
+This follows from
+
+$$
+M_XX
+=
+(I-P_X)X
+=
+X-P_XX
+=
+X-X
+=
+0.
+$$
+
+This algebraically expresses the fact that the residual-maker removes everything lying in the column space of $X$.
+
+---
+
+# Orthogonal decomposition
+
+A vector $y$ can be decomposed into two orthogonal components:
+
+$$
+y=P_Xy+M_Xy.
+$$
+
+The first component,
+
+$$
+P_Xy,
+$$
+
+lies in
+
+$$
+\operatorname{Col}(X).
+$$
+
+The second component,
+
+$$
+M_Xy,
+$$
+
+lies in the orthogonal complement of that space.
+
+Therefore,
+
+$$
+\boxed{
+y=\hat y+e
+}
+$$
+
+where
+
+$$
+\hat y\perp e.
+$$
+
+This gives the geometric interpretation of least squares:
+
+$$
+\boxed{
+\text{observed data}
+=
+\text{fitted component}
++
+\text{orthogonal residual component}.
+}
+$$
+
+---
+
+# Pythagorean identity for least squares
+
+Because
+
+$$
+\hat y\perp e,
+$$
+
+we have
+
+$$
+y=\hat y+e
+$$
+
+with orthogonal components.
+
+Therefore,
+
+$$
+\|y\|^2
+=
+\|\hat y\|^2+\|e\|^2.
+$$
+
+That is,
+
+$$
+\boxed{
+\|y\|^2
+=
+\|X\hat\beta\|^2
++
+\|y-X\hat\beta\|^2
+}
+$$
+
+This is the geometric origin of many familiar sums-of-squares decompositions.
+
+---
+
+# Quadratic forms in Linear Models
+
+The least-squares objective is
+
+$$
+\|y-X\beta\|^2.
+$$
+
+Using the fact that
+
+$$
+\|z\|^2=z^\top z,
+$$
+
+we can write
+
+$$
+\|y-X\beta\|^2
+=
+(y-X\beta)^\top(y-X\beta).
+$$
+
+Expanding gives
+
+$$
+\|y-X\beta\|^2
+=
+y^\top y
+-
+2\beta^\top X^\top y
++
+\beta^\top X^\top X\beta.
+$$
+
+This is a quadratic function of $\beta$.
+
+The matrix
+
+$$
+X^\top X
+$$
+
+therefore controls the quadratic part of the least-squares objective.
+
+This is one reason positive semidefinite matrices are important in Linear Models.
+
+---
+
+# Positive definite matrices
+
+A symmetric matrix $A$ is **positive definite** if
+
+$$
+x^\top Ax>0
+$$
+
+for every non-zero vector $x$.
+
+Compare this with positive semidefinite:
+
+$$
+x^\top Ax\geq0.
+$$
+
+Thus:
+
+$$
+\text{positive definite}
+\quad\Longrightarrow\quad
+\text{positive semidefinite}.
+$$
+
+But a positive semidefinite matrix does not necessarily have to be positive definite.
+
+---
+
+# Why $X^\top X$ matters
+
+For any vector $c$,
+
+$$
+c^\top X^\top Xc
+=
+(Xc)^\top(Xc)
+=
+\|Xc\|^2.
+$$
+
+Therefore,
+
+$$
+c^\top X^\top Xc\geq0.
+$$
+
+So $X^\top X$ is positive semidefinite.
+
+If $X$ has full column rank, then
+
+$$
+Xc\neq0
+$$
+
+whenever
+
+$$
+c\neq0.
+$$
+
+Therefore,
+
+$$
+\|Xc\|^2>0
+$$
+
+for every non-zero $c$.
+
+Hence,
+
+$$
+\boxed{
+X^\top X\text{ is positive definite if }X\text{ has full column rank}.
+}
+$$
+
+This gives another way of seeing why full column rank is so important.
+
+---
+
+# Matrix norms
+
+A norm measures the size of a mathematical object.
+
+For a vector,
+
+$$
+\|x\|
+=
+\sqrt{x^\top x}.
+$$
+
+Matrices can also be assigned norms.
+
+One common matrix norm is the **Frobenius norm**:
+
+$$
+\|A\|_F
+=
+\sqrt{
+\sum_i\sum_j a_{ij}^2
+}.
+$$
+
+Equivalently,
+
+$$
+\|A\|_F
+=
+\sqrt{\operatorname{tr}(A^\top A)}.
+$$
+
+For example,
+
+$$
+A=
+\begin{pmatrix}
+1 & 2\\
+3 & 4
+\end{pmatrix}
+$$
+
+has
+
+$$
+\|A\|_F
+=
+\sqrt{1^2+2^2+3^2+4^2}
+=
+\sqrt{30}.
+$$
+
+The Frobenius norm is useful for measuring the overall size of a matrix.
+
+---
+
+# Matrix multiplication identities
+
+The following identities are particularly useful.
+
+For compatible matrices,
+
+$$
+A(B+C)=AB+AC,
+$$
+
+$$
+(A+B)C=AC+BC,
+$$
+
+$$
+(AB)C=A(BC),
+$$
+
+and
+
+$$
+c(AB)=(cA)B=A(cB).
+$$
+
+For transposes,
+
+$$
+(A+B)^\top=A^\top+B^\top,
+$$
+
+$$
+(cA)^\top=cA^\top,
+$$
+
+and
+
+$$
+(AB)^\top=B^\top A^\top.
+$$
+
+For inverses,
+
+$$
+(AB)^{-1}=B^{-1}A^{-1},
+$$
+
+and
+
+$$
+(A^\top)^{-1}=(A^{-1})^\top.
+$$
+
+The order-reversal rules are particularly important:
+
+$$
+\boxed{
+(AB)^\top=B^\top A^\top
+}
+$$
+
+and
+
+$$
+\boxed{
+(AB)^{-1}=B^{-1}A^{-1}.
+}
+$$
+
+---
+
+# Common matrix mistakes
+
+Matrix algebra has a few traps that are worth identifying early.
+
+### Assuming multiplication is commutative
+
+Generally,
+
+$$
+AB\neq BA.
+$$
+
+### Multiplying corresponding entries
+
+Standard matrix multiplication is not
+
+$$
+a_{ij}b_{ij}.
+$$
+
+Instead, each output entry is a row-column dot product.
+
+### Ignoring dimensions
+
+Always check that the inner dimensions match.
+
+### Forgetting transpose order
+
+The correct identity is
+
+$$
+(AB)^\top=B^\top A^\top.
+$$
+
+### Treating every square matrix as invertible
+
+A square matrix may be singular.
+
+The inverse exists only when
+
+$$
+\det(A)\neq0.
+$$
+
+### Assuming $A^\top A=AA^\top$
+
+These matrices generally have different dimensions and are not generally equal.
+
+If
+
+$$
+A\in\mathbb R^{n\times p},
+$$
+
+then
+
+$$
+A^\top A\in\mathbb R^{p\times p}
+$$
+
+while
+
+$$
+AA^\top\in\mathbb R^{n\times n}.
+$$
+
+---
+
+# Matrix identities worth remembering
+
+For Linear Models, the following identities are particularly useful:
+
+$$
+(A+B)^\top=A^\top+B^\top
+$$
+
+$$
+(AB)^\top=B^\top A^\top
+$$
+
+$$
+(A^{-1})^\top=(A^\top)^{-1}
+$$
+
+$$
+(AB)^{-1}=B^{-1}A^{-1}
+$$
+
+$$
+x^\top y=y^\top x
+$$
+
+$$
+\|x\|^2=x^\top x
+$$
+
+$$
+X^\top X=(X^\top X)^\top
+$$
+
+$$
+P_X=X(X^\top X)^{-1}X^\top
+$$
+
+$$
+P_X^2=P_X
+$$
+
+$$
+P_X^\top=P_X
+$$
+
+$$
+M_X=I-P_X
+$$
+
+$$
+M_X^2=M_X
+$$
+
+$$
+M_X^\top=M_X
+$$
+
+and, for ordinary least squares with full column rank,
+
+$$
+\hat\beta=(X^\top X)^{-1}X^\top y.
+$$
+
+---
+
+# Dimension reference
+
+Suppose
+
+$$
+X\in\mathbb R^{n\times p},
+\qquad
+\beta\in\mathbb R^{p},
+\qquad
+y\in\mathbb R^n.
+$$
+
+Then:
+
+| Expression | Dimensions |
+|---|---|
+| $X$ | $n\times p$ |
+| $X^\top$ | $p\times n$ |
+| $\beta$ | $p\times1$ |
+| $y$ | $n\times1$ |
+| $X\beta$ | $n\times1$ |
+| $X^\top y$ | $p\times1$ |
+| $X^\top X$ | $p\times p$ |
+| $(X^\top X)^{-1}$ | $p\times p$ |
+| $(X^\top X)^{-1}X^\top$ | $p\times n$ |
+| $\hat\beta$ | $p\times1$ |
+| $\hat y=X\hat\beta$ | $n\times1$ |
+| $e=y-\hat y$ | $n\times1$ |
+| $P_X$ | $n\times n$ |
+| $M_X$ | $n\times n$ |
+
+This table is worth keeping nearby when manipulating matrix expressions.
+
+---
+
+# Linear Models matrix map
+
+The main matrix concepts connect to Linear Models as follows:
+
+$$
+X
+\longrightarrow
+\text{design matrix}
+$$
+
+$$
+X\beta
+\longrightarrow
+\text{fitted linear predictor}
+$$
+
+$$
+X^\top X
+\longrightarrow
+\text{Gram matrix}
+$$
+
+$$
+(X^\top X)^{-1}X^\top
+\longrightarrow
+\text{least-squares coefficient operator}
+$$
+
+$$
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y
+$$
+
+$$
+X\hat\beta
+\longrightarrow
+\text{projection of }y\text{ onto }\operatorname{Col}(X)
+$$
+
+$$
+P_X
+=
+X(X^\top X)^{-1}X^\top
+\longrightarrow
+\text{projection matrix}
+$$
+
+$$
+M_X=I-P_X
+\longrightarrow
+\text{residual-maker matrix}
+$$
+
+$$
+e=M_Xy
+\longrightarrow
+\text{residual vector}
+$$
+
+and
+
+$$
+X^\top e=0
+$$
+
+expresses the orthogonality of the residuals to the model space.
+
+---
+
+# What you should know before moving to the Core material
+
+For the purposes of a Linear Models course, you should be comfortable with the following.
+
+## Essential
+
+You should be able to:
+
+- identify matrix dimensions,
+- extract rows and columns,
+- perform matrix addition and scalar multiplication,
+- perform matrix multiplication,
+- perform matrix-vector multiplication,
+- use transposes,
+- understand $X^\top X$ and $X^\top y$,
+- understand linear combinations of matrix columns,
+- understand column space,
+- understand linear independence,
+- understand rank,
+- solve basic systems of equations,
+- understand the null space,
+- understand matrix inverses,
+- understand orthogonality,
+- understand projections,
+- understand projection matrices,
+- and follow the dimensions in a matrix expression.
+
+## Important for Linear Models
+
+You should understand:
+
+$$
+X\beta
+$$
+
+as a linear combination of the columns of $X$,
+
+$$
+X^\top X
+$$
+
+as a Gram matrix,
+
+$$
+X^\top X\hat\beta=X^\top y
+$$
+
+as the normal equations,
+
+and
+
+$$
+\hat y=P_Xy
+$$
+
+as the projection of $y$ onto the column space of $X$.
+
+## Useful but not necessarily central
+
+You should recognize:
+
+- determinants,
+- positive semidefinite matrices,
+- positive definite matrices,
+- orthogonal matrices,
+- idempotent matrices,
+- quadratic forms,
+- matrix norms,
+- row reduction,
+- and rank-nullity.
+
+You do not necessarily need to become an expert in all of these before starting the Linear Models material.
+
+---
+
+# Quick reference
+
+| Concept | Key idea |
+|---|---|
+| Matrix | Rectangular array of numbers |
+| Dimension | Rows $\times$ columns |
+| Matrix multiplication | Row-column dot products |
+| Transpose | Exchange rows and columns |
+| Symmetric matrix | $A^\top=A$ |
+| Identity matrix | $AI=IA=A$ |
+| Inverse | $AA^{-1}=A^{-1}A=I$ |
+| Rank | Dimension of column space |
+| Null space | $\{x:Ax=0\}$ |
+| Full column rank | $\operatorname{rank}(X)=p$ |
+| Orthogonal vectors | $x^\top y=0$ |
+| Orthonormal vectors | Orthogonal and unit length |
+| Orthogonal matrix | $Q^\top Q=I$ |
+| Projection matrix | Maps vectors onto a subspace |
+| Idempotent matrix | $P^2=P$ |
+| Positive semidefinite | $x^\top Ax\geq0$ |
+| Positive definite | $x^\top Ax>0$ for $x\neq0$ |
+| Gram matrix | $X^\top X$ |
+| Design matrix | $X$ in a linear model |
+| Normal equations | $X^\top X\hat\beta=X^\top y$ |
+| Projection matrix in OLS | $P_X=X(X^\top X)^{-1}X^\top$ |
+| Residual-maker | $M_X=I-P_X$ |
+| OLS estimator | $\hat\beta=(X^\top X)^{-1}X^\top y$ |
+
+---
+
+# Summary
+
+Matrices provide the compact algebraic language used to express Linear Models.
+
+The most important operations are matrix addition, scalar multiplication, matrix multiplication, and transposition.
+
+Matrix multiplication connects directly to vectors:
+
+$$
+Ax
+$$
+
+can be interpreted as a linear combination of the columns of $A$.
+
+This leads naturally to the column space:
+
+$$
+\operatorname{Col}(A)
+=
+\{Ax:x\in\mathbb R^n\}.
+$$
+
+Rank measures the dimension of this space and therefore measures the number of independent directions represented by the matrix.
+
+The equation
+
+$$
+Ax=b
+$$
+
+provides the general framework for systems of linear equations, while
+
+$$
+Ax=0
+$$
+
+defines the null space and connects directly to linear independence.
+
+For Linear Models, the central object is the design matrix $X$.
+
+The model
+
+$$
+y=X\beta+\varepsilon
+$$
+
+uses matrix-vector multiplication to represent all observations simultaneously.
+
+The matrix
+
+$$
+X^\top X
+$$
+
+contains the pairwise inner products between the columns of $X$ and is therefore a Gram matrix.
+
+When $X$ has full column rank, $X^\top X$ is invertible and the least-squares estimator is
+
+$$
+\hat\beta
+=
+(X^\top X)^{-1}X^\top y.
+$$
+
+The fitted values are
+
+$$
+\hat y=X\hat\beta
+$$
+
+and can be interpreted geometrically as the orthogonal projection of $y$ onto the column space of $X$:
+
+$$
+\hat y=P_Xy,
+$$
+
+where
+
+$$
+P_X
+=
+X(X^\top X)^{-1}X^\top.
+$$
+
+The residual vector is
+
+$$
+e=y-\hat y,
+$$
+
+and it satisfies
+
+$$
+X^\top e=0.
+$$
+
+Thus the key conceptual chain is:
+
+$$
+\boxed{
+\text{vectors}
+\rightarrow
+\text{matrices}
+\rightarrow
+\text{linear transformations}
+\rightarrow
+\text{linear combinations}
+\rightarrow
+\text{column spaces}
+\rightarrow
+\text{projections}
+\rightarrow
+\text{least squares}
+}
+$$
+
+This is the bridge from the Linear Algebra prerequisite material into the mathematical core of Linear Models.

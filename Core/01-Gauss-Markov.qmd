@@ -1,0 +1,3549 @@
+---
+title: "Gauss-Markov Set-up"
+subtitle: "The Linear Model, Estimation, and the Gauss-Markov Framework"
+---
+
+# Gauss-Markov Set-up
+
+::: {.callout-note}
+## Course Status
+
+**Status:** 🟢 **Core**
+
+This module is explicitly included in the Linear Models syllabus and forms the theoretical foundation for the subsequent modules on regression, analysis of variance, and model checking.
+
+**Required depth:** **4 · Prove**
+
+The course requires understanding the theory of linear estimation, estimability, least squares, the Gauss-Markov theorem, and estimation of error variance. Important results should therefore be understood mathematically, including their derivations or proofs where appropriate.
+:::
+
+## Overview
+
+The Gauss-Markov set-up provides the mathematical foundation for the theory of linear models.
+
+At its heart, a linear model describes a response variable in terms of systematic effects represented by unknown parameters and a random component representing unexplained variation.
+
+The general form of the linear model is
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+$$
+
+This compact equation contains almost the entire framework:
+
+- $\mathbf{Y}$ represents the observed responses.
+- $\mathbf{X}$ is the model matrix, which describes how the explanatory variables enter the model.
+- $\boldsymbol{\beta}$ is the vector of unknown parameters.
+- $\boldsymbol{\varepsilon}$ is the vector of random errors.
+
+The purpose of linear model theory is to use the observed data $\mathbf{Y}$ to learn about the unknown parameter vector $\boldsymbol{\beta}$ while accounting for the random variation represented by $\boldsymbol{\varepsilon}$.
+
+The Gauss-Markov framework then provides a rigorous way of answering questions such as:
+
+- How should the unknown parameters be estimated?
+- Which functions of the parameters can actually be estimated?
+- What does it mean for an estimator to be unbiased?
+- Among linear unbiased estimators, which one is best?
+- How can the unknown error variance be estimated?
+
+These questions form the theoretical basis for ordinary least squares and much of classical linear model inference.
+
+---
+
+## Why Study Linear Models?
+
+Linear models are important because a surprisingly large collection of statistical methods can be expressed within a single mathematical framework.
+
+Simple linear regression, multiple regression, analysis of variance, and analysis of covariance can all be represented using the general linear model
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+$$
+
+The apparent differences between these methods often arise from differences in the structure of the model matrix $\mathbf{X}$, the interpretation of the parameters in $\boldsymbol{\beta}$, and the assumptions made about the errors.
+
+This is one of the central ideas of the subject:
+
+> Different statistical models can be treated using the same underlying linear model machinery.
+
+For example, the simple regression model
+
+$$
+Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+$$
+
+can be written in matrix form as
+
+$$
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+$$
+
+The same structure extends naturally to multiple regression and to many experimental designs used in analysis of variance.
+
+The matrix formulation therefore gives us a common language for a broad range of statistical models.
+
+---
+
+## The General Linear Model
+
+Suppose we observe $n$ responses
+
+$$
+Y_1,Y_2,\ldots,Y_n.
+$$
+
+The general linear model represents these observations collectively as
+
+$$
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
+$$
+
+The dimensions of the objects are important.
+
+Suppose there are $n$ observations and $p$ unknown parameters. Then
+
+$$
+\mathbf{Y}_{n\times 1},
+\qquad
+\mathbf{X}_{n\times p},
+\qquad
+\boldsymbol{\beta}_{p\times 1},
+\qquad
+\boldsymbol{\varepsilon}_{n\times 1}.
+$$
+
+The matrix multiplication
+
+$$
+\mathbf{X}\boldsymbol{\beta}
+$$
+
+therefore produces an $n\times 1$ vector, matching the dimension of $\mathbf{Y}$.
+
+The model can also be written observation by observation:
+
+$$
+Y_i = \sum_{j=1}^{p} x_{ij}\beta_j + \varepsilon_i,
+\qquad i=1,\ldots,n.
+$$
+
+Here, $x_{ij}$ denotes the element of the model matrix in row $i$ and column $j$.
+
+This representation makes the meaning of "linear" particularly clear. The model is linear in the unknown parameters $\beta_1,\ldots,\beta_p$.
+
+---
+
+## Components of the Linear Model
+
+### The Response Vector
+
+The vector
+
+$$
+\mathbf{Y}
+=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}
+$$
+
+contains the random response variables.
+
+After observing the data, we obtain the observed vector
+
+$$
+\mathbf{y}
+=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+$$
+
+It is useful to distinguish between the random variable $\mathbf{Y}$ and its observed value $\mathbf{y}$.
+
+Before the data are observed, $\mathbf{Y}$ is random.
+
+After the data are observed, $\mathbf{y}$ is the particular realization that we have obtained.
+
+---
+
+### The Parameter Vector
+
+The unknown parameters are collected into
+
+$$
+\boldsymbol{\beta}
+=
+\begin{pmatrix}
+\beta_1\\
+\beta_2\\
+\vdots\\
+\beta_p
+\end{pmatrix}.
+$$
+
+These parameters describe the systematic component of the model.
+
+Depending on the model, they may represent quantities such as:
+
+- an intercept,
+- regression coefficients,
+- treatment effects,
+- group effects,
+- interaction effects,
+- or other linear combinations of scientifically meaningful quantities.
+
+The parameter vector is generally unknown and is therefore the main object we want to estimate.
+
+---
+
+### The Model Matrix
+
+The matrix
+
+$$
+\mathbf{X}
+=
+\begin{pmatrix}
+x_{11} & x_{12} & \cdots & x_{1p}\\
+x_{21} & x_{22} & \cdots & x_{2p}\\
+\vdots & \vdots & \ddots & \vdots\\
+x_{n1} & x_{n2} & \cdots & x_{np}
+\end{pmatrix}
+$$
+
+is called the **model matrix** or **design matrix**.
+
+Its rows correspond to observations, while its columns correspond to parameters.
+
+The model matrix determines how the parameters enter the model.
+
+For example, consider simple linear regression:
+
+$$
+Y_i = \beta_0+\beta_1x_i+\varepsilon_i.
+$$
+
+The model matrix is
+
+$$
+\mathbf{X}
+=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}.
+$$
+
+The first column represents the intercept and the second column represents the explanatory variable.
+
+The model matrix will become particularly important when we study least squares estimation, because the geometry and algebra of the model are largely determined by the column space of $\mathbf{X}$.
+
+---
+
+### The Error Vector
+
+The random errors are collected into
+
+$$
+\boldsymbol{\varepsilon}
+=
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+$$
+
+The errors represent the part of the observations that is not explained by the systematic component $\mathbf{X}\boldsymbol{\beta}$.
+
+Thus,
+
+$$
+\mathbf{Y}
+=
+\underbrace{\mathbf{X}\boldsymbol{\beta}}_{\text{systematic component}}
++
+\underbrace{\boldsymbol{\varepsilon}}_{\text{random component}}.
+$$
+
+This decomposition is fundamental.
+
+The systematic component describes what the model says about the mean structure of the observations, while the random component accounts for unexplained variation.
+
+---
+
+## Assumptions of the Gauss-Markov Model
+
+The classical Gauss-Markov framework is based on assumptions about the error vector.
+
+The central assumptions are
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+$$
+
+and
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n,
+$$
+
+where $\sigma^2>0$ is the common error variance and $\mathbf{I}_n$ is the $n\times n$ identity matrix.
+
+These assumptions can be unpacked into simpler statements.
+
+---
+
+### Zero Mean Errors
+
+The condition
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+$$
+
+means that
+
+$$
+E(\varepsilon_i)=0
+$$
+
+for every observation.
+
+The errors therefore have no systematic tendency to be positive or negative.
+
+Taking expectations in the model
+
+$$
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
+$$
+
+and assuming that $\mathbf{X}$ is fixed, gives
+
+$$
+E(\mathbf{Y})
+=
+\mathbf{X}\boldsymbol{\beta}
++
+E(\boldsymbol{\varepsilon}).
+$$
+
+Therefore,
+
+$$
+E(\mathbf{Y})
+=
+\mathbf{X}\boldsymbol{\beta}.
+$$
+
+Thus the systematic component of the model is the expected response:
+
+$$
+\boxed{
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}
+}
+$$
+
+This is one of the most important interpretations of the linear model.
+
+---
+
+### Constant Error Variance
+
+The assumption
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n
+$$
+
+implies that every error has the same variance:
+
+$$
+\operatorname{Var}(\varepsilon_i)=\sigma^2.
+$$
+
+This property is called **homoscedasticity**.
+
+It also implies that the errors are uncorrelated:
+
+$$
+\operatorname{Cov}(\varepsilon_i,\varepsilon_j)=0,
+\qquad i\neq j.
+$$
+
+Therefore, the errors have a covariance matrix of the form
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\begin{pmatrix}
+\sigma^2 & 0 & \cdots & 0\\
+0 & \sigma^2 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \sigma^2
+\end{pmatrix}
+=
+\sigma^2\mathbf{I}_n.
+$$
+
+This assumption is central to the Gauss-Markov theorem.
+
+---
+
+### Normality Is Not Required for the Gauss-Markov Theorem
+
+An important distinction should be made here.
+
+The basic Gauss-Markov theorem does **not** require the errors to be normally distributed.
+
+The essential assumptions are the mean and covariance conditions
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+$$
+
+and
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+$$
+
+Normality,
+
+$$
+\boldsymbol{\varepsilon}\sim N(\mathbf{0},\sigma^2\mathbf{I}_n),
+$$
+
+is an additional assumption that is useful for obtaining exact finite-sample distributions and carrying out classical hypothesis tests and confidence procedures.
+
+This distinction will become important later when we discuss inference and model checking.
+
+---
+
+## Mean and Variance of the Response
+
+Since
+
+$$
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
+$$
+
+and
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0},
+$$
+
+we have
+
+$$
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}.
+$$
+
+Similarly, because $\mathbf{X}\boldsymbol{\beta}$ is treated as fixed,
+
+$$
+\operatorname{Var}(\mathbf{Y})
+=
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+$$
+
+Therefore, the basic Gauss-Markov model can be summarized as
+
+$$
+\boxed{
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}
+}
+$$
+
+and
+
+$$
+\boxed{
+\operatorname{Var}(\mathbf{Y})=\sigma^2\mathbf{I}_n.
+}
+$$
+
+These two equations describe the mean structure and covariance structure of the observations.
+
+---
+
+## What Does "Linear" Mean?
+
+The word **linear** in linear model refers to linearity in the unknown parameters.
+
+For example,
+
+$$
+Y_i=\beta_0+\beta_1x_i+\varepsilon_i
+$$
+
+is a linear model.
+
+So is
+
+$$
+Y_i=\beta_0+\beta_1x_i+\beta_2x_i^2+\varepsilon_i.
+$$
+
+Although $x_i^2$ appears in the second model, the model is still linear in the parameters $\beta_0,\beta_1,\beta_2$.
+
+It can be written as
+
+$$
+Y_i
+=
+\beta_0(1)
++
+\beta_1(x_i)
++
+\beta_2(x_i^2)
++
+\varepsilon_i.
+$$
+
+In matrix form,
+
+$$
+\mathbf{Y}
+=
+\begin{pmatrix}
+1 & x_1 & x_1^2\\
+1 & x_2 & x_2^2\\
+\vdots & \vdots & \vdots\\
+1 & x_n & x_n^2
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1\\
+\beta_2
+\end{pmatrix}
++
+\boldsymbol{\varepsilon}.
+$$
+
+The parameters still appear only to the first power and are not multiplied by one another.
+
+By contrast, a model such as
+
+$$
+Y_i=\beta_0+\beta_1^{\,2}x_i+\varepsilon_i
+$$
+
+is not linear in the parameter $\beta_1$.
+
+Thus, linearity concerns the **parameters**, not necessarily the explanatory variables.
+
+---
+
+## Linear Parametric Functions
+
+The goal of estimation is not always to estimate the individual parameters $\beta_1,\ldots,\beta_p$.
+
+Often, the quantity of interest is a linear combination of the parameters.
+
+A general linear parametric function has the form
+
+$$
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
+$$
+
+where $\mathbf{a}$ is a known vector of constants.
+
+For example, if
+
+$$
+\boldsymbol{\beta}
+=
+\begin{pmatrix}
+\beta_0\\
+\beta_1\\
+\beta_2
+\end{pmatrix},
+$$
+
+then
+
+$$
+\mathbf{a}
+=
+\begin{pmatrix}
+1\\
+2\\
+-1
+\end{pmatrix}
+$$
+
+gives
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+=
+\beta_0+2\beta_1-\beta_2.
+$$
+
+Such quantities are called **linear parametric functions**.
+
+Estimability asks whether a particular linear parametric function can be estimated from the available observations under the model.
+
+This question becomes especially important when the model matrix does not have full column rank.
+
+---
+
+## Linear Estimators
+
+An estimator is a function of the observed data used to estimate an unknown quantity.
+
+In the Gauss-Markov framework, we are particularly interested in **linear estimators**.
+
+A general linear estimator of a scalar quantity can be written as
+
+$$
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y},
+$$
+
+where $\mathbf{c}$ is a vector of known constants.
+
+Equivalently,
+
+$$
+\widehat{\lambda}
+=
+\sum_{i=1}^{n}c_iY_i.
+$$
+
+Thus, a linear estimator is a weighted sum of the observations.
+
+The weights $c_1,\ldots,c_n$ are chosen so that the estimator has desirable statistical properties.
+
+---
+
+### Unbiasedness
+
+Suppose we want to estimate the linear parametric function
+
+$$
+\lambda=\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+$$
+
+A linear estimator
+
+$$
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y}
+$$
+
+is **unbiased** if
+
+$$
+E(\widehat{\lambda})=\lambda.
+$$
+
+Using
+
+$$
+E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta},
+$$
+
+we obtain
+
+$$
+E(\widehat{\lambda})
+=
+E(\mathbf{c}^{\mathsf T}\mathbf{Y})
+=
+\mathbf{c}^{\mathsf T}E(\mathbf{Y})
+=
+\mathbf{c}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
+$$
+
+For this to equal
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+
+for every possible $\boldsymbol{\beta}$, we require
+
+$$
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}.
+$$
+
+Therefore, the condition for $\mathbf{c}^{\mathsf T}\mathbf{Y}$ to be an unbiased estimator of $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$ is
+
+$$
+\boxed{
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}
+}
+$$
+
+This condition provides the bridge between **estimability** and **linear estimation**.
+
+---
+
+## Why Variance Matters
+
+Unbiasedness alone is not enough to choose an estimator.
+
+Suppose several unbiased estimators of the same quantity are available. We would generally prefer an estimator that has smaller variance because it tends to fluctuate less from sample to sample.
+
+For the linear estimator
+
+$$
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y},
+$$
+
+its variance is
+
+$$
+\operatorname{Var}(\widehat{\lambda})
+=
+\operatorname{Var}(\mathbf{c}^{\mathsf T}\mathbf{Y}).
+$$
+
+Since
+
+$$
+\operatorname{Var}(\mathbf{Y})
+=
+\sigma^2\mathbf{I}_n,
+$$
+
+we obtain
+
+$$
+\operatorname{Var}(\widehat{\lambda})
+=
+\mathbf{c}^{\mathsf T}
+\operatorname{Var}(\mathbf{Y})
+\mathbf{c}.
+$$
+
+Hence,
+
+$$
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2\mathbf{c}^{\mathsf T}\mathbf{c}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2\mathbf{c}^{\mathsf T}\mathbf{c}
+}
+$$
+
+under the Gauss-Markov assumptions.
+
+This leads to the central optimization problem of linear estimation:
+
+> Among all linear unbiased estimators of a given estimable quantity, which estimator has the smallest variance?
+
+The answer to this question is the **best linear unbiased estimator**, or **BLUE**.
+
+The Gauss-Markov theorem will establish why the least squares estimator has this optimality property.
+
+---
+
+## The Road Ahead
+
+The theory developed so far gives us the basic ingredients:
+
+$$
+\boxed{
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+}
+$$
+
+with
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0},
+\qquad
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+$$
+
+From this set-up we have introduced:
+
+- the response vector $\mathbf{Y}$,
+- the model matrix $\mathbf{X}$,
+- the parameter vector $\boldsymbol{\beta}$,
+- the error vector $\boldsymbol{\varepsilon}$,
+- linear parametric functions $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$,
+- linear estimators $\mathbf{c}^{\mathsf T}\mathbf{Y}$,
+- unbiasedness,
+- and the role of estimator variance.
+
+The next question is unavoidable:
+
+> Which linear parametric functions can actually be estimated, and how should we construct an estimator with the smallest possible variance?
+
+This leads to the theory of **estimability** and then to the **method of least squares**.
+
+::: {.callout-tip}
+### Key Idea
+
+The Gauss-Markov framework is built around three objects:
+
+$$
+\boxed{
+\text{Model}
+\quad\longrightarrow\quad
+\text{Estimator}
+\quad\longrightarrow\quad
+\text{Optimality}
+}
+$$
+
+The model describes the data through
+
+$$
+\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
+$$
+
+the estimator uses $\mathbf{Y}$ to estimate a quantity involving $\boldsymbol{\beta}$, and the Gauss-Markov theorem tells us which linear unbiased estimator is best.
+:::
+
+# Estimability and the Method of Least Squares
+
+::: {.callout-note}
+### Course Status
+
+**Status:** 🟢 **Core**
+
+**Required depth:** **4 · Prove**
+
+This section covers the syllabus topics **estimability of linear parametric functions** and the **method of least squares**. The main results should be understood mathematically, including the connection between the model matrix, estimability, normal equations, and least squares estimation.
+:::
+
+## Estimability
+
+In the previous section, we introduced a linear parametric function
+
+$$
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
+$$
+
+and a linear estimator
+
+$$
+\widehat{\lambda}
+=
+\mathbf{c}^{\mathsf T}\mathbf{Y}.
+$$
+
+For $\widehat{\lambda}$ to be an unbiased estimator of $\lambda$, we established the condition
+
+$$
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}.
+$$
+
+This immediately raises an important question:
+
+> Does such a vector $\mathbf{c}$ exist?
+
+If it does, the linear parametric function is **estimable**.
+
+Thus, estimability is fundamentally a question about the model matrix $\mathbf{X}$.
+
+---
+
+### Definition of Estimability
+
+A linear parametric function
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+
+is said to be **estimable** if there exists a vector $\mathbf{c}$ such that
+
+$$
+\mathbf{c}^{\mathsf T}\mathbf{X}
+=
+\mathbf{a}^{\mathsf T}.
+$$
+
+Equivalently,
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{c}
+=
+\mathbf{a}.
+$$
+
+When this condition holds, the quantity
+
+$$
+\mathbf{c}^{\mathsf T}\mathbf{Y}
+$$
+
+is a linear unbiased estimator of
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\text{ is estimable}
+\iff
+\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T})
+}
+$$
+
+where $\mathcal{C}(\mathbf{X}^{\mathsf T})$ denotes the column space of $\mathbf{X}^{\mathsf T}$.
+
+Since
+
+$$
+\mathcal{C}(\mathbf{X}^{\mathsf T})
+$$
+
+is the row space of $\mathbf{X}$, we can also state that a linear parametric function is estimable precisely when its coefficient vector belongs to the row space of $\mathbf{X}$.
+
+---
+
+## Why Estimability Matters
+
+It is tempting to assume that every individual parameter in $\boldsymbol{\beta}$ can automatically be estimated.
+
+That is not always true.
+
+Suppose
+
+$$
+\mathbf{X}
+=
+\begin{pmatrix}
+1 & 1\\
+1 & 1\\
+1 & 1
+\end{pmatrix}.
+$$
+
+The two columns of $\mathbf{X}$ are identical.
+
+The model
+
+$$
+\mathbf{Y}
+=
+\mathbf{X}
+\begin{pmatrix}
+\beta_1\\
+\beta_2
+\end{pmatrix}
++
+\boldsymbol{\varepsilon}
+$$
+
+therefore becomes
+
+$$
+Y_i
+=
+\beta_1+\beta_2+\varepsilon_i.
+$$
+
+The data contain information about
+
+$$
+\beta_1+\beta_2,
+$$
+
+but there is no way to distinguish $\beta_1$ from $\beta_2$ individually.
+
+Thus,
+
+$$
+\beta_1+\beta_2
+$$
+
+is estimable, while $\beta_1$ and $\beta_2$ individually are not uniquely determined by the model.
+
+This illustrates an important principle:
+
+> The data determine certain combinations of parameters, rather than necessarily determining every parameter separately.
+
+---
+
+## Full Column Rank and Estimability
+
+The simplest situation occurs when $\mathbf{X}$ has full column rank.
+
+Suppose
+
+$$
+\operatorname{rank}(\mathbf{X})=p.
+$$
+
+Then
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{X}
+$$
+
+is nonsingular.
+
+In this case, every linear parametric function
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+
+is estimable.
+
+In particular, each individual parameter $\beta_j$ is estimable.
+
+The full-rank case is therefore especially convenient because the parameter vector itself is uniquely identifiable from the systematic part of the model.
+
+---
+
+### Rank Deficiency
+
+If
+
+$$
+\operatorname{rank}(\mathbf{X})<p,
+$$
+
+then the columns of $\mathbf{X}$ are linearly dependent.
+
+In this situation, the parameter vector $\boldsymbol{\beta}$ is not uniquely determined by $\mathbf{X}\boldsymbol{\beta}$.
+
+There may be multiple vectors $\boldsymbol{\beta}$ that produce exactly the same mean vector:
+
+$$
+\mathbf{X}\boldsymbol{\beta}_1
+=
+\mathbf{X}\boldsymbol{\beta}_2.
+$$
+
+Therefore, individual parameters may fail to be estimable.
+
+However, certain linear combinations of the parameters can still be estimable.
+
+This distinction is important:
+
+$$
+\boxed{
+\text{Non-estimability of individual parameters}
+\neq
+\text{non-estimability of every parameter function}
+}
+$$
+
+Even when $\mathbf{X}$ is rank deficient, meaningful contrasts and other linear functions of the parameters may remain estimable.
+
+---
+
+## The Null Space and Estimability
+
+The relationship between estimability and the null space of $\mathbf{X}$ provides another useful characterization.
+
+The null space of $\mathbf{X}$ is
+
+$$
+\mathcal{N}(\mathbf{X})
+=
+\left\{
+\mathbf{v}:
+\mathbf{X}\mathbf{v}=\mathbf{0}
+\right\}.
+$$
+
+Suppose two parameter vectors $\boldsymbol{\beta}_1$ and $\boldsymbol{\beta}_2$ produce the same mean response:
+
+$$
+\mathbf{X}\boldsymbol{\beta}_1
+=
+\mathbf{X}\boldsymbol{\beta}_2.
+$$
+
+Then
+
+$$
+\mathbf{X}(\boldsymbol{\beta}_1-\boldsymbol{\beta}_2)
+=
+\mathbf{0}.
+$$
+
+Hence,
+
+$$
+\boldsymbol{\beta}_1-\boldsymbol{\beta}_2
+\in
+\mathcal{N}(\mathbf{X}).
+$$
+
+A linear function
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+
+is estimable if it has the same value for every parameter vector that produces the same mean response.
+
+Therefore, we require
+
+$$
+\mathbf{a}^{\mathsf T}\mathbf{v}=0
+$$
+
+for every
+
+$$
+\mathbf{v}\in\mathcal{N}(\mathbf{X}).
+$$
+
+Thus,
+
+$$
+\mathbf{a}
+\perp
+\mathcal{N}(\mathbf{X}).
+$$
+
+Using the fundamental theorem of linear algebra,
+
+$$
+\mathcal{N}(\mathbf{X})^\perp
+=
+\mathcal{C}(\mathbf{X}^{\mathsf T}),
+$$
+
+so we recover the earlier condition
+
+$$
+\boxed{
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+\text{ is estimable}
+\iff
+\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T})
+}
+$$
+
+This connects estimability directly to the geometry of the model matrix.
+
+---
+
+## The Method of Least Squares
+
+Once we have established the model and considered which quantities are estimable, we need a method for constructing estimators.
+
+The most important method is **least squares**.
+
+Recall the linear model
+
+$$
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+$$
+
+For a candidate parameter vector $\boldsymbol{\beta}$, the corresponding fitted mean vector is
+
+$$
+\mathbf{X}\boldsymbol{\beta}.
+$$
+
+The difference between the observed response vector and this fitted vector is
+
+$$
+\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}.
+$$
+
+This difference is the vector of residuals associated with $\boldsymbol{\beta}$.
+
+Least squares chooses the parameter vector that makes these residuals collectively as small as possible.
+
+---
+
+### The Least Squares Criterion
+
+The residual vector is
+
+$$
+\mathbf{e}
+=
+\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}.
+$$
+
+A natural measure of its size is its squared Euclidean length:
+
+$$
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+$$
+
+Therefore, the least squares estimator is obtained by minimizing
+
+$$
+S(\boldsymbol{\beta})
+=
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).
+$$
+
+Thus,
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+\underset{\boldsymbol{\beta}}{\operatorname{arg\,min}}
+\;
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})
+}
+$$
+
+This is the **least squares estimator**.
+
+---
+
+### Scalar Form
+
+The same criterion can be written in terms of the individual observations.
+
+Since
+
+$$
+\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}
+=
+\begin{pmatrix}
+Y_1-\sum_{j=1}^{p}x_{1j}\beta_j\\
+Y_2-\sum_{j=1}^{p}x_{2j}\beta_j\\
+\vdots\\
+Y_n-\sum_{j=1}^{p}x_{nj}\beta_j
+\end{pmatrix},
+$$
+
+the least squares criterion is
+
+$$
+S(\boldsymbol{\beta})
+=
+\sum_{i=1}^{n}
+\left(
+Y_i-\sum_{j=1}^{p}x_{ij}\beta_j
+\right)^2.
+$$
+
+The least squares estimator minimizes the sum of squared deviations between the observed responses and the values predicted by the model.
+
+---
+
+## Why Square the Residuals?
+
+There are several reasons for using squared residuals.
+
+First, positive and negative residuals should not cancel each other.
+
+For example, if two residuals are $5$ and $-5$, their ordinary sum is
+
+$$
+5+(-5)=0,
+$$
+
+even though both represent substantial deviations.
+
+Squaring gives
+
+$$
+5^2+(-5)^2=50,
+$$
+
+so both deviations contribute positively.
+
+Second, the squared-error criterion has convenient mathematical properties. It is differentiable and, under the usual conditions, leads to a unique minimum.
+
+Third, the squared Euclidean distance has a natural geometric interpretation, which will become particularly important when we connect least squares to orthogonal projections.
+
+---
+
+## Deriving the Normal Equations
+
+Consider the least squares criterion
+
+$$
+S(\boldsymbol{\beta})
+=
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).
+$$
+
+Expanding the expression gives
+
+$$
+S(\boldsymbol{\beta})
+=
+\mathbf{Y}^{\mathsf T}\mathbf{Y}
+-
+2\boldsymbol{\beta}^{\mathsf T}\mathbf{X}^{\mathsf T}\mathbf{Y}
++
+\boldsymbol{\beta}^{\mathsf T}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\boldsymbol{\beta}.
+$$
+
+To minimize this function with respect to $\boldsymbol{\beta}$, differentiate with respect to $\boldsymbol{\beta}$.
+
+Using the standard matrix derivative results,
+
+$$
+\frac{\partial}{\partial\boldsymbol{\beta}}
+\left(
+\mathbf{Y}^{\mathsf T}\mathbf{Y}
+\right)
+=
+\mathbf{0},
+$$
+
+$$
+\frac{\partial}{\partial\boldsymbol{\beta}}
+\left(
+-2\boldsymbol{\beta}^{\mathsf T}\mathbf{X}^{\mathsf T}\mathbf{Y}
+\right)
+=
+-2\mathbf{X}^{\mathsf T}\mathbf{Y},
+$$
+
+and
+
+$$
+\frac{\partial}{\partial\boldsymbol{\beta}}
+\left(
+\boldsymbol{\beta}^{\mathsf T}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\boldsymbol{\beta}
+\right)
+=
+2\mathbf{X}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
+$$
+
+Therefore,
+
+$$
+\frac{\partial S(\boldsymbol{\beta})}
+{\partial\boldsymbol{\beta}}
+=
+-2\mathbf{X}^{\mathsf T}\mathbf{Y}
++
+2\mathbf{X}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
+$$
+
+At the minimum, the derivative must equal zero:
+
+$$
+-2\mathbf{X}^{\mathsf T}\mathbf{Y}
++
+2\mathbf{X}^{\mathsf T}\mathbf{X}\widehat{\boldsymbol{\beta}}
+=
+\mathbf{0}.
+$$
+
+Dividing by $2$ gives
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+These are the **normal equations**:
+
+$$
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+$$
+
+The normal equations are one of the central results of least squares theory.
+
+---
+
+## The Least Squares Estimator
+
+If $\mathbf{X}$ has full column rank, then
+
+$$
+\operatorname{rank}(\mathbf{X})=p,
+$$
+
+and therefore
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{X}
+$$
+
+is nonsingular.
+
+We can then multiply the normal equations by
+
+$$
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+$$
+
+to obtain
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+$$
+
+This is the familiar matrix expression for the ordinary least squares estimator.
+
+The corresponding observed estimator is
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{y}.
+$$
+
+The distinction between $\mathbf{Y}$ and $\mathbf{y}$ is important:
+
+- $\mathbf{Y}$ is the random response vector.
+- $\mathbf{y}$ is the observed realization.
+- $\widehat{\boldsymbol{\beta}}$ is therefore itself a random vector before the data are observed.
+
+---
+
+## The Normal Equations and Residuals
+
+Define the fitted response vector as
+
+$$
+\widehat{\mathbf{Y}}
+=
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+$$
+
+The residual vector is
+
+$$
+\mathbf{e}
+=
+\mathbf{Y}-\widehat{\mathbf{Y}}.
+$$
+
+Substituting the fitted values gives
+
+$$
+\mathbf{e}
+=
+\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+$$
+
+The normal equations state that
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+Rearranging,
+
+$$
+\mathbf{X}^{\mathsf T}
+\left(
+\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}
+\right)
+=
+\mathbf{0}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}
+}
+$$
+
+This means that the residual vector is orthogonal to every column of the model matrix.
+
+In other words,
+
+$$
+\mathbf{e}
+\perp
+\mathcal{C}(\mathbf{X}).
+$$
+
+This is the geometric heart of least squares.
+
+---
+
+## Least Squares as an Orthogonal Projection
+
+The fitted vector is
+
+$$
+\widehat{\mathbf{Y}}
+=
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+$$
+
+Because it is a linear combination of the columns of $\mathbf{X}$,
+
+$$
+\widehat{\mathbf{Y}}
+\in
+\mathcal{C}(\mathbf{X}).
+$$
+
+At the same time,
+
+$$
+\mathbf{e}
+=
+\mathbf{Y}-\widehat{\mathbf{Y}}
+$$
+
+is orthogonal to $\mathcal{C}(\mathbf{X})$.
+
+Therefore, the observed vector $\mathbf{Y}$ can be decomposed as
+
+$$
+\mathbf{Y}
+=
+\widehat{\mathbf{Y}}
++
+\mathbf{e},
+$$
+
+where
+
+$$
+\widehat{\mathbf{Y}}\in\mathcal{C}(\mathbf{X})
+$$
+
+and
+
+$$
+\mathbf{e}\perp\mathcal{C}(\mathbf{X}).
+$$
+
+Thus, $\widehat{\mathbf{Y}}$ is the orthogonal projection of $\mathbf{Y}$ onto the column space of $\mathbf{X}$.
+
+We can visualize the decomposition conceptually as
+
+$$
+\boxed{
+\mathbf{Y}
+=
+\underbrace{\widehat{\mathbf{Y}}}_{\text{projection onto }\mathcal{C}(\mathbf{X})}
++
+\underbrace{\mathbf{e}}_{\text{orthogonal residual}}
+}
+$$
+
+This geometric interpretation will become especially useful when studying projections and the matrix form of the linear model.
+
+---
+
+## The Hat Matrix
+
+When $\mathbf{X}$ has full column rank,
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+Therefore,
+
+$$
+\widehat{\mathbf{Y}}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+Define
+
+$$
+\mathbf{H}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+$$
+
+Then
+
+$$
+\boxed{
+\widehat{\mathbf{Y}}
+=
+\mathbf{H}\mathbf{Y}
+}
+$$
+
+The matrix $\mathbf{H}$ is called the **hat matrix** because it maps $\mathbf{Y}$ to $\widehat{\mathbf{Y}}$:
+
+$$
+\mathbf{Y}
+\longmapsto
+\widehat{\mathbf{Y}}.
+$$
+
+The residual vector can therefore be written as
+
+$$
+\mathbf{e}
+=
+\mathbf{Y}-\mathbf{H}\mathbf{Y}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}.
+$$
+
+Thus,
+
+$$
+\boxed{
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}
+}
+$$
+
+The matrices $\mathbf{H}$ and $\mathbf{I}-\mathbf{H}$ will play an important role in the analysis of fitted values and residuals.
+
+---
+
+## Properties of the Hat Matrix
+
+The hat matrix has two important algebraic properties.
+
+First,
+
+$$
+\mathbf{H}^{\mathsf T}
+=
+\mathbf{H}.
+$$
+
+Thus, $\mathbf{H}$ is symmetric.
+
+Second,
+
+$$
+\mathbf{H}^2
+=
+\mathbf{H}.
+$$
+
+A matrix satisfying
+
+$$
+\mathbf{H}^2=\mathbf{H}
+$$
+
+is called **idempotent**.
+
+Therefore,
+
+$$
+\boxed{
+\mathbf{H}^{\mathsf T}=\mathbf{H},
+\qquad
+\mathbf{H}^2=\mathbf{H}
+}
+$$
+
+These properties are exactly what we expect from an orthogonal projection matrix.
+
+Similarly, define the residual-maker matrix
+
+$$
+\mathbf{M}
+=
+\mathbf{I}-\mathbf{H}.
+$$
+
+Then
+
+$$
+\mathbf{e}
+=
+\mathbf{M}\mathbf{Y}.
+$$
+
+Since $\mathbf{H}$ is symmetric and idempotent,
+
+$$
+\mathbf{M}^{\mathsf T}
+=
+\mathbf{M}
+$$
+
+and
+
+$$
+\mathbf{M}^2
+=
+\mathbf{M}.
+$$
+
+Thus, $\mathbf{M}$ is also a symmetric idempotent matrix.
+
+It projects vectors onto the orthogonal complement of $\mathcal{C}(\mathbf{X})$.
+
+---
+
+## Unbiasedness of the Least Squares Estimator
+
+We now return to the statistical properties of the least squares estimator.
+
+Under the full-rank assumption,
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+Substitute the linear model
+
+$$
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+$$
+
+Then
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\left(
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+\right).
+$$
+
+Expanding,
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\boldsymbol{\beta}
++
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}.
+$$
+
+Therefore,
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+\boldsymbol{\beta}
++
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}.
+$$
+
+Taking expectations,
+
+$$
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
++
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+E(\boldsymbol{\varepsilon}).
+$$
+
+Since
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0},
+$$
+
+we obtain
+
+$$
+\boxed{
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+}
+$$
+
+Therefore, the least squares estimator is unbiased.
+
+---
+
+## Variance of the Least Squares Estimator
+
+From the previous derivation,
+
+$$
+\widehat{\boldsymbol{\beta}}
+-
+\boldsymbol{\beta}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}.
+$$
+
+Therefore,
+
+$$
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\operatorname{Var}
+\left[
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\boldsymbol{\varepsilon}
+\right].
+$$
+
+Using
+
+$$
+\operatorname{Var}(\mathbf{A}\mathbf{Y})
+=
+\mathbf{A}
+\operatorname{Var}(\mathbf{Y})
+\mathbf{A}^{\mathsf T},
+$$
+
+we obtain
+
+$$
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\operatorname{Var}(\boldsymbol{\varepsilon})
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+$$
+
+Under the Gauss-Markov assumption,
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+$$
+
+Therefore,
+
+$$
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+$$
+
+Simplifying,
+
+$$
+\boxed{
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+}
+$$
+
+This covariance matrix is fundamental for inference about the parameters.
+
+The diagonal entries give the individual variances:
+
+$$
+\operatorname{Var}(\widehat{\beta}_j)
+=
+\sigma^2
+\left[
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\right]_{jj}.
+$$
+
+The off-diagonal entries give covariances between parameter estimators.
+
+---
+
+## Estimating a Linear Parametric Function
+
+Suppose the quantity of interest is
+
+$$
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+$$
+
+Once $\widehat{\boldsymbol{\beta}}$ has been obtained, a natural estimator is
+
+$$
+\widehat{\lambda}
+=
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}.
+$$
+
+Because $\widehat{\boldsymbol{\beta}}$ is unbiased,
+
+$$
+E(\widehat{\lambda})
+=
+E
+\left(
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+\right)
+=
+\mathbf{a}^{\mathsf T}
+E(\widehat{\boldsymbol{\beta}})
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+$$
+
+Thus,
+
+$$
+\boxed{
+\widehat{\lambda}
+=
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+}
+$$
+
+is an unbiased estimator of
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+$$
+
+Its variance is
+
+$$
+\operatorname{Var}(\widehat{\lambda})
+=
+\mathbf{a}^{\mathsf T}
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+\mathbf{a}.
+$$
+
+Hence,
+
+$$
+\boxed{
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2
+\mathbf{a}^{\mathsf T}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{a}
+}
+$$
+
+in the full-rank case.
+
+This formula will later provide the standard error needed for hypothesis testing and confidence intervals.
+
+---
+
+## Residual Sum of Squares
+
+The least squares criterion evaluated at the least squares estimator is called the **residual sum of squares**.
+
+The residual vector is
+
+$$
+\mathbf{e}
+=
+\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}.
+$$
+
+Therefore,
+
+$$
+\operatorname{SSE}
+=
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+$$
+
+Equivalently,
+
+$$
+\operatorname{SSE}
+=
+(\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}})^{\mathsf T}
+(\mathbf{Y}
+-
+\mathbf{X}\widehat{\boldsymbol{\beta}}).
+$$
+
+In scalar notation,
+
+$$
+\operatorname{SSE}
+=
+\sum_{i=1}^{n}
+(Y_i-\widehat{Y}_i)^2.
+$$
+
+Thus,
+
+$$
+\boxed{
+\operatorname{SSE}
+=
+\sum_{i=1}^{n}
+e_i^2
+}
+$$
+
+The least squares estimator is precisely the parameter vector that minimizes this quantity.
+
+---
+
+## A Useful Decomposition
+
+Because
+
+$$
+\mathbf{Y}
+=
+\widehat{\mathbf{Y}}
++
+\mathbf{e}
+$$
+
+and
+
+$$
+\widehat{\mathbf{Y}}
+\perp
+\mathbf{e},
+$$
+
+we have
+
+$$
+\mathbf{Y}^{\mathsf T}\mathbf{Y}
+=
+\widehat{\mathbf{Y}}^{\mathsf T}
+\widehat{\mathbf{Y}}
++
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+$$
+
+Thus,
+
+$$
+\boxed{
+\|\mathbf{Y}\|^2
+=
+\|\widehat{\mathbf{Y}}\|^2
++
+\|\mathbf{e}\|^2
+}
+$$
+
+This is a direct consequence of the Pythagorean theorem in Euclidean space.
+
+In linear model terminology, it expresses the decomposition of the observed vector into a fitted component and a residual component.
+
+This geometric viewpoint will become particularly useful when we study analysis of variance.
+
+---
+
+## Summary of Part 2
+
+The main ideas developed in this section can be summarized as follows.
+
+A linear parametric function
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+
+is estimable if and only if
+
+$$
+\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T}).
+$$
+
+The least squares estimator minimizes
+
+$$
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}
+(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}).
+$$
+
+This leads to the normal equations
+
+$$
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+$$
+
+and, when $\mathbf{X}$ has full column rank,
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+}
+$$
+
+The fitted values are
+
+$$
+\boxed{
+\widehat{\mathbf{Y}}
+=
+\mathbf{H}\mathbf{Y}
+}
+$$
+
+where
+
+$$
+\mathbf{H}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+$$
+
+The residuals are
+
+$$
+\boxed{
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}
+}
+$$
+
+and satisfy
+
+$$
+\boxed{
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}.
+}
+$$
+
+Under the Gauss-Markov assumptions,
+
+$$
+\boxed{
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+}
+$$
+
+and
+
+$$
+\boxed{
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+}
+$$
+
+The least squares estimator is therefore linear and unbiased.
+
+The remaining question is the crucial one:
+
+> Is least squares merely an unbiased estimator, or is it the **best** linear unbiased estimator?
+
+That is exactly what the **Gauss-Markov theorem** answers.
+
+::: {.callout-tip}
+### Key Idea
+
+Least squares can be understood in two equivalent ways.
+
+**Algebraically**, it chooses $\widehat{\boldsymbol{\beta}}$ to minimize
+
+$$
+\|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|^2.
+$$
+
+**Geometrically**, it projects $\mathbf{Y}$ orthogonally onto the column space of $\mathbf{X}$:
+
+$$
+\mathbf{Y}
+=
+\widehat{\mathbf{Y}}
++
+\mathbf{e},
+\qquad
+\widehat{\mathbf{Y}}\in\mathcal{C}(\mathbf{X}),
+\qquad
+\mathbf{e}\perp\mathcal{C}(\mathbf{X}).
+$$
+
+These are not two different methods. They are two views of the same least squares procedure.
+:::
+
+# Gauss-Markov Theorem
+
+::: {.callout-note}
+## Course Status
+
+**Status:** 🟢 **Core**
+
+**Required depth:** **4 · Prove**
+
+This section covers the **Gauss-Markov theorem** and the **estimation of error variance**, completing the theoretical foundation of the Gauss-Markov set-up.
+
+The central result establishes the optimality of the least squares estimator among all linear unbiased estimators.
+:::
+
+## From Least Squares to the Gauss-Markov Theorem
+
+In the previous section, we obtained the least squares estimator
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y},
+$$
+
+under the assumption that $\mathbf{X}$ has full column rank.
+
+We also established that
+
+$$
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+$$
+
+and
+
+$$
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+$$
+
+Thus, the least squares estimator is unbiased.
+
+But unbiasedness alone does not make an estimator optimal.
+
+There may be many different linear unbiased estimators of the same parameter or parametric function. The natural question is therefore:
+
+> Among all linear unbiased estimators, does least squares have the smallest variance?
+
+The Gauss-Markov theorem answers this question.
+
+---
+
+## The Gauss-Markov Theorem
+
+Suppose the linear model
+
+$$
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+$$
+
+satisfies
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+$$
+
+and
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+$$
+
+Assume also that $\mathbf{X}$ has full column rank.
+
+Then the ordinary least squares estimator
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+$$
+
+is the **Best Linear Unbiased Estimator**, or **BLUE**, of $\boldsymbol{\beta}$.
+
+More generally, for any estimable linear parametric function
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
+$$
+
+the least squares estimator
+
+$$
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+$$
+
+is the best linear unbiased estimator of that function.
+
+Thus,
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE}
+}
+$$
+
+under the Gauss-Markov assumptions.
+
+---
+
+## What Does BLUE Mean?
+
+The acronym **BLUE** stands for:
+
+- **B**est
+- **L**inear
+- **U**nbiased
+- **E**stimator
+
+Each word has a precise meaning.
+
+### Linear
+
+The estimator is linear in the observations.
+
+The least squares estimator can be written as
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y},
+$$
+
+where
+
+$$
+\mathbf{A}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+$$
+
+Thus, each component of $\widehat{\boldsymbol{\beta}}$ is a linear combination of the observations.
+
+### Unbiased
+
+The estimator satisfies
+
+$$
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}.
+$$
+
+Thus, on average, the estimator equals the true parameter vector.
+
+### Best
+
+Among all linear unbiased estimators, the least squares estimator has the smallest variance.
+
+The word "best" therefore refers to **minimum variance**, not to some vague notion of being generally superior.
+
+---
+
+## Comparing Linear Unbiased Estimators
+
+To understand the theorem, consider another linear unbiased estimator of $\boldsymbol{\beta}$.
+
+Write this estimator as
+
+$$
+\widetilde{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y}.
+$$
+
+For $\widetilde{\boldsymbol{\beta}}$ to be unbiased,
+
+$$
+E(\widetilde{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}.
+$$
+
+Since
+
+$$
+E(\mathbf{Y})
+=
+\mathbf{X}\boldsymbol{\beta},
+$$
+
+we require
+
+$$
+\mathbf{A}\mathbf{X}\boldsymbol{\beta}
+=
+\boldsymbol{\beta}
+$$
+
+for every $\boldsymbol{\beta}$.
+
+Therefore,
+
+$$
+\boxed{
+\mathbf{A}\mathbf{X}
+=
+\mathbf{I}_p
+}
+$$
+
+is the condition for $\mathbf{A}\mathbf{Y}$ to be an unbiased linear estimator of $\boldsymbol{\beta}$.
+
+For the least squares estimator,
+
+$$
+\mathbf{A}_0
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T},
+$$
+
+and indeed
+
+$$
+\mathbf{A}_0\mathbf{X}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{X}
+=
+\mathbf{I}_p.
+$$
+
+Thus, least squares satisfies the unbiasedness condition.
+
+---
+
+## Variance of a General Linear Unbiased Estimator
+
+For
+
+$$
+\widetilde{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y},
+$$
+
+the covariance matrix is
+
+$$
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\mathbf{A}
+\operatorname{Var}(\mathbf{Y})
+\mathbf{A}^{\mathsf T}.
+$$
+
+Under the Gauss-Markov assumption,
+
+$$
+\operatorname{Var}(\mathbf{Y})
+=
+\sigma^2\mathbf{I}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\sigma^2\mathbf{A}\mathbf{A}^{\mathsf T}
+}
+$$
+
+The goal is therefore to show that the covariance matrix of any linear unbiased estimator is at least as large as the covariance matrix of the least squares estimator in the positive semidefinite sense.
+
+---
+
+## Proof of the Gauss-Markov Theorem
+
+Let
+
+$$
+\mathbf{A}_0
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+$$
+
+be the matrix defining the least squares estimator.
+
+Then
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{A}_0\mathbf{Y}.
+$$
+
+Consider any other linear unbiased estimator
+
+$$
+\widetilde{\boldsymbol{\beta}}
+=
+\mathbf{A}\mathbf{Y}
+$$
+
+such that
+
+$$
+\mathbf{A}\mathbf{X}
+=
+\mathbf{I}_p.
+$$
+
+Define
+
+$$
+\mathbf{D}
+=
+\mathbf{A}-\mathbf{A}_0.
+$$
+
+Then
+
+$$
+\mathbf{A}
+=
+\mathbf{A}_0+\mathbf{D}.
+$$
+
+Since both $\mathbf{A}$ and $\mathbf{A}_0$ satisfy the unbiasedness condition,
+
+$$
+\mathbf{A}\mathbf{X}
+=
+\mathbf{I}_p
+$$
+
+and
+
+$$
+\mathbf{A}_0\mathbf{X}
+=
+\mathbf{I}_p.
+$$
+
+Subtracting,
+
+$$
+(\mathbf{A}-\mathbf{A}_0)\mathbf{X}
+=
+\mathbf{0}.
+$$
+
+Hence,
+
+$$
+\boxed{
+\mathbf{D}\mathbf{X}
+=
+\mathbf{0}
+}
+$$
+
+Now consider the covariance matrix of $\widetilde{\boldsymbol{\beta}}$:
+
+$$
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\sigma^2\mathbf{A}\mathbf{A}^{\mathsf T}.
+$$
+
+Substitute
+
+$$
+\mathbf{A}
+=
+\mathbf{A}_0+\mathbf{D}.
+$$
+
+Then
+
+$$
+\mathbf{A}\mathbf{A}^{\mathsf T}
+=
+(\mathbf{A}_0+\mathbf{D})
+(\mathbf{A}_0+\mathbf{D})^{\mathsf T}.
+$$
+
+Expanding,
+
+$$
+\mathbf{A}\mathbf{A}^{\mathsf T}
+=
+\mathbf{A}_0\mathbf{A}_0^{\mathsf T}
++
+\mathbf{A}_0\mathbf{D}^{\mathsf T}
++
+\mathbf{D}\mathbf{A}_0^{\mathsf T}
++
+\mathbf{D}\mathbf{D}^{\mathsf T}.
+$$
+
+We now examine the cross terms.
+
+Since
+
+$$
+\mathbf{A}_0
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T},
+$$
+
+we have
+
+$$
+\mathbf{A}_0\mathbf{D}^{\mathsf T}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}
+\mathbf{D}^{\mathsf T}.
+$$
+
+But
+
+$$
+\mathbf{D}\mathbf{X}
+=
+\mathbf{0},
+$$
+
+so
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{D}^{\mathsf T}
+=
+\mathbf{0}.
+$$
+
+Therefore,
+
+$$
+\mathbf{A}_0\mathbf{D}^{\mathsf T}
+=
+\mathbf{0}.
+$$
+
+Similarly,
+
+$$
+\mathbf{D}\mathbf{A}_0^{\mathsf T}
+=
+\mathbf{0}.
+$$
+
+Hence,
+
+$$
+\mathbf{A}\mathbf{A}^{\mathsf T}
+=
+\mathbf{A}_0\mathbf{A}_0^{\mathsf T}
++
+\mathbf{D}\mathbf{D}^{\mathsf T}.
+$$
+
+Multiplying by $\sigma^2$ gives
+
+$$
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+=
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
++
+\sigma^2\mathbf{D}\mathbf{D}^{\mathsf T}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+-
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2\mathbf{D}\mathbf{D}^{\mathsf T}
+}
+$$
+
+The matrix
+
+$$
+\mathbf{D}\mathbf{D}^{\mathsf T}
+$$
+
+is positive semidefinite because, for any vector $\mathbf{v}$,
+
+$$
+\mathbf{v}^{\mathsf T}
+\mathbf{D}\mathbf{D}^{\mathsf T}
+\mathbf{v}
+=
+\left\|
+\mathbf{D}^{\mathsf T}\mathbf{v}
+\right\|^2
+\geq 0.
+$$
+
+Therefore,
+
+$$
+\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
+\geq
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+$$
+
+in the positive semidefinite ordering.
+
+Hence the least squares estimator has no larger variance than any other linear unbiased estimator.
+
+Therefore,
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE.}
+}
+$$
+
+This is the **Gauss-Markov theorem**.
+
+---
+
+## Interpretation of the Theorem
+
+The Gauss-Markov theorem does not say that least squares is the best estimator among every possible estimator.
+
+It says something more specific:
+
+> Among estimators that are both **linear in the observations** and **unbiased**, the least squares estimator has minimum variance.
+
+The restrictions matter.
+
+The theorem compares estimators within the class
+
+$$
+\left\{
+\text{linear unbiased estimators}
+\right\}.
+$$
+
+It does not claim that no nonlinear or biased estimator could ever have a smaller mean squared error.
+
+The precise conclusion is therefore
+
+$$
+\boxed{
+\text{OLS is the BLUE under the Gauss-Markov assumptions.}
+}
+$$
+
+---
+
+## BLUE for Linear Parametric Functions
+
+The theorem also applies to an estimable linear parametric function
+
+$$
+\lambda
+=
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+$$
+
+The least squares estimator is
+
+$$
+\widehat{\lambda}
+=
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}.
+$$
+
+Its variance is
+
+$$
+\operatorname{Var}(\widehat{\lambda})
+=
+\sigma^2
+\mathbf{a}^{\mathsf T}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{a}.
+$$
+
+The Gauss-Markov theorem implies that no other linear unbiased estimator of the same quantity has smaller variance.
+
+Thus,
+
+$$
+\boxed{
+\mathbf{a}^{\mathsf T}
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE for }
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
+}
+$$
+
+This is especially important in applications because hypotheses and scientific questions are often expressed in terms of contrasts or other linear combinations rather than individual parameters.
+
+---
+
+## Estimation of Error Variance
+
+The Gauss-Markov model contains another unknown quantity:
+
+$$
+\sigma^2.
+$$
+
+Recall that
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}_n.
+$$
+
+Although the least squares estimator provides an estimate of $\boldsymbol{\beta}$, we also need an estimator of $\sigma^2$.
+
+The residual sum of squares is
+
+$$
+\operatorname{SSE}
+=
+\mathbf{e}^{\mathsf T}\mathbf{e}.
+$$
+
+A natural estimator of $\sigma^2$ is obtained by dividing the residual sum of squares by the appropriate number of degrees of freedom.
+
+---
+
+### Degrees of Freedom
+
+Suppose $\mathbf{X}$ has rank $r$.
+
+The fitted values belong to the column space
+
+$$
+\mathcal{C}(\mathbf{X}),
+$$
+
+which has dimension $r$.
+
+The residual vector belongs to the orthogonal complement of this space.
+
+Therefore, the residual space has dimension
+
+$$
+n-r.
+$$
+
+This gives the residual degrees of freedom:
+
+$$
+\boxed{
+\operatorname{df}_{\text{error}}
+=
+n-r
+}
+$$
+
+In the full-rank case, where
+
+$$
+r=p,
+$$
+
+this becomes
+
+$$
+\boxed{
+\operatorname{df}_{\text{error}}
+=
+n-p.
+}
+$$
+
+The degrees of freedom are reduced because $r$ independent pieces of information have been used to estimate the systematic component of the model.
+
+---
+
+### Expected Residual Sum of Squares
+
+Recall that
+
+$$
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})\mathbf{Y}.
+$$
+
+Under the model,
+
+$$
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+$$
+
+Therefore,
+
+$$
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})
+\mathbf{X}\boldsymbol{\beta}
++
+(\mathbf{I}-\mathbf{H})
+\boldsymbol{\varepsilon}.
+$$
+
+Since
+
+$$
+\mathbf{H}\mathbf{X}
+=
+\mathbf{X},
+$$
+
+we have
+
+$$
+(\mathbf{I}-\mathbf{H})\mathbf{X}
+=
+\mathbf{0}.
+$$
+
+Hence,
+
+$$
+\mathbf{e}
+=
+(\mathbf{I}-\mathbf{H})
+\boldsymbol{\varepsilon}.
+$$
+
+The residuals therefore contain only the component of the error vector orthogonal to the model space.
+
+The expected residual sum of squares is
+
+$$
+E(\mathbf{e}^{\mathsf T}\mathbf{e})
+=
+(n-r)\sigma^2.
+$$
+
+Thus,
+
+$$
+\boxed{
+E(\operatorname{SSE})
+=
+(n-r)\sigma^2
+}
+$$
+
+This explains why the residual sum of squares must be divided by $n-r$ rather than by $n$.
+
+---
+
+### Unbiased Estimator of $\sigma^2$
+
+Define
+
+$$
+s^2
+=
+\frac{\operatorname{SSE}}{n-r}.
+$$
+
+Then
+
+$$
+E(s^2)
+=
+E
+\left(
+\frac{\operatorname{SSE}}{n-r}
+\right).
+$$
+
+Therefore,
+
+$$
+E(s^2)
+=
+\frac{1}{n-r}
+E(\operatorname{SSE}).
+$$
+
+Using
+
+$$
+E(\operatorname{SSE})
+=
+(n-r)\sigma^2,
+$$
+
+we obtain
+
+$$
+E(s^2)
+=
+\sigma^2.
+$$
+
+Thus,
+
+$$
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-r}
+}
+$$
+
+is an unbiased estimator of the error variance.
+
+When $\mathbf{X}$ has full column rank,
+
+$$
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-p}.
+}
+$$
+
+This is the usual residual mean square.
+
+---
+
+## Residual Mean Square
+
+The quantity
+
+$$
+\frac{\operatorname{SSE}}{n-p}
+$$
+
+is commonly called the **residual mean square** or **mean squared error**:
+
+$$
+\boxed{
+\operatorname{MSE}
+=
+\frac{\operatorname{SSE}}{n-p}
+}
+$$
+
+in the full-rank case.
+
+It provides an estimate of the common error variance $\sigma^2$.
+
+The estimated standard deviation of the errors is therefore
+
+$$
+s
+=
+\sqrt{\operatorname{MSE}}.
+$$
+
+This quantity plays an important role in the standard errors of estimated regression coefficients and in subsequent inference.
+
+---
+
+## The Role of Normality
+
+The Gauss-Markov theorem itself does not require normality.
+
+Recall that the theorem only assumes
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+$$
+
+and
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+$$
+
+However, if we additionally assume
+
+$$
+\boldsymbol{\varepsilon}
+\sim
+N(\mathbf{0},\sigma^2\mathbf{I}),
+$$
+
+then
+
+$$
+\mathbf{Y}
+\sim
+N(\mathbf{X}\boldsymbol{\beta},
+\sigma^2\mathbf{I}).
+$$
+
+Under this stronger assumption, the least squares estimator has the exact distribution
+
+$$
+\widehat{\boldsymbol{\beta}}
+\sim
+N
+\left(
+\boldsymbol{\beta},
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\right).
+$$
+
+Normality therefore provides additional distributional results that are useful for exact small-sample inference.
+
+This distinction can be summarized as follows:
+
+| Assumption | Main consequence |
+|---|---|
+| $E(\boldsymbol{\varepsilon})=\mathbf{0}$ | Unbiasedness |
+| $\operatorname{Var}(\boldsymbol{\varepsilon})=\sigma^2\mathbf{I}$ | Gauss-Markov optimality |
+| Normal errors | Exact finite-sample distributions and classical inference |
+
+Thus, normality is **not** part of the minimum assumptions required for the Gauss-Markov theorem.
+
+---
+
+## The Complete Gauss-Markov Framework
+
+We can now assemble the pieces developed throughout this module.
+
+The model is
+
+$$
+\boxed{
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}
+}
+$$
+
+with
+
+$$
+\boxed{
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+}
+$$
+
+and
+
+$$
+\boxed{
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+}
+$$
+
+The least squares estimator is
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}
+}
+$$
+
+when $\mathbf{X}$ has full column rank.
+
+It is unbiased:
+
+$$
+\boxed{
+E(\widehat{\boldsymbol{\beta}})
+=
+\boldsymbol{\beta}
+}
+$$
+
+and has covariance matrix
+
+$$
+\boxed{
+\operatorname{Var}(\widehat{\boldsymbol{\beta}})
+=
+\sigma^2
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+}
+$$
+
+The Gauss-Markov theorem then tells us that
+
+$$
+\boxed{
+\widehat{\boldsymbol{\beta}}
+\text{ is BLUE}.
+}
+$$
+
+Finally, the error variance can be estimated using
+
+$$
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-r}.
+}
+$$
+
+For a full-rank model,
+
+$$
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-p}.
+}
+$$
+
+---
+
+# Summary
+
+The Gauss-Markov framework provides the theoretical foundation for ordinary least squares and much of classical linear model theory.
+
+The complete logical progression is
+
+$$
+\text{Linear Model}
+\longrightarrow
+\text{Estimability}
+\longrightarrow
+\text{Least Squares}
+\longrightarrow
+\text{Unbiasedness}
+\longrightarrow
+\text{Minimum Variance}
+\longrightarrow
+\text{BLUE}.
+$$
+
+The fundamental model is
+
+$$
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon},
+$$
+
+with
+
+$$
+E(\boldsymbol{\varepsilon})=\mathbf{0}
+$$
+
+and
+
+$$
+\operatorname{Var}(\boldsymbol{\varepsilon})
+=
+\sigma^2\mathbf{I}.
+$$
+
+A linear parametric function
+
+$$
+\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+
+is estimable when
+
+$$
+\mathbf{a}
+\in
+\mathcal{C}(\mathbf{X}^{\mathsf T}).
+$$
+
+Least squares minimizes
+
+$$
+\|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|^2
+$$
+
+and produces the normal equations
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{X}
+\widehat{\boldsymbol{\beta}}
+=
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+For full column rank,
+
+$$
+\widehat{\boldsymbol{\beta}}
+=
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.
+$$
+
+The fitted values are the orthogonal projection of $\mathbf{Y}$ onto $\mathcal{C}(\mathbf{X})$:
+
+$$
+\widehat{\mathbf{Y}}
+=
+\mathbf{H}\mathbf{Y},
+$$
+
+where
+
+$$
+\mathbf{H}
+=
+\mathbf{X}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+\mathbf{X}^{\mathsf T}.
+$$
+
+The residuals satisfy
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}.
+$$
+
+Under the Gauss-Markov assumptions, least squares is BLUE:
+
+$$
+\boxed{
+\text{OLS}
+=
+\text{Best Linear Unbiased Estimator}.
+}
+$$
+
+Finally, the error variance is estimated by
+
+$$
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-r},
+}
+$$
+
+or, when $\mathbf{X}$ has full column rank,
+
+$$
+\boxed{
+s^2
+=
+\frac{\operatorname{SSE}}{n-p}.
+}
+$$
+
+---
+
+# Quick Reference
+
+| Concept | Key Result |
+|---|---|
+| Linear model | $\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}$ |
+| Error mean | $E(\boldsymbol{\varepsilon})=\mathbf{0}$ |
+| Error covariance | $\operatorname{Var}(\boldsymbol{\varepsilon})=\sigma^2\mathbf{I}$ |
+| Estimability | $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$ is estimable iff $\mathbf{a}\in\mathcal{C}(\mathbf{X}^{\mathsf T})$ |
+| Least squares criterion | $(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})^{\mathsf T}(\mathbf{Y}-\mathbf{X}\boldsymbol{\beta})$ |
+| Normal equations | $\mathbf{X}^{\mathsf T}\mathbf{X}\widehat{\boldsymbol{\beta}}=\mathbf{X}^{\mathsf T}\mathbf{Y}$ |
+| OLS estimator | $(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}\mathbf{X}^{\mathsf T}\mathbf{Y}$ |
+| Fitted values | $\widehat{\mathbf{Y}}=\mathbf{H}\mathbf{Y}$ |
+| Hat matrix | $\mathbf{H}=\mathbf{X}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}\mathbf{X}^{\mathsf T}$ |
+| Residuals | $\mathbf{e}=(\mathbf{I}-\mathbf{H})\mathbf{Y}$ |
+| Residual orthogonality | $\mathbf{X}^{\mathsf T}\mathbf{e}=\mathbf{0}$ |
+| OLS expectation | $E(\widehat{\boldsymbol{\beta}})=\boldsymbol{\beta}$ |
+| OLS covariance | $\operatorname{Var}(\widehat{\boldsymbol{\beta}})=\sigma^2(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}$ |
+| Gauss-Markov theorem | OLS is BLUE |
+| Error variance estimator | $s^2=\operatorname{SSE}/(n-r)$ |
+| Full-rank error variance estimator | $s^2=\operatorname{SSE}/(n-p)$ |
+
+::: {.callout-tip}
+## The Big Picture
+
+The Gauss-Markov theorem is the bridge between the **algebra of least squares** and the **statistical optimality of the estimator**.
+
+Least squares gives us an estimator by solving
+
+$$
+\min_{\boldsymbol{\beta}}
+\|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|^2.
+$$
+
+The Gauss-Markov theorem then tells us why this particular estimator matters:
+
+$$
+\boxed{
+\text{Among all linear unbiased estimators, OLS has minimum variance.}
+}
+$$
+
+This result is the theoretical backbone on which the later modules build regression, analysis of variance, analysis of covariance, and inference.
+:::

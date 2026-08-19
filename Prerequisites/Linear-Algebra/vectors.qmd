@@ -1,0 +1,2888 @@
+---
+title: "Vectors"
+subtitle: "Linear Algebra Prerequisite"
+description: "Vectors, vector operations, geometry, norms, inner products, orthogonality, and their role in Linear Models."
+---
+
+# Vectors
+
+::: {.callout-note}
+## Topic status
+
+**Category:** Prerequisite  
+**Course relevance:** Supporting  
+**Recommended depth:** 3 · Derive / Apply
+
+This topic provides the basic language needed throughout Linear Models.
+
+You should be comfortable with vectors as both algebraic objects and geometric objects. In particular, you should understand vector addition, scalar multiplication, linear combinations, norms, dot products, orthogonality, and projections.
+
+The more abstract theory of vector spaces is treated separately.
+:::
+
+---
+
+# Why vectors matter
+
+Linear Models is fundamentally built around vectors and matrices.
+
+A typical linear model is written as
+
+$$y = X\beta + \varepsilon,$$
+
+where
+
+$$
+y \in \mathbb{R}^n,
+\qquad
+\beta \in \mathbb{R}^p,
+\qquad
+\varepsilon \in \mathbb{R}^n.
+$$
+
+Here:
+
+- $y$ is a vector containing observed responses,
+- $\beta$ is a vector containing unknown model parameters,
+- $\varepsilon$ is a vector containing random errors,
+- $X$ is a matrix that maps the parameter vector $\beta$ into the observation space.
+
+Understanding the geometry of vectors makes many results in Linear Models much easier to interpret.
+
+For example, the least-squares problem
+
+$$
+\min_\beta \|y-X\beta\|^2
+$$
+
+can be understood geometrically as finding the point $X\beta$ closest to $y$.
+
+That interpretation eventually leads to orthogonal projections, the normal equations, the hat matrix, residuals, and many other central ideas.
+
+---
+
+# What is a vector?
+
+A vector is an ordered collection of numbers.
+
+A vector with $n$ components can be written as
+
+$$
+x =
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+\in \mathbb{R}^n.
+$$
+
+The notation
+
+$$
+x \in \mathbb{R}^n
+$$
+
+means that $x$ has $n$ real-valued components.
+
+For example,
+
+$$
+x =
+\begin{pmatrix}
+2\\
+-1\\
+4
+\end{pmatrix}
+$$
+
+is a vector in $\mathbb{R}^3$.
+
+We can also write vectors horizontally:
+
+$$
+x^\top =
+\begin{pmatrix}
+2 & -1 & 4
+\end{pmatrix}.
+$$
+
+The superscript ${}^\top$ denotes the **transpose**. Transposition converts a column vector into a row vector and vice versa.
+
+Thus
+
+$$
+x =
+\begin{pmatrix}
+2\\
+-1\\
+4
+\end{pmatrix}
+$$
+
+and
+
+$$
+x^\top =
+\begin{pmatrix}
+2 & -1 & 4
+\end{pmatrix}
+$$
+
+contain exactly the same components, but have different orientations.
+
+::: {.callout-important}
+## Column vectors are the default
+
+In Linear Models, vectors are usually treated as **column vectors** unless explicitly stated otherwise.
+
+Thus
+
+$$
+x =
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+$$
+
+is the standard representation.
+
+This becomes important when multiplying vectors and matrices.
+:::
+
+---
+
+# Scalars versus vectors
+
+A **scalar** is a single number.
+
+For example,
+
+$$
+a=5
+$$
+
+is a scalar.
+
+A vector contains multiple components:
+
+$$
+x =
+\begin{pmatrix}
+2\\
+4\\
+7
+\end{pmatrix}.
+$$
+
+Scalars and vectors play different roles.
+
+A scalar can multiply a vector:
+
+$$
+3
+\begin{pmatrix}
+2\\
+4\\
+7
+\end{pmatrix}
+=
+\begin{pmatrix}
+6\\
+12\\
+21
+\end{pmatrix}.
+$$
+
+The scalar changes the magnitude of the vector and, if negative, reverses its direction.
+
+---
+
+# Equality of vectors
+
+Two vectors are equal if and only if they have the same dimension and their corresponding components are equal.
+
+Suppose
+
+$$
+x =
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+$$
+
+and
+
+$$
+y =
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+x=y
+$$
+
+if and only if
+
+$$
+x_i=y_i
+$$
+
+for every $i=1,\ldots,n$.
+
+For example,
+
+$$
+\begin{pmatrix}
+2\\
+-1\\
+5
+\end{pmatrix}
+=
+\begin{pmatrix}
+2\\
+-1\\
+5
+\end{pmatrix},
+$$
+
+but
+
+$$
+\begin{pmatrix}
+2\\
+-1\\
+5
+\end{pmatrix}
+\neq
+\begin{pmatrix}
+2\\
+5\\
+-1
+\end{pmatrix}.
+$$
+
+The ordering of components matters.
+
+---
+
+# The zero vector
+
+The **zero vector** in $\mathbb R^n$ is
+
+$$
+0 =
+\begin{pmatrix}
+0\\
+0\\
+\vdots\\
+0
+\end{pmatrix}.
+$$
+
+Sometimes the dimension is made explicit:
+
+$$
+0_n \in \mathbb R^n.
+$$
+
+The zero vector is the additive identity because
+
+$$
+x+0=x
+$$
+
+for every $x\in\mathbb R^n$.
+
+---
+
+# Adding vectors
+
+Two vectors can be added only when they have the same dimension.
+
+If
+
+$$
+x =
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+$$
+
+and
+
+$$
+y =
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix},
+$$
+
+then
+
+$$
+x+y
+=
+\begin{pmatrix}
+x_1+y_1\\
+x_2+y_2\\
+\vdots\\
+x_n+y_n
+\end{pmatrix}.
+$$
+
+For example,
+
+$$
+\begin{pmatrix}
+1\\
+2\\
+3
+\end{pmatrix}
++
+\begin{pmatrix}
+4\\
+-1\\
+2
+\end{pmatrix}
+=
+\begin{pmatrix}
+5\\
+1\\
+5
+\end{pmatrix}.
+$$
+
+Vector addition is **componentwise**.
+
+---
+
+# Subtracting vectors
+
+Vector subtraction is also componentwise:
+
+$$
+x-y
+=
+\begin{pmatrix}
+x_1-y_1\\
+x_2-y_2\\
+\vdots\\
+x_n-y_n
+\end{pmatrix}.
+$$
+
+For example,
+
+$$
+\begin{pmatrix}
+5\\
+3
+\end{pmatrix}
+-
+\begin{pmatrix}
+2\\
+7
+\end{pmatrix}
+=
+\begin{pmatrix}
+3\\
+-4
+\end{pmatrix}.
+$$
+
+Subtraction can also be viewed as addition of the negative vector:
+
+$$
+x-y=x+(-y).
+$$
+
+---
+
+# Scalar multiplication
+
+If $a\in\mathbb R$ and $x\in\mathbb R^n$, then
+
+$$
+ax
+$$
+
+is the vector obtained by multiplying every component of $x$ by $a$.
+
+Thus
+
+$$
+a
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+ax_1\\
+ax_2\\
+\vdots\\
+ax_n
+\end{pmatrix}.
+$$
+
+For example,
+
+$$
+-2
+\begin{pmatrix}
+1\\
+-3\\
+4
+\end{pmatrix}
+=
+\begin{pmatrix}
+-2\\
+6\\
+-8
+\end{pmatrix}.
+$$
+
+Special cases:
+
+$$
+1x=x,
+$$
+
+$$
+0x=0,
+$$
+
+and
+
+$$
+(-1)x=-x.
+$$
+
+---
+
+# Linear combinations
+
+A **linear combination** of vectors is an expression of the form
+
+$$
+a_1x_1+a_2x_2+\cdots+a_kx_k,
+$$
+
+where $a_1,\ldots,a_k$ are scalars.
+
+For example, if
+
+$$
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+3\\
+-1
+\end{pmatrix},
+$$
+
+then
+
+$$
+2x-3y
+$$
+
+is a linear combination of $x$ and $y$.
+
+Calculating,
+
+$$
+2x
+=
+\begin{pmatrix}
+2\\
+4
+\end{pmatrix}
+$$
+
+and
+
+$$
+3y
+=
+\begin{pmatrix}
+9\\
+-3
+\end{pmatrix},
+$$
+
+so
+
+$$
+2x-3y
+=
+\begin{pmatrix}
+2\\
+4
+\end{pmatrix}
+-
+\begin{pmatrix}
+9\\
+-3
+\end{pmatrix}
+=
+\begin{pmatrix}
+-7\\
+7
+\end{pmatrix}.
+$$
+
+Linear combinations are one of the most important ideas in linear algebra.
+
+Much of Linear Models can be understood in terms of asking:
+
+> Which vectors can be constructed as linear combinations of other vectors?
+
+---
+
+# Span
+
+The **span** of a collection of vectors is the set of every vector that can be formed as a linear combination of them.
+
+For vectors $x_1,\ldots,x_k$, their span is
+
+$$
+\operatorname{span}(x_1,\ldots,x_k)
+=
+\left\{
+a_1x_1+\cdots+a_kx_k
+:
+a_1,\ldots,a_k\in\mathbb R
+\right\}.
+$$
+
+For example, consider
+
+$$
+x_1=
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix},
+\qquad
+x_2=
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}.
+$$
+
+Any vector
+
+$$
+\begin{pmatrix}
+a\\
+b
+\end{pmatrix}
+$$
+
+can be written as
+
+$$
+a
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix}
++
+b
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+\operatorname{span}(x_1,x_2)=\mathbb R^2.
+$$
+
+The span tells us what part of the surrounding space can be reached using the given vectors.
+
+::: {.callout-note}
+## Connection to Linear Models
+
+Suppose the columns of a design matrix $X$ are
+
+$$
+x_1,\ldots,x_p.
+$$
+
+Then every vector of the form
+
+$$
+X\beta
+$$
+
+is a linear combination of those columns.
+
+Therefore,
+
+$$
+\{X\beta:\beta\in\mathbb R^p\}
+=
+\operatorname{span}(x_1,\ldots,x_p).
+$$
+
+This set is the **column space** of $X$, written
+
+$$
+\mathcal C(X).
+$$
+
+This is central to least squares.
+:::
+
+---
+
+# Linear independence
+
+Vectors $x_1,\ldots,x_k$ are **linearly independent** if the only solution to
+
+$$
+a_1x_1+\cdots+a_kx_k=0
+$$
+
+is
+
+$$
+a_1=a_2=\cdots=a_k=0.
+$$
+
+In other words, none of the vectors can be constructed as a linear combination of the others.
+
+If there exists a non-zero set of coefficients such that
+
+$$
+a_1x_1+\cdots+a_kx_k=0,
+$$
+
+then the vectors are **linearly dependent**.
+
+For example,
+
+$$
+x_1=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+x_2=
+\begin{pmatrix}
+2\\
+4
+\end{pmatrix}
+$$
+
+are linearly dependent because
+
+$$
+x_2=2x_1.
+$$
+
+Equivalently,
+
+$$
+2x_1-x_2=0
+$$
+
+is a non-trivial linear combination equal to zero.
+
+---
+
+# Geometric interpretation
+
+Vectors can be interpreted geometrically as directed quantities.
+
+In $\mathbb R^2$, a vector
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}
+$$
+
+can be represented as an arrow from the origin to the point
+
+$$
+(x_1,x_2).
+$$
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+3\\
+2
+\end{pmatrix}
+$$
+
+corresponds to an arrow from
+
+$$
+(0,0)
+$$
+
+to
+
+$$
+(3,2).
+$$
+
+The vector has two important geometric properties:
+
+- **direction**
+- **magnitude**
+
+The algebraic representation allows us to manipulate these quantities exactly.
+
+---
+
+# The norm
+
+The **Euclidean norm**, or length, of a vector
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}
+$$
+
+is
+
+$$
+\|x\|
+=
+\sqrt{x_1^2+x_2^2+\cdots+x_n^2}.
+$$
+
+Equivalently,
+
+$$
+\boxed{
+\|x\|=\sqrt{x^\top x}
+}
+$$
+
+because
+
+$$
+x^\top x
+=
+\begin{pmatrix}
+x_1 & \cdots & x_n
+\end{pmatrix}
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+=
+x_1^2+\cdots+x_n^2.
+$$
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+3\\
+4
+\end{pmatrix}
+$$
+
+has norm
+
+$$
+\|x\|
+=
+\sqrt{3^2+4^2}
+=
+5.
+$$
+
+The norm measures the distance of the vector from the origin.
+
+---
+
+# Squared norm
+
+The squared norm is
+
+$$
+\|x\|^2=x^\top x.
+$$
+
+Thus,
+
+$$
+\|x\|^2
+=
+x_1^2+\cdots+x_n^2.
+$$
+
+The squared norm appears constantly in Linear Models.
+
+For example, the least-squares objective is
+
+$$
+\|y-X\beta\|^2.
+$$
+
+This is the squared Euclidean distance between $y$ and $X\beta$.
+
+It is also commonly written as
+
+$$
+(y-X\beta)^\top(y-X\beta).
+$$
+
+These are the same quantity.
+
+---
+
+# Distance between vectors
+
+The distance between two vectors $x$ and $y$ is defined by
+
+$$
+d(x,y)=\|x-y\|.
+$$
+
+Thus,
+
+$$
+d(x,y)
+=
+\sqrt{
+(x_1-y_1)^2+\cdots+(x_n-y_n)^2
+}.
+$$
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+4\\
+6
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+x-y=
+\begin{pmatrix}
+-3\\
+-4
+\end{pmatrix}
+$$
+
+and therefore
+
+$$
+d(x,y)=5.
+$$
+
+In least squares,
+
+$$
+\|y-X\beta\|
+$$
+
+measures how far the fitted vector $X\beta$ is from the observed vector $y$.
+
+---
+
+# Unit vectors
+
+A **unit vector** is a vector with norm equal to $1$.
+
+If $x\neq0$, then the corresponding unit vector in the direction of $x$ is
+
+$$
+\frac{x}{\|x\|}.
+$$
+
+Indeed,
+
+$$
+\left\|
+\frac{x}{\|x\|}
+\right\|
+=
+\frac{\|x\|}{\|x\|}
+=
+1.
+$$
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+3\\
+4
+\end{pmatrix}
+$$
+
+has norm $5$, so the unit vector in its direction is
+
+$$
+\frac{x}{\|x\|}
+=
+\begin{pmatrix}
+3/5\\
+4/5
+\end{pmatrix}.
+$$
+
+Unit vectors are useful when separating a vector's **direction** from its **magnitude**.
+
+---
+
+# The dot product
+
+For vectors
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+$$
+
+and
+
+$$
+y=
+\begin{pmatrix}
+y_1\\
+\vdots\\
+y_n
+\end{pmatrix},
+$$
+
+their **dot product**, or inner product in the standard Euclidean setting, is
+
+$$
+x^\top y
+=
+x_1y_1+\cdots+x_ny_n.
+$$
+
+The result is a scalar.
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+1\\
+2\\
+3
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+4\\
+-1\\
+2
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+x^\top y
+=
+1(4)+2(-1)+3(2)
+=
+4-2+6
+=
+8.
+$$
+
+::: {.callout-important}
+## Vector versus scalar
+
+Notice that
+
+$$
+x^\top y
+$$
+
+is a scalar, not a vector.
+
+If $x,y\in\mathbb R^n$, then
+
+$$
+x^\top y\in\mathbb R.
+$$
+
+This distinction becomes extremely important when manipulating matrix expressions.
+:::
+
+---
+
+# Geometric interpretation of the dot product
+
+The dot product can also be expressed in terms of the angle between two non-zero vectors:
+
+$$
+\boxed{
+x^\top y
+=
+\|x\|\|y\|\cos\theta
+}
+$$
+
+where $\theta$ is the angle between $x$ and $y$.
+
+Therefore,
+
+$$
+\cos\theta
+=
+\frac{x^\top y}{\|x\|\|y\|}.
+$$
+
+This connects the algebraic and geometric viewpoints.
+
+The sign of the dot product tells us about the angle:
+
+$$
+x^\top y>0
+\quad\Longrightarrow\quad
+\theta<90^\circ,
+$$
+
+$$
+x^\top y=0
+\quad\Longrightarrow\quad
+\theta=90^\circ,
+$$
+
+and
+
+$$
+x^\top y<0
+\quad\Longrightarrow\quad
+\theta>90^\circ.
+$$
+
+---
+
+# Orthogonality
+
+Two vectors are **orthogonal** if their dot product is zero.
+
+Thus,
+
+$$
+x\perp y
+$$
+
+if and only if
+
+$$
+x^\top y=0.
+$$
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+1\\
+2
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+2\\
+-1
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+x^\top y
+=
+1(2)+2(-1)
+=
+0.
+$$
+
+Therefore,
+
+$$
+x\perp y.
+$$
+
+Geometrically, non-zero orthogonal vectors meet at a right angle.
+
+::: {.callout-note}
+## Why this matters for Linear Models
+
+Orthogonality is everywhere in Linear Models.
+
+In least squares, the residual vector is orthogonal to the column space of the design matrix.
+
+If
+
+$$
+e=y-X\hat\beta,
+$$
+
+then
+
+$$
+X^\top e=0.
+$$
+
+This single equation is one of the fundamental geometric facts behind least squares.
+:::
+
+---
+
+# Orthogonal decomposition
+
+Suppose a vector $y$ can be written as
+
+$$
+y=u+v
+$$
+
+where
+
+$$
+u\perp v.
+$$
+
+Then
+
+$$
+\|y\|^2
+=
+\|u+v\|^2.
+$$
+
+Using the dot product,
+
+$$
+\begin{aligned}
+\|u+v\|^2
+&=(u+v)^\top(u+v)\\
+&=u^\top u+2u^\top v+v^\top v.
+\end{aligned}
+$$
+
+Since $u^\top v=0$,
+
+$$
+\boxed{
+\|u+v\|^2
+=
+\|u\|^2+\|v\|^2
+}
+$$
+
+which is the vector form of the Pythagorean theorem.
+
+This identity will later appear repeatedly in least-squares decompositions.
+
+---
+
+# Important norm identities
+
+For vectors $x,y$ and scalar $a$,
+
+$$
+\|x\|\geq0,
+$$
+
+with
+
+$$
+\|x\|=0
+\iff
+x=0.
+$$
+
+The norm is homogeneous:
+
+$$
+\|ax\|=|a|\|x\|.
+$$
+
+The triangle inequality states
+
+$$
+\|x+y\|\leq\|x\|+\|y\|.
+$$
+
+The squared norm satisfies
+
+$$
+\|x+y\|^2
+=
+\|x\|^2+2x^\top y+\|y\|^2.
+$$
+
+Similarly,
+
+$$
+\|x-y\|^2
+=
+\|x\|^2-2x^\top y+\|y\|^2.
+$$
+
+These identities are worth knowing because they appear frequently when manipulating least-squares objectives.
+
+---
+
+# Cauchy-Schwarz inequality
+
+For any $x,y\in\mathbb R^n$,
+
+$$
+\boxed{
+|x^\top y|
+\leq
+\|x\|\|y\|
+}
+$$
+
+This is the **Cauchy-Schwarz inequality**.
+
+Equality occurs exactly when $x$ and $y$ are linearly dependent, assuming neither is zero.
+
+The geometric formula
+
+$$
+x^\top y
+=
+\|x\|\|y\|\cos\theta
+$$
+
+makes the inequality intuitive because
+
+$$
+|\cos\theta|\leq1.
+$$
+
+Cauchy-Schwarz is fundamental in analysis and probability and will reappear in more advanced statistical theory.
+
+For the basic Linear Models material, knowing the statement and interpretation is generally more important than memorizing a proof unless your course explicitly requires the proof.
+
+---
+
+# The standard basis
+
+The standard basis vectors of $\mathbb R^n$ are
+
+$$
+e_1,e_2,\ldots,e_n,
+$$
+
+where $e_i$ has a $1$ in position $i$ and zeros elsewhere.
+
+For $\mathbb R^3$,
+
+$$
+e_1=
+\begin{pmatrix}
+1\\
+0\\
+0
+\end{pmatrix},
+\qquad
+e_2=
+\begin{pmatrix}
+0\\
+1\\
+0
+\end{pmatrix},
+\qquad
+e_3=
+\begin{pmatrix}
+0\\
+0\\
+1
+\end{pmatrix}.
+$$
+
+Every vector in $\mathbb R^n$ can be expressed as a linear combination of the standard basis vectors.
+
+For example,
+
+$$
+\begin{pmatrix}
+2\\
+-3\\
+5
+\end{pmatrix}
+=
+2e_1-3e_2+5e_3.
+$$
+
+The standard basis provides the simplest coordinate system for Euclidean space.
+
+A more general treatment of bases and dimension belongs in the **Vector Spaces** prerequisite section.
+
+---
+
+# Vectors as data
+
+A vector does not have to represent a physical arrow.
+
+In statistics, a vector often represents a collection of observations.
+
+Suppose $n$ observations of a response variable are
+
+$$
+y_1,y_2,\ldots,y_n.
+$$
+
+They can be represented as the response vector
+
+$$
+y=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+$$
+
+Likewise, the observations of a predictor $x$ can be represented by
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}.
+$$
+
+This is one reason vectors are so useful in statistics: a vector provides a compact mathematical representation of an entire variable.
+
+---
+
+# Vectors in Linear Models
+
+Consider a simple linear regression model
+
+$$
+y_i=\beta_0+\beta_1x_i+\varepsilon_i,
+\qquad i=1,\ldots,n.
+$$
+
+We can collect all observations into vectors.
+
+The response vector is
+
+$$
+y=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix},
+$$
+
+and the error vector is
+
+$$
+\varepsilon=
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+$$
+
+The parameters can be represented as
+
+$$
+\beta=
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+$$
+
+The design matrix is
+
+$$
+X=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}.
+$$
+
+The model becomes
+
+$$
+\boxed{
+y=X\beta+\varepsilon
+}
+$$
+
+This is the fundamental vector-matrix representation of a linear model.
+
+The fitted values are
+
+$$
+\hat y=X\hat\beta.
+$$
+
+The residual vector is
+
+$$
+e=y-\hat y.
+$$
+
+Thus, several of the most important objects in Linear Models are vectors.
+
+---
+
+# The geometry of least squares
+
+The vector formulation reveals a geometric interpretation.
+
+Given
+
+$$
+y=X\beta+\varepsilon,
+$$
+
+the set of all possible fitted-value vectors is
+
+$$
+\{X\beta:\beta\in\mathbb R^p\}.
+$$
+
+This set is the column space of $X$:
+
+$$
+\mathcal C(X)
+=
+\{X\beta:\beta\in\mathbb R^p\}.
+$$
+
+The least-squares estimator chooses $\hat\beta$ so that
+
+$$
+X\hat\beta
+$$
+
+is the point in $\mathcal C(X)$ closest to $y$.
+
+Therefore,
+
+$$
+\hat y=X\hat\beta
+$$
+
+is the orthogonal projection of $y$ onto the column space of $X$.
+
+The residual
+
+$$
+e=y-\hat y
+$$
+
+is perpendicular to that column space.
+
+This gives the fundamental picture:
+
+```text
+                     y
+                     ●
+                    /|
+                   / |
+                  /  | e
+                 /   |
+                /    |
+               ●-----┘
+              ŷ
+              │
+              │
+        Column space of X
+```
+# Vector notation worth recognizing
+
+You will encounter several equivalent ways of writing vector expressions.
+
+For a vector $x$, the column-vector notation
+
+$$
+x =
+\begin{pmatrix}
+x_1\\
+\vdots\\
+x_n
+\end{pmatrix}
+$$
+
+may also be written as
+
+$$
+x=(x_1,\ldots,x_n)^\top.
+$$
+
+The dot product can be written as
+
+$$
+x^\top y
+$$
+
+or, in inner-product notation,
+
+$$
+\langle x,y\rangle.
+$$
+
+In the standard Euclidean setting these represent the same operation.
+
+The Euclidean norm can be written as
+
+$$
+\|x\|
+$$
+
+and satisfies
+
+$$
+\|x\|=\sqrt{\langle x,x\rangle}.
+$$
+
+Because the standard inner product is given by the dot product,
+
+$$
+\langle x,x\rangle=x^\top x,
+$$
+
+so
+
+$$
+\boxed{\|x\|=\sqrt{x^\top x}}.
+$$
+
+Consequently,
+
+$$
+\boxed{\|x\|^2=x^\top x}.
+$$
+
+These expressions are worth recognizing immediately because Linear Models uses all of them.
+
+---
+
+# Vectors and summation notation
+
+It is often convenient to write vectors and their operations using summation notation.
+
+Suppose
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_n
+\end{pmatrix}.
+$$
+
+Then their dot product is
+
+$$
+x^\top y
+=
+\sum_{i=1}^n x_i y_i.
+$$
+
+Their squared norm is
+
+$$
+\|x\|^2
+=
+\sum_{i=1}^n x_i^2.
+$$
+
+Their squared distance is
+
+$$
+\|x-y\|^2
+=
+\sum_{i=1}^n (x_i-y_i)^2.
+$$
+
+This notation becomes especially useful in statistics because many statistical quantities are sums over observations.
+
+For example, the sum of squared residuals can be written as
+
+$$
+\sum_{i=1}^n e_i^2
+$$
+
+or, using vector notation,
+
+$$
+e^\top e
+=
+\|e\|^2.
+$$
+
+These are exactly the same quantity.
+
+::: {.callout-note}
+## Why vector notation is useful
+
+A scalar expression such as
+
+$$
+\sum_{i=1}^n (y_i-\hat y_i)^2
+$$
+
+can become cumbersome when many operations are involved.
+
+Vector notation compresses the same expression into
+
+$$
+\|y-\hat y\|^2.
+$$
+
+This is one reason linear algebra is so powerful in statistical modelling: complicated collections of scalar equations can often be expressed as a small number of vector and matrix operations.
+:::
+
+---
+
+# The transpose
+
+The **transpose** changes a column vector into a row vector and a row vector into a column vector.
+
+If
+
+$$
+x=
+\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix},
+$$
+
+then
+
+$$
+x^\top
+=
+\begin{pmatrix}
+x_1 & x_2 & \cdots & x_n
+\end{pmatrix}.
+$$
+
+Applying the transpose twice returns the original vector:
+
+$$
+(x^\top)^\top=x.
+$$
+
+The transpose is particularly important because it allows vector multiplication.
+
+For example,
+
+$$
+x^\top y
+$$
+
+is valid when $x,y\in\mathbb R^n$.
+
+The dimensions are
+
+$$
+x^\top\in\mathbb R^{1\times n},
+\qquad
+y\in\mathbb R^{n\times1},
+$$
+
+so
+
+$$
+x^\top y\in\mathbb R^{1\times1}.
+$$
+
+A $1\times1$ matrix is identified with a scalar, giving the dot product.
+
+On the other hand,
+
+$$
+xy^\top
+$$
+
+has dimensions
+
+$$
+(n\times1)(1\times n)
+=
+n\times n,
+$$
+
+so it produces a matrix rather than a scalar.
+
+This distinction becomes extremely important once matrices are introduced.
+
+---
+
+# Inner product
+
+The dot product is an example of an **inner product**.
+
+For vectors $x,y\in\mathbb R^n$, the standard inner product is
+
+$$
+\langle x,y\rangle=x^\top y.
+$$
+
+An inner product is a function that assigns a scalar to two vectors and satisfies certain properties.
+
+For the standard Euclidean inner product:
+
+### Symmetry
+
+$$
+\langle x,y\rangle
+=
+\langle y,x\rangle.
+$$
+
+### Linearity
+
+For scalars $a,b$,
+
+$$
+\langle ax+by,z\rangle
+=
+a\langle x,z\rangle
++
+b\langle y,z\rangle.
+$$
+
+### Positive definiteness
+
+$$
+\langle x,x\rangle\geq0,
+$$
+
+and
+
+$$
+\langle x,x\rangle=0
+\iff
+x=0.
+$$
+
+The Euclidean norm is induced by the inner product:
+
+$$
+\|x\|=\sqrt{\langle x,x\rangle}.
+$$
+
+The general theory of inner-product spaces will be covered separately in the prerequisite material on vector spaces and inner products.
+
+For the present topic, the important point is:
+
+$$
+\boxed{\text{dot product} \longrightarrow \text{norm} \longrightarrow \text{geometry}}
+$$
+
+---
+
+# Orthogonal vectors and orthogonal sets
+
+Two vectors $x$ and $y$ are orthogonal when
+
+$$
+x^\top y=0.
+$$
+
+A collection of vectors is **pairwise orthogonal** if every pair of distinct vectors is orthogonal.
+
+For example,
+
+$$
+x_1=
+\begin{pmatrix}
+1\\
+0\\
+0
+\end{pmatrix},
+\qquad
+x_2=
+\begin{pmatrix}
+0\\
+1\\
+0
+\end{pmatrix},
+\qquad
+x_3=
+\begin{pmatrix}
+0\\
+0\\
+1
+\end{pmatrix}
+$$
+
+satisfy
+
+$$
+x_i^\top x_j=0
+$$
+
+whenever $i\neq j$.
+
+An orthogonal set of non-zero vectors is automatically linearly independent.
+
+To see why, suppose
+
+$$
+a_1x_1+\cdots+a_kx_k=0
+$$
+
+and suppose the vectors are pairwise orthogonal.
+
+Take the inner product with $x_j$:
+
+$$
+x_j^\top
+\left(
+a_1x_1+\cdots+a_kx_k
+\right)
+=
+x_j^\top0.
+$$
+
+By linearity,
+
+$$
+a_1x_j^\top x_1+\cdots+a_kx_j^\top x_k=0.
+$$
+
+Because the vectors are orthogonal, every term except the $j$th disappears:
+
+$$
+a_jx_j^\top x_j=0.
+$$
+
+Since $x_j\neq0$,
+
+$$
+x_j^\top x_j=\|x_j\|^2>0.
+$$
+
+Therefore,
+
+$$
+a_j=0.
+$$
+
+Since this holds for every $j$, all coefficients must be zero.
+
+Thus:
+
+$$
+\boxed{
+\text{non-zero orthogonal vectors are linearly independent}
+}
+$$
+
+This fact will become useful when studying orthogonal bases and least-squares geometry.
+
+---
+
+# The zero vector and orthogonality
+
+The zero vector requires a small caveat.
+
+For any vector $x$,
+
+$$
+x^\top0=0.
+$$
+
+Therefore, technically,
+
+$$
+x\perp0.
+$$
+
+However, geometric discussions of angles between vectors generally assume that both vectors are non-zero, because the zero vector has no direction.
+
+So when talking about the angle between vectors, it is normally understood that
+
+$$
+x\neq0,
+\qquad
+y\neq0.
+$$
+
+---
+
+# Projection onto a vector
+
+Suppose $x\neq0$ and we want to find the component of another vector $y$ that lies in the direction of $x$.
+
+The **projection of $y$ onto $x$** is
+
+$$
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+$$
+
+Since
+
+$$
+x^\top x=\|x\|^2,
+$$
+
+this can also be written as
+
+$$
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{\|x\|^2}x.
+$$
+
+The scalar
+
+$$
+\frac{x^\top y}{x^\top x}
+$$
+
+tells us how much of $x$ is required to obtain the projection.
+
+Thus the projection has the form
+
+$$
+\operatorname{proj}_x(y)=cx
+$$
+
+where
+
+$$
+c=\frac{x^\top y}{x^\top x}.
+$$
+
+The residual component is
+
+$$
+y-\operatorname{proj}_x(y).
+$$
+
+A key property is that this residual is orthogonal to $x$:
+
+$$
+x^\top
+\left(
+y-\operatorname{proj}_x(y)
+\right)
+=0.
+$$
+
+To verify this,
+
+$$
+\begin{aligned}
+x^\top
+\left(
+y-\frac{x^\top y}{x^\top x}x
+\right)
+&=
+x^\top y
+-
+\frac{x^\top y}{x^\top x}x^\top x\\
+&=
+x^\top y-x^\top y\\
+&=0.
+\end{aligned}
+$$
+
+This is the basic idea behind orthogonal projection.
+
+The more general theory of projection onto a subspace will be developed separately.
+
+---
+
+# Decomposing a vector into parallel and orthogonal components
+
+The projection formula gives a useful decomposition.
+
+For $x\neq0$,
+
+$$
+y
+=
+\operatorname{proj}_x(y)
++
+\left(
+y-\operatorname{proj}_x(y)
+\right).
+$$
+
+The first component is parallel to $x$:
+
+$$
+\operatorname{proj}_x(y)\in\operatorname{span}(x).
+$$
+
+The second component is orthogonal to $x:
+
+$$
+x^\top
+\left(
+y-\operatorname{proj}_x(y)
+\right)
+=0.
+$$
+
+Thus every vector $y$ can be decomposed into
+
+$$
+\boxed{
+y=
+\text{component parallel to }x
++
+\text{component orthogonal to }x
+}
+$$
+
+This simple idea becomes a central principle of least squares.
+
+---
+
+# Projection and least squares
+
+The previous section considered projection onto a single direction.
+
+Linear Models generalizes this idea.
+
+Suppose $X$ is a matrix whose columns are
+
+$$
+x_1,\ldots,x_p.
+$$
+
+Every vector of the form
+
+$$
+X\beta
+$$
+
+is a linear combination of these columns.
+
+Therefore, the set
+
+$$
+\{X\beta:\beta\in\mathbb R^p\}
+$$
+
+is the column space of $X$:
+
+$$
+\mathcal C(X).
+$$
+
+Given an observed vector $y$, the least-squares problem is
+
+$$
+\min_\beta \|y-X\beta\|^2.
+$$
+
+The solution chooses the vector
+
+$$
+\hat y=X\hat\beta
+$$
+
+in the column space of $X$ that is closest to $y$.
+
+Geometrically,
+
+$$
+\hat y
+$$
+
+is the orthogonal projection of $y$ onto $\mathcal C(X)$.
+
+The residual
+
+$$
+e=y-\hat y
+$$
+
+is therefore orthogonal to the column space:
+
+$$
+e\perp\mathcal C(X).
+$$
+
+Equivalently,
+
+$$
+X^\top e=0.
+$$
+
+This equation will later become the **normal equations**.
+
+So the chain is:
+
+$$
+\boxed{
+\text{vectors}
+\rightarrow
+\text{dot products}
+\rightarrow
+\text{orthogonality}
+\rightarrow
+\text{projection}
+\rightarrow
+\text{least squares}
+}
+$$
+
+This is one of the most important conceptual chains in Linear Models.
+
+---
+
+# Vector norms and least-squares objectives
+
+Consider the least-squares objective
+
+$$
+\|y-X\beta\|^2.
+$$
+
+Using the definition of the squared norm,
+
+$$
+\|y-X\beta\|^2
+=
+(y-X\beta)^\top(y-X\beta).
+$$
+
+Expanding,
+
+$$
+\begin{aligned}
+\|y-X\beta\|^2
+&=
+y^\top y
+-y^\top X\beta
+-\beta^\top X^\top y
++\beta^\top X^\top X\beta.
+\end{aligned}
+$$
+
+Since $y^\top X\beta$ is a scalar,
+
+$$
+y^\top X\beta
+=
+\beta^\top X^\top y.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\|y-X\beta\|^2
+=
+y^\top y
+-
+2\beta^\top X^\top y
++
+\beta^\top X^\top X\beta
+}
+$$
+
+This expression is central when deriving the least-squares estimator.
+
+The vector concepts introduced in this chapter therefore directly support the calculus and matrix algebra used later.
+
+---
+
+# A useful geometric identity
+
+Suppose $y$ is decomposed into two orthogonal components:
+
+$$
+y=u+v,
+\qquad
+u^\top v=0.
+$$
+
+Then
+
+$$
+\|y\|^2
+=
+\|u\|^2+\|v\|^2.
+$$
+
+In least squares, take
+
+$$
+y=\hat y+e
+$$
+
+where
+
+$$
+\hat y\perp e.
+$$
+
+Then
+
+$$
+\boxed{
+\|y\|^2
+=
+\|\hat y\|^2+\|e\|^2
+}
+$$
+
+because
+
+$$
+\hat y^\top e=0.
+$$
+
+This is the geometric origin of several important sums-of-squares decompositions in statistical models.
+
+The exact statistical interpretation depends on the model and on additional assumptions, but the underlying geometry is simply the Pythagorean theorem applied to orthogonal vectors.
+
+---
+
+# Vector-valued random variables
+
+In statistics, vectors can themselves be random.
+
+A **random vector** is a vector whose components are random variables.
+
+For example,
+
+$$
+Y=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}.
+$$
+
+Each $Y_i$ is a random variable, so $Y$ is a random vector.
+
+In a linear model,
+
+$$
+Y=X\beta+\varepsilon,
+$$
+
+the response vector $Y$ and error vector $\varepsilon$ are typically random, while $X$ and $\beta$ may be treated as fixed depending on the modelling framework.
+
+The expectation of a random vector is defined componentwise:
+
+$$
+E[Y]
+=
+\begin{pmatrix}
+E[Y_1]\\
+E[Y_2]\\
+\vdots\\
+E[Y_n]
+\end{pmatrix}.
+$$
+
+The covariance matrix of a random vector is treated in the probability/statistics prerequisites.
+
+This is one place where the vector language of linear algebra meets the probabilistic language of statistics.
+
+---
+
+# Coordinate vectors
+
+A vector can be described by its coordinates relative to a chosen basis.
+
+For example, consider the standard basis of $\mathbb R^2$:
+
+$$
+e_1=
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix},
+\qquad
+e_2=
+\begin{pmatrix}
+0\\
+1
+\end{pmatrix}.
+$$
+
+Then
+
+$$
+x=
+\begin{pmatrix}
+3\\
+5
+\end{pmatrix}
+$$
+
+can be written as
+
+$$
+x=3e_1+5e_2.
+$$
+
+The numbers $3$ and $5$ are the coordinates of $x$ relative to this basis.
+
+More generally, if
+
+$$
+\mathcal B=\{b_1,\ldots,b_n\}
+$$
+
+is a basis, then a vector can be expressed as
+
+$$
+x=a_1b_1+\cdots+a_nb_n.
+$$
+
+The coefficients
+
+$$
+a_1,\ldots,a_n
+$$
+
+are the coordinates of $x$ relative to $\mathcal B$.
+
+The general theory of bases and coordinates is developed in the vector-spaces section.
+
+---
+
+# Vector operations: a compact reference
+
+For $x,y\in\mathbb R^n$ and $a\in\mathbb R$:
+
+### Addition
+
+$$
+x+y
+=
+\begin{pmatrix}
+x_1+y_1\\
+\vdots\\
+x_n+y_n
+\end{pmatrix}.
+$$
+
+### Scalar multiplication
+
+$$
+ax
+=
+\begin{pmatrix}
+ax_1\\
+\vdots\\
+ax_n
+\end{pmatrix}.
+$$
+
+### Negative
+
+$$
+-x
+=
+(-1)x.
+$$
+
+### Subtraction
+
+$$
+x-y=x+(-y).
+$$
+
+### Dot product
+
+$$
+x^\top y
+=
+\sum_{i=1}^n x_i y_i.
+$$
+
+### Norm
+
+$$
+\|x\|
+=
+\sqrt{x^\top x}.
+$$
+
+### Squared norm
+
+$$
+\|x\|^2=x^\top x.
+$$
+
+### Distance
+
+$$
+d(x,y)=\|x-y\|.
+$$
+
+### Orthogonality
+
+$$
+x\perp y
+\iff
+x^\top y=0.
+$$
+
+### Projection onto $x$
+
+$$
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x.
+$$
+
+---
+
+# Common mistakes
+
+## Confusing vectors and scalars
+
+If
+
+$$
+x\in\mathbb R^n,
+$$
+
+then $x$ is a vector.
+
+But
+
+$$
+x^\top x
+$$
+
+is a scalar.
+
+Similarly,
+
+$$
+\|x\|
+$$
+
+is a scalar.
+
+Keeping track of whether an expression produces a scalar, vector, or matrix becomes increasingly important as the course progresses.
+
+---
+
+## Confusing $x^\top y$ and $xy^\top$
+
+These expressions have completely different dimensions.
+
+If
+
+$$
+x,y\in\mathbb R^n,
+$$
+
+then
+
+$$
+x^\top y
+$$
+
+is a scalar, whereas
+
+$$
+xy^\top
+$$
+
+is an $n\times n$ matrix.
+
+The first is an inner product.
+
+The second is an outer product.
+
+Outer products will become relevant later when working with matrices, covariance matrices, and quadratic forms.
+
+---
+
+## Forgetting the square root in the norm
+
+Remember:
+
+$$
+\|x\|=\sqrt{x^\top x}
+$$
+
+whereas
+
+$$
+\|x\|^2=x^\top x.
+$$
+
+If a least-squares objective is written as
+
+$$
+\|y-X\beta\|,
+$$
+
+it represents Euclidean distance.
+
+If it is written as
+
+$$
+\|y-X\beta\|^2,
+$$
+
+it represents squared Euclidean distance.
+
+Both are minimized by the same $\beta$, but the squared version is algebraically much easier to work with.
+
+---
+
+## Assuming orthogonality means vectors have equal length
+
+Orthogonality concerns the dot product:
+
+$$
+x^\top y=0.
+$$
+
+It says nothing about the lengths of $x$ and $y$.
+
+For example,
+
+$$
+x=
+\begin{pmatrix}
+100\\
+0
+\end{pmatrix},
+\qquad
+y=
+\begin{pmatrix}
+0\\
+0.001
+\end{pmatrix}
+$$
+
+are orthogonal even though their lengths differ dramatically.
+
+---
+
+## Forgetting that the zero vector has no direction
+
+The zero vector satisfies
+
+$$
+x^\top0=0
+$$
+
+for every $x$.
+
+However, it does not have a meaningful direction or angle.
+
+Thus geometric statements involving angles normally assume the vectors are non-zero.
+
+---
+
+# Essential results to remember
+
+For Linear Models, the following results should become familiar.
+
+### Vector norm
+
+$$
+\boxed{
+\|x\|=\sqrt{x^\top x}
+}
+$$
+
+### Squared norm
+
+$$
+\boxed{
+\|x\|^2=x^\top x
+}
+$$
+
+### Distance
+
+$$
+\boxed{
+d(x,y)=\|x-y\|
+}
+$$
+
+### Dot product and angle
+
+$$
+\boxed{
+x^\top y
+=
+\|x\|\|y\|\cos\theta
+}
+$$
+
+### Orthogonality
+
+$$
+\boxed{
+x\perp y
+\iff
+x^\top y=0
+}
+$$
+
+### Projection onto a vector
+
+$$
+\boxed{
+\operatorname{proj}_x(y)
+=
+\frac{x^\top y}{x^\top x}x
+}
+$$
+
+### Least-squares objective
+
+$$
+\boxed{
+\min_\beta\|y-X\beta\|^2
+}
+$$
+
+### Residual
+
+$$
+\boxed{
+e=y-X\hat\beta
+}
+$$
+
+### Orthogonality of least-squares residuals
+
+$$
+\boxed{
+X^\top e=0
+}
+$$
+
+The final result belongs formally to the Linear Models material, but it is included here because it shows exactly why the vector concepts in this prerequisite matter.
+
+---
+
+# What you should be able to do
+
+Before moving on from vectors, you should be able to do the following without having to relearn the definitions.
+
+- Add and subtract vectors.
+- Multiply a vector by a scalar.
+- Recognize and construct linear combinations.
+- Determine whether vectors are linearly dependent or independent in simple cases.
+- Interpret the span of a collection of vectors.
+- Calculate a dot product.
+- Calculate a vector norm.
+- Calculate the distance between two vectors.
+- Determine whether two vectors are orthogonal.
+- Interpret vectors geometrically.
+- Move comfortably between component notation and matrix notation.
+- Recognize expressions such as $x^\top y$, $x^\top x$, and $\|x\|^2$.
+- Understand the relationship between dot products and angles.
+- Understand the basic idea of projecting one vector onto another.
+- Understand why least squares can be interpreted geometrically.
+
+You do **not** need to memorize every derivation in this chapter. The important goal is that the notation and basic operations become familiar enough that they do not interrupt your understanding of the Linear Models material.
+
+---
+
+# Connection to the rest of Linear Algebra
+
+The ideas in this chapter lead naturally into the next prerequisite topics.
+
+The dependency structure is approximately:
+
+```text
+Vectors
+   │
+   ├── Linear combinations
+   │       │
+   │       ├── Span
+   │       └── Linear independence
+   │
+   ├── Dot product
+   │       │
+   │       ├── Norm
+   │       ├── Distance
+   │       └── Orthogonality
+   │
+   └── Geometry
+           │
+           └── Projection
+```
+# Quick reference
+
+| Concept | Definition |
+|---|---|
+| Vector | An ordered collection of scalars |
+| Scalar | A single number |
+| Linear combination | $\sum_i a_i x_i$ |
+| Span | All linear combinations of a set of vectors |
+| Linear independence | Only the trivial combination equals zero |
+| Dot product | $x^\top y$ |
+| Norm | $\|x\|=\sqrt{x^\top x}$ |
+| Squared norm | $\|x\|^2=x^\top x$ |
+| Distance | $\|x-y\|$ |
+| Orthogonality | $x^\top y=0$ |
+| Projection onto $x$ | $\frac{x^\top y}{x^\top x}x$ |
+| Least-squares objective | $\|y-X\beta\|^2$ |
+| Residual | $y-X\hat\beta$ |
+
+---
+
+# Summary
+
+Vectors provide the basic language for expressing data, parameters, errors, fitted values, and many other objects in Linear Models.
+
+The central algebraic operations are vector addition, scalar multiplication, and linear combination. These lead naturally to the ideas of span and linear independence.
+
+The dot product introduces geometry:
+
+$$
+x^\top y
+=
+\|x\|\|y\|\cos\theta.
+$$
+
+From the dot product we obtain the Euclidean norm,
+
+$$
+\|x\|=\sqrt{x^\top x},
+$$
+
+and the concept of orthogonality,
+
+$$
+x^\top y=0.
+$$
+
+Orthogonality allows vectors to be decomposed into independent geometric components. Projection formalizes the process of finding the component of one vector lying within a particular direction or subspace.
+
+This becomes the geometric foundation of least squares.
+
+Given a design matrix $X$, the fitted vector
+
+$$
+\hat y=X\hat\beta
+$$
+
+lies in the column space of $X$, while the residual
+
+$$
+e=y-\hat y
+$$
+
+is orthogonal to that space:
+
+$$
+X^\top e=0.
+$$
+
+Thus, although vectors are elementary objects, they provide the language for one of the central ideas of Linear Models:
+
+$$
+\boxed{
+\text{Least squares is fundamentally a problem of geometry in vector space.}
+}
+$$

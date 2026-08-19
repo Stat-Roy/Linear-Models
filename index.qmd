@@ -1,0 +1,122 @@
+---
+title: "Linear Models"
+subtitle: "Course Knowledge Base"
+---
+
+# Linear Models
+
+Welcome to the Linear Models knowledge base.
+
+This document is designed to serve two purposes:
+
+1. **Course reference:** everything explicitly taught in the Linear Models course.
+2. **Mathematical reference:** prerequisite material needed to understand the course, even when that material is taught elsewhere or is not part of the syllabus.
+
+The goal is not simply to reproduce lecture notes, but to map the mathematical structure connecting the topics.
+
+---
+
+## How to use this document
+
+The material is divided into three main sections:
+
+::: {.columns}
+
+::: {.column width="33%"}
+
+### Core
+
+Material explicitly taught in the Linear Models course.
+
+These topics are the primary focus for coursework and examinations.
+
+:::
+
+::: {.column width="33%"}
+
+### Prerequisites
+
+Mathematical and statistical concepts needed to understand the Core material.
+
+Some of these may be taught in other courses and may not be directly examinable in Linear Models.
+
+:::
+
+::: {.column width="33%"}
+
+### Intro
+
+Course information, syllabus, notation, exam coverage, and other orientation material.
+
+:::
+
+:::
+
+---
+
+## Understanding the status of a topic
+
+Each topic can have two different kinds of importance.
+
+### Course relevance
+
+| Status | Meaning |
+|---|---|
+| 🟢 **Core** | Explicitly taught and examinable |
+| 🟡 **Supporting** | Not necessarily examinable, but needed to understand Core material |
+| ⚪ **Background** | Useful background knowledge |
+| 🔵 **Extension** | Beyond the requirements of the course |
+
+### Required depth
+
+| Level | Meaning |
+|---|---|
+| **1 · Recognize** | Understand the idea and terminology |
+| **2 · Apply** | Perform calculations or use the result |
+| **3 · Derive** | Derive important results |
+| **4 · Prove** | Understand or reproduce proofs |
+
+A prerequisite therefore does **not** automatically mean "study the entire subject."
+
+For example, Linear Models may require a working understanding of orthogonal projections without requiring the full theory of abstract inner-product spaces.
+
+---
+
+## The dependency structure
+
+The important question is not only:
+
+> "What comes next in the lectures?"
+
+but also:
+
+> "What does this topic depend on?"
+
+A simplified dependency structure might look like:
+
+```text
+Linear Algebra
+      │
+      ├── Vectors
+      ├── Matrices
+      ├── Subspaces
+      ├── Orthogonality
+      │
+      └──────────────┐
+                     ↓
+                Projections
+                     │
+                     ↓
+                Least Squares
+                     │
+                     ↓
+                Linear Model
+                     │
+              ┌──────┴──────┐
+              ↓             ↓
+         Estimation      Residuals
+              │             │
+              └──────┬──────┘
+                     ↓
+                 Inference
+```

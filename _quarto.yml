@@ -1,0 +1,61 @@
+project:
+  type: website
+
+website:
+  title: "Linear Models"
+
+  navbar:
+    title: "Linear Models"
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Intro"
+        href: Intro/syllabus.qmd
+      - text: "Core"
+        href: Core/01-linear-model.qmd
+      - text: "Prerequisites"
+        href: Prerequisites/Linear-Algebra/vectors.qmd
+
+  sidebar:
+    style: "floating"
+    search: true
+    contents:
+
+      - text: "Home"
+        href: index.qmd
+
+      - section: "Intro"
+        contents:
+          - Intro/syllabus.qmd
+          - Intro/exam-map.qmd
+          - Intro/notation.qmd
+
+      - section: "Core"
+        contents:
+          - Core/01-Gauss-Markov.qmd
+
+      - section: "Prerequisites"
+        contents:
+
+          - section: "Linear Algebra"
+            contents:
+              - Prerequisites/Linear-Algebra/vectors.qmd
+              - Prerequisites/Linear-Algebra/matrices.qmd
+              #- Prerequisites/Linear-Algebra/rank.qmd
+
+          - section: "Statistics"
+            contents:
+              - Prerequisites/Statistics/expectation.qmd
+              #- Prerequisites/Statistics/variance.qmd
+              #- Prerequisites/Statistics/covariance.qmd
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    smooth-scroll: true
+
+execute:
+  freeze: auto
