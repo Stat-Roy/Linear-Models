@@ -1,5 +1,1515 @@
 ---
-title: "Regression-Analysis"
-format: html
+title: "Regression Analysis"
+subtitle: "Simple and Multiple linear regression, Estimation and hypothesis testing on regression"
 ---
 
+Regression analysis is one of the most important branches if statistical analysis. It is concerned with the study of relationship between a response variable and one or more explanatory variable. The main objective is to describe the average behavior of the response variable in terms of the explanatory variables and to make predictions where appropriate
+
+e.g. The yield of a crop may depend upon the amount of fertilizers used, the amount of rainfall and the temperature. Similarly the sales of a product may depend upon price, income, expenditure on advertisement and other economic variable
+
+If only there is one explanatory variable the analysis is called **Simple Regression Analysis**. If there are two or more explanatory variables it is called **Multiple Regression Analysis**.
+
+# Simple Linear Regression
+
+::: {.callout-note}
+## Course Status
+
+**Status:** 🟢 **Core**
+
+**Required depth:** **4 · Prove**
+
+This section introduces the simple linear regression model, develops the least squares estimators, establishes their main algebraic properties, and introduces the decomposition of variation through sums of squares and the coefficient of determination.
+
+The emphasis is on understanding both the mathematical derivations and the statistical interpretation of the regression model.
+:::
+
+## The Simple Linear Regression Model
+
+Simple linear regression describes the relationship between a response variable and a single explanatory variable.
+
+Let $Y_i$ denote the response associated with observation $i$, and let $x_i$ denote the corresponding value of the explanatory variable.
+
+The simple linear regression model is
+
+$$
+\boxed{
+Y_i
+=
+\beta_0+\beta_1x_i+\varepsilon_i,
+\qquad i=1,\ldots,n.
+}
+$$
+
+Here:
+
+- $Y_i$ is the $i$'th response variable.
+- $x_i$ is the corresponding explanatory variable.
+- $\beta_0$ is the intercept.
+- $\beta_1$ is the slope.
+- $\varepsilon_i$ is the random error.
+
+The systematic part of the model is
+
+$$
+\beta_0+\beta_1x_i,
+$$
+
+while the random component is
+
+$$
+\varepsilon_i.
+$$
+
+Thus,
+
+$$
+Y_i
+=
+\underbrace{\beta_0+\beta_1x_i}_{\text{systematic component}}
++
+\underbrace{\varepsilon_i}_{\text{random component}}.
+$$
+
+---
+
+## Interpretation of the Parameters
+
+The parameters $\beta_0$ and $\beta_1$ describe the population regression relationship.
+
+### The Intercept
+
+The intercept $\beta_0$ is the expected value of the response variable (Y) when the explanatory variable (X) is zero.
+
+Since
+
+$$
+E(Y_i\mid x_i)
+=
+\beta_0+\beta_1x_i,
+$$
+
+setting $x_i=0$ gives
+
+$$
+E(Y_i\mid x_i=0)
+=
+\beta_0.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\beta_0
+=
+E(Y\mid X=0)
+}
+$$
+
+when $x=0$ is meaningful within the context of the problem.
+
+The mathematical interpretation is straightforward, but the practical interpretation requires some care. If $x=0$ is outside the range of the observed data, the intercept may have little direct scientific meaning even though it remains an important part of the model.
+
+### The Slope
+
+The slope $\beta_1$ describes the change in the expected response variable (Y) associated with a one-unit increase in the explanatory variable (X).
+
+For two values $x$ and $x+1$,
+
+$$
+E(Y\mid X=x+1)
+-
+E(Y\mid X=x)
+=
+[\beta_0 + \beta_1(x+1)] - [\beta_0 + \beta_1x]
+=
+\beta_1.
+$$
+
+Thus,
+
+$$
+\boxed{
+\beta_1
+=
+\text{change in expected }Y
+\text{ for a one-unit increase in }X.
+}
+$$
+
+More generally, if $x$ increases by $\Delta x$, then the expected response changes by
+
+$$
+\beta_1\Delta x.
+$$
+
+The sign of $\beta_1$ determines the direction of the relationship:
+
+- $\beta_1>0$: the expected response increases as $x$ increases. [ Positive slope]
+- $\beta_1<0$: the expected response decreases as $x$ increases. [ Negative slope]
+- $\beta_1=0$: there is no linear change in the expected response.
+
+---
+
+## Conditional Mean Function
+
+Taking conditional expectations of the model gives
+
+$$
+E(Y_i\mid x_i)
+=
+E(\beta_0+\beta_1x_i+\varepsilon_i\mid x_i).
+$$
+
+Since $\beta_0$ and $\beta_1x_i$ are non-random once $x_i$ is given,
+
+$$
+E(Y_i\mid x_i)
+=
+\beta_0+\beta_1x_i
++
+E(\varepsilon_i\mid x_i).
+$$
+
+Under the usual regression assumption
+
+$$
+E(\varepsilon_i\mid x_i)=0,
+$$
+
+we obtain
+
+$$
+\boxed{
+E(Y_i\mid x_i)
+=
+\beta_0+\beta_1x_i.
+}
+$$
+
+This equation defines the **population regression line**.
+It represents the mean response at each value of the explanatory variable.
+
+The individual observations need not lie exactly on this line because of the random errors $\varepsilon_i$.
+
+---
+
+## The Error Term
+
+The error term represents variation in the response that is not explained by the systematic linear relationship with $x_i$.
+
+The standard assumptions are,
+
+$$
+E(\varepsilon_i) = 0,\\
+\operatorname{Var}(\varepsilon_i) = \sigma^2.
+$$
+
+The errors therefore have mean zero and a common variance.
+
+For the classical simple linear regression model, the errors are also assumed to be mutually uncorrelated:
+
+$$
+\operatorname{Cov}(\varepsilon_i,\varepsilon_j)=0,
+\qquad \forall i\neq j.
+$$
+
+Additionally if normality is assumed, then
+
+$$
+\varepsilon_i
+\overset{\mathrm{i.i.d}}{\sim}
+N(0,\sigma^2).
+$$
+
+The normality assumption is stronger than what is required for the Gauss-Markov theorem, but it becomes useful for exact finite-sample inference.
+
+Consequently
+
+$$
+(Y_i \mid X_i = x_i) \sim N(\beta_0 + \beta_1x_i,\;\; \sigma^2)
+$$
+
+---
+
+## Matrix Representation
+
+The simple linear regression model is a special case of the general linear model.
+
+Write
+
+$$
+\mathbf{Y}
+=
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix},
+\qquad
+\boldsymbol{\beta}
+=
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}.
+$$
+
+The model matrix is
+
+$$
+\mathbf{X}
+=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\mathbf{Y}
+=
+\mathbf{X}\boldsymbol{\beta}
++
+\boldsymbol{\varepsilon}.
+}
+$$
+
+Explicitly,
+
+$$
+\begin{pmatrix}
+Y_1\\
+Y_2\\
+\vdots\\
+Y_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & x_1\\
+1 & x_2\\
+\vdots & \vdots\\
+1 & x_n
+\end{pmatrix}
+\begin{pmatrix}
+\beta_0\\
+\beta_1
+\end{pmatrix}
++
+\begin{pmatrix}
+\varepsilon_1\\
+\varepsilon_2\\
+\vdots\\
+\varepsilon_n
+\end{pmatrix}.
+$$
+
+This representation allows all of the general linear model machinery to be applied directly to simple linear regression.
+
+---
+
+## Least Squares Estimation
+
+Consider the linear regression model
+$$
+Y_i = \beta_0 + \beta_1x_i + \varepsilon_i
+$$
+The population parameters $\beta_0$ and $\beta_1$ are unknown. We therefore need to estimate them from the observed data.
+Let
+$$
+\widehat{\beta}_0 = b_0 \qquad\text{and} \qquad
+\widehat{\beta}_1 = b_1
+$$
+
+denote the estimators of $\beta_0$ and $\beta_1$.
+
+The fitted regression line is then
+
+$$
+\boxed{
+\widehat{Y}_i
+=
+b_0
++
+b_1x_i.
+}
+$$
+
+The difference between the observed response and the fitted response is the residual:
+
+$$
+\begin{align*}
+  e_i =& Y_i-\widehat{Y}_i.\\
+  =& Y_i - b_0 - b_1x_i.
+\end{align*}
+$$
+
+The least squares method chooses $b_0$ and $b_1$ to minimize the total squared residuals.
+
+$$
+Q(\beta_0,\beta_1)
+=
+\sum_{i=1}^{n}
+\left(
+Y_i-\beta_0-\beta_1x_i
+\right)^2.
+$$
+
+The least squares estimators are the values that minimize this function:
+
+$$
+\boxed{
+(b_0,b_1)
+=
+\underset{\beta_0,\beta_1}{\operatorname{arg\,min}}
+\;
+\sum_{i=1}^{n}
+\left(
+Y_i-\beta_0-\beta_1x_i
+\right)^2.
+}
+$$
+
+The residual sum of squares is therefore minimized by the fitted regression line.
+
+---
+
+### Deriving the Least Squares Estimators
+
+We begin with
+
+$$
+Q(\beta_0,\beta_1)
+=
+\sum_{i=1}^{n}
+\left(
+Y_i-\beta_0-\beta_1x_i
+\right)^2.
+$$
+
+To find the minimum, differentiate with respect to $\beta_0$ and $\beta_1$.
+
+The first partial derivative is
+
+$$
+\frac{\partial Q}{\partial\beta_0}
+=
+-2
+\sum_{i=1}^{n}
+\left(
+Y_i-\beta_0-\beta_1x_i
+\right).
+$$
+
+At the minimum,
+
+$$
+\frac{\partial Q}{\partial\beta_0}=0.
+$$
+
+Therefore,
+
+$$
+\begin{align*}
+
+\sum_{i=1}^{n}\left(Y_i-b_0-b_1x_i\right) &= 0.\\
+\sum_{i=1}^{n}Y_i - nb_0 - b_1 \sum_{i=1}^{n}x_i &= 0.\\
+n{b_0} + b_1\sum_{i = 1}^{n}x_i &= \sum_{i = 1}^{n}Y_i
+
+\end{align*}
+$$
+
+Dividing by $n$,
+
+$$
+\bar{Y}
+-
+b_0
+-
+b_1\bar{x}
+=
+0.
+$$
+
+Hence,
+
+$$
+\boxed{
+b_0
+=
+\bar{Y}
+-
+b_1\bar{x}.
+}
+$$
+
+This is the first least squares equation.
+
+Now differentiate with respect to $\beta_1$:
+
+$$
+\frac{\partial Q}{\partial\beta_1}
+=
+-2
+\sum_{i=1}^{n}
+x_i
+\left(
+Y_i-\beta_0-\beta_1x_i
+\right).
+$$
+
+Setting this equal to zero gives
+
+$$
+\sum_{i=1}^{n}
+x_i
+\left(
+Y_i-b_0-b_1x_i
+\right)
+=
+0.
+$$
+
+Therefore,
+
+$$
+\sum_{i=1}^{n}x_iY_i
+-
+b_0
+\sum_{i=1}^{n}x_i
+-
+b_1
+\sum_{i=1}^{n}x_i^2
+=
+0.
+$$
+
+These two equations,
+
+$$
+\sum_{i=1}^{n}
+\left(
+Y_i-b_0-b_1x_i
+\right)
+=
+0
+$$
+
+and
+
+$$
+\sum_{i=1}^{n}
+x_i
+\left(
+Y_i-b_0-b_1x_i
+\right)
+=
+0,
+$$
+
+are the **normal equations** for simple linear regression.
+
+---
+
+### The Slope in Centered Form
+
+Using
+
+$$
+b_0
+=
+\bar{Y}
+-
+b_1\bar{x},
+$$
+
+substitute into the second normal equation.
+
+After simplification,
+
+$$
+\sum_{i=1}^{n}
+(x_i-\bar{x})(Y_i-\bar{Y})
+=
+b_1
+\sum_{i=1}^{n}
+(x_i-\bar{x})^2.
+$$
+
+Therefore,
+
+$$
+\boxed{
+b_1
+=
+\frac{
+\sum_{i=1}^{n}
+(x_i-\bar{x})(Y_i-\bar{Y})
+}{
+\sum_{i=1}^{n}
+(x_i-\bar{x})^2
+}
+=
+\dfrac{S_{xy}}{S_{xx}}
+}
+$$
+
+The intercept estimator is then
+
+$$
+\boxed{
+b_0
+=
+\bar{Y}
+-
+b_1\bar{x}.
+}
+$$
+
+These are the standard least squares estimators for simple linear regression.
+
+---
+
+### Interpretation of the Slope Estimator
+
+The numerator
+
+$$
+\sum_{i=1}^{n}
+(x_i-\bar{x})(Y_i-\bar{Y})
+$$
+
+measures the joint variation between $x$ and $Y$.
+
+The denominator
+
+$$
+\sum_{i=1}^{n}
+(x_i-\bar{x})^2
+$$
+
+measures the variation in $x$.
+
+Therefore,
+
+$$
+b_1
+=
+\frac{\text{joint variation of }x\text{ and }Y}
+{\text{variation of }x}.
+$$
+
+The sign of $b_1$ tells us the direction of the observed linear relationship.
+
+If $b_1>0,$ the fitted response increases with $x$.
+
+If $b_1<0,$ the fitted response decreases with $x$.
+
+If $b_1=0,$ the fitted regression line is horizontal.
+
+---
+
+## Properties of the Fitted Regression Line
+
+The fitted regression line is
+
+$$
+\widehat{Y}_i
+=
+b_0
++
+b_1x_i.
+$$
+
+Using
+
+$$
+b_0
+=
+\bar{Y}
+-
+b_1\bar{x},
+$$
+
+we can rewrite it as
+
+$$
+\widehat{Y}_i
+=
+\bar{Y}
++
+b_1(x_i-\bar{x}).
+$$
+
+Therefore,
+
+$$
+\boxed{
+\widehat{Y}_i
+=
+\bar{Y}
++
+b_1(x_i-\bar{x}).
+}
+$$
+
+This form makes several important properties immediately visible.
+
+---
+
+### The Regression Line Passes Through the Sample Means
+
+Set
+
+$$
+x_i=\bar{x}.
+$$
+
+Then
+
+$$
+\widehat{Y}
+=
+\bar{Y}
++
+b_1(\bar{x}-\bar{x}).
+$$
+
+Therefore,
+
+$$
+\widehat{Y}=\bar{Y}.
+$$
+
+Hence, the fitted regression line passes through the point
+
+$$
+\boxed{
+(\bar{x},\bar{Y}).
+}
+$$
+
+This is one of the fundamental geometric properties of the least squares regression line.
+
+---
+
+### Sum of the Residuals is Zero
+
+The residual for observation $i$ is
+
+$$
+e_i
+=
+Y_i-\widehat{Y}_i.
+$$
+
+Substituting the fitted line,
+
+$$
+e_i
+=
+Y_i
+-
+b_0
+-
+b_1x_i.
+$$
+
+One of the normal equations gives
+
+$$
+\sum_{i=1}^{n}
+\left(
+Y_i-b_0-b_1x_i
+\right)
+=
+0.
+$$
+
+Since
+
+$$
+e_i
+=
+Y_i-b_0-b_1x_i,
+$$
+
+we obtain
+
+$$
+\boxed{
+\sum_{i=1}^{n}e_i=0.
+}
+$$
+
+Therefore,
+
+$$
+\bar{e}=0.
+$$
+
+The residuals have sample mean zero.
+
+This result depends on the model containing an intercept.
+
+---
+
+### Residuals Are Orthogonal to the Predictor (X)
+
+The second normal equation gives
+
+$$
+\sum_{i=1}^{n}
+x_i
+\left(
+Y_i-b_0-b_1x_i
+\right)
+=
+0.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\sum_{i=1}^{n}x_ie_i=0.
+}
+$$
+
+Thus, the residual vector is orthogonal to the vector of predictor values.
+
+Because
+
+$$
+\sum_{i=1}^{n}e_i=0,
+$$
+
+we also have
+
+$$
+\sum_{i=1}^{n}
+(x_i-\bar{x})e_i
+=
+0.
+$$
+
+Hence,
+
+$$
+\boxed{
+\sum_{i=1}^{n}
+(x_i-\bar{x})e_i
+=
+0.
+}
+$$
+
+This is the scalar version of the general linear model result
+
+$$
+\mathbf{X}^{\mathsf T}\mathbf{e}
+=
+\mathbf{0}.
+$$
+
+---
+
+### Residuals and Fitted Values
+
+Because
+
+$$
+\widehat{Y}_i
+=
+b_0
++
+b_1x_i,
+$$
+
+we have
+
+$$
+\sum_{i=1}^{n}
+\widehat{Y}_ie_i
+=
+b_0
+\sum_{i=1}^{n}e_i
++
+b_1
+\sum_{i=1}^{n}x_ie_i.
+$$
+
+Both terms are zero.
+
+Therefore,
+
+$$
+\boxed{
+\sum_{i=1}^{n}
+\widehat{Y}_ie_i
+=
+0.
+}
+$$
+
+Thus, the fitted values and residuals are orthogonal.
+
+This gives the decomposition
+
+$$
+Y_i
+=
+\widehat{Y}_i+e_i
+$$
+
+with
+
+$$
+\sum_{i=1}^{n}
+\widehat{Y}_ie_i
+=
+0.
+$$
+
+---
+
+## Sums of Squares
+
+The total variation in the response can be decomposed into a part explained by the fitted regression line and a residual part.
+
+Start with
+
+$$
+Y_i-\bar{Y}.
+$$
+
+Since
+
+$$
+Y_i
+=
+\widehat{Y}_i+e_i,
+$$
+
+we have
+
+$$
+Y_i-\bar{Y}
+=
+(\widehat{Y}_i-\bar{Y})+e_i.
+$$
+
+Squaring,
+
+$$
+(Y_i-\bar{Y})^2
+=
+(\widehat{Y}_i-\bar{Y})^2
++
+2(\widehat{Y}_i-\bar{Y})e_i
++
+e_i^2.
+$$
+
+Summing over all observations,
+
+$$
+\sum_{i=1}^{n}
+(Y_i-\bar{Y})^2
+=
+\sum_{i=1}^{n}
+(\widehat{Y}_i-\bar{Y})^2
++
+2\sum_{i=1}^{n}
+(\widehat{Y}_i-\bar{Y})e_i
++
+\sum_{i=1}^{n}e_i^2.
+$$
+
+Because the fitted values and residuals are orthogonal,
+
+$$
+\sum_{i=1}^{n}
+(\widehat{Y}_i-\bar{Y})e_i
+=
+0.
+$$
+
+Therefore,
+
+$$
+\boxed{
+\sum_{i=1}^{n}
+(Y_i-\bar{Y})^2
+=
+\sum_{i=1}^{n}
+(\widehat{Y}_i-\bar{Y})^2
++
+\sum_{i=1}^{n}e_i^2.
+}
+$$
+
+This is the fundamental **sum-of-squares decomposition**.
+
+---
+
+### Total Sum of Squares
+
+The total variation in the observed response is measured by the **total sum of squares**:
+
+$$
+\boxed{
+SST
+=
+\sum_{i=1}^{n}
+(Y_i-\bar{Y})^2.
+}
+$$
+
+This measures how much the observations vary around their sample mean.
+
+It represents the total amount of observed variation in the response.
+
+---
+
+### Regression Sum of Squares
+
+The variation explained by the fitted regression model is
+
+$$
+\boxed{
+SSR
+=
+\sum_{i=1}^{n}
+(\widehat{Y}_i-\bar{Y})^2.
+}
+$$
+
+This is called the **regression sum of squares**.
+
+It measures how much variation in the fitted values is explained by their relationship with the predictor.
+
+---
+
+### Error Sum of Squares
+
+The unexplained variation is measured by the **error sum of squares**, also called the residual sum of squares:
+
+$$
+\boxed{
+SSE
+=
+\sum_{i=1}^{n}
+(Y_i-\widehat{Y}_i)^2
+=
+\sum_{i=1}^{n}e_i^2.
+}
+$$
+
+This is precisely the quantity minimized by the least squares method.
+
+---
+
+### The Sum-of-Squares Decomposition
+
+Combining the three quantities gives
+
+$$
+\boxed{
+SST
+=
+SSR+SSE.
+}
+$$
+
+Equivalently,
+
+$$
+\boxed{
+\text{Total variation}
+=
+\text{Explained variation}
++
+\text{Unexplained variation}.
+}
+$$
+
+This decomposition is one of the central ideas of regression analysis.
+
+It provides the foundation for the coefficient of determination, analysis of variance, and tests of regression significance.
+
+---
+
+## Coefficient of Determination
+
+The coefficient of determination is denoted by
+
+$$
+R^2.
+$$
+
+It measures the proportion of the total variation in the response that is explained by the fitted regression model.
+
+It is defined as
+
+$$
+\boxed{
+R^2
+=
+\frac{SSR}{SST}.
+}
+$$
+
+Using
+
+$$
+SST=SSR+SSE,
+$$
+
+we can also write
+
+$$
+\boxed{
+R^2
+=
+1-\frac{SSE}{SST}.
+}
+$$
+
+Thus, $R^2$ compares the unexplained variation with the total variation.
+
+---
+
+### Interpretation of $R^2$
+
+Suppose
+
+$$
+R^2=0.80.
+$$
+
+Then the fitted regression model accounts for $80\%$ of the observed variation in the response around its sample mean.
+
+The remaining
+
+$$
+20\%
+$$
+
+is represented by the residual variation.
+
+Thus,
+
+$$
+\boxed{
+R^2
+=
+\text{proportion of sample variation explained by the regression model}.
+}
+$$
+
+The interpretation should be made carefully.
+
+A large $R^2$ indicates that the fitted model explains a large proportion of the observed variation, but it does not by itself establish causality or prove that the model is appropriate.
+
+---
+
+### Range of $R^2$
+
+For a simple linear regression model containing an intercept,
+
+$$
+0\leq R^2\leq1.
+$$
+
+If
+
+$$
+R^2=0,
+$$
+
+then
+
+$$
+SSR=0,
+$$
+
+so the fitted model explains none of the variation around the sample mean.
+
+In simple linear regression this corresponds to
+
+$$
+b_1=0.
+$$
+
+If
+
+$$
+R^2=1,
+$$
+
+then
+
+$$
+SSE=0,
+$$
+
+meaning every observation lies exactly on the fitted regression line.
+
+Thus,
+
+$$
+\boxed{
+R^2=1
+\iff
+\text{perfect linear fit}
+}
+$$
+
+for the usual regression model with an intercept.
+
+---
+
+### Relationship Between $R^2$ and Correlation
+
+In simple linear regression with an intercept, the sample correlation coefficient between $X$ and $Y$ is
+
+$$
+r_{XY}
+=
+\frac{
+\sum_{i=1}^{n}
+(x_i-\bar{x})(Y_i-\bar{Y})
+}{
+\sqrt{
+\sum_{i=1}^{n}(x_i-\bar{x})^2
+\sum_{i=1}^{n}(Y_i-\bar{Y})^2
+}
+}.
+$$
+
+For simple linear regression,
+
+$$
+\boxed{
+R^2=r_{XY}^2.
+}
+$$
+
+Therefore,
+
+$$
+\sqrt{R^2}=|r_{XY}|.
+$$
+
+The sign of the relationship is determined by the slope:
+
+$$
+\operatorname{sign}(b_1)
+=
+\operatorname{sign}(r_{XY}).
+$$
+
+Thus, $R^2$ measures the strength of the linear relationship but does not retain its direction.
+
+For example, a strong positive relationship and a strong negative relationship can have exactly the same value of $R^2$.
+
+---
+
+### A Useful Expression for $R^2$
+
+Recall that
+
+$$
+b_1
+=
+\frac{S_{xy}}{S_{xx}}.
+$$
+
+The regression sum of squares can be written as
+
+$$
+SSR
+=
+b_1^2S_{xx}.
+$$
+
+Since
+
+$$
+b_1
+=
+\frac{S_{xy}}{S_{xx}},
+$$
+
+we obtain
+
+$$
+SSR
+=
+\frac{S_{xy}^2}{S_{xx}}.
+$$
+
+Therefore,
+
+$$
+R^2
+=
+\frac{S_{xy}^2}{S_{xx}S_{yy}},
+$$
+
+where
+
+$$
+S_{yy}
+=
+\sum_{i=1}^{n}
+(Y_i-\bar{Y})^2.
+$$
+
+This is precisely the square of the sample correlation coefficient.
+
+---
+
+## Degrees of Freedom
+
+The sums of squares are associated with different degrees of freedom.
+
+For simple linear regression with an intercept:
+
+| Source | Sum of Squares | Degrees of Freedom |
+|---|---:|---:|
+| Regression | $SSR$ | $1$ |
+| Error | $SSE$ | $n-2$ |
+| Total | $SST$ | $n-1$ |
+
+The degrees of freedom satisfy
+
+$$
+(n-1)
+=
+1+(n-2).
+$$
+
+The total degrees of freedom are
+
+$$
+n-1
+$$
+
+because the deviations
+
+$$
+Y_i-\bar{Y}
+$$
+
+must sum to zero.
+
+One degree of freedom is therefore lost in estimating the sample mean.
+
+The regression component uses one additional degree of freedom because there is one slope parameter being estimated beyond the intercept.
+
+---
+
+### Mean Squares
+
+Dividing the sums of squares by their respective degrees of freedom gives mean squares.
+
+The regression mean square is
+
+$$
+\boxed{
+MSR
+=
+\frac{SSR}{1}
+=
+SSR.
+}
+$$
+
+The residual mean square is
+
+$$
+\boxed{
+MSE
+=
+\frac{SSE}{n-2}.
+}
+$$
+
+Under the standard model,
+
+$$
+E(MSE)=\sigma^2.
+$$
+
+Thus, $MSE$ provides an unbiased estimate of the error variance.
+
+The mean square quantities become particularly important when constructing the $F$-statistic for testing the significance of the regression.
+
+---
+
+# Summary
+
+Simple linear regression models the relationship between a response and one explanatory variable:
+
+$$
+\boxed{
+Y_i=\beta_0+\beta_1x_i+\varepsilon_i.
+}
+$$
+
+The conditional mean is
+
+$$
+\boxed{
+E(Y_i\mid x_i)=\beta_0+\beta_1x_i.
+}
+$$
+
+The least squares estimators are
+
+$$
+\boxed{
+b_1
+=
+\frac{
+\sum_{i=1}^{n}
+(x_i-\bar{x})(Y_i-\bar{Y})
+}{
+\sum_{i=1}^{n}
+(x_i-\bar{x})^2
+}
+}
+$$
+
+and
+
+$$
+\boxed{
+b_0
+=
+\bar{Y}
+-
+b_1\bar{x}.
+}
+$$
+
+The fitted regression line is
+
+$$
+\boxed{
+\widehat{Y}_i
+=
+b_0
++
+b_1x_i.
+}
+$$
+
+It passes through
+
+$$
+\boxed{
+(\bar{x},\bar{Y}).
+}
+$$
+
+The residuals satisfy
+
+$$
+\boxed{
+\sum_{i=1}^{n}e_i=0
+}
+$$
+
+and
+
+$$
+\boxed{
+\sum_{i=1}^{n}x_ie_i=0.
+}
+$$
+
+The fundamental sum-of-squares decomposition is
+
+$$
+\boxed{
+SST=SSR+SSE.
+}
+$$
+
+Finally, the coefficient of determination is
+
+$$
+\boxed{
+R^2
+=
+\frac{SSR}{SST}
+=
+1-\frac{SSE}{SST}.
+}
+$$
+
+For simple linear regression with an intercept,
+
+$$
+\boxed{
+R^2=r_{XY}^2.
+}
+$$
+
+::: {.callout-tip}
+## Key Ideas
+
+The essential chain for simple linear regression is
+
+$$
+\text{Model}
+\longrightarrow
+\text{Least Squares}
+\longrightarrow
+\text{Fitted Line}
+\longrightarrow
+\text{Residuals}
+\longrightarrow
+\text{Sums of Squares}
+\longrightarrow
+R^2.
+$$
+
+The least squares line is not chosen merely because it "looks good." It is the line that minimizes
+
+$$
+SSE
+=
+\sum_{i=1}^{n}
+(Y_i-\widehat{Y}_i)^2.
+$$
+
+Its geometry and algebra are tied together through the orthogonality conditions
+
+$$
+\sum_{i=1}^{n}e_i=0
+$$
+
+and
+
+$$
+\sum_{i=1}^{n}x_ie_i=0.
+$$
+
+The resulting decomposition
+
+$$
+SST=SSR+SSE
+$$
+
+then tells us how the total variation in the response is divided between the part accounted for by the regression and the part left in the residuals.
+:::

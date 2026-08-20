@@ -12,7 +12,7 @@ website:
       - text: "Intro"
         href: Intro/syllabus.qmd
       - text: "Core"
-        href: Core/01-linear-model.qmd
+        href: Core/01-Gauss-Markov.qmd
       - text: "Prerequisites"
         href: Prerequisites/Linear-Algebra/vectors.qmd
 
@@ -33,6 +33,7 @@ website:
       - section: "Core"
         contents:
           - Core/01-Gauss-Markov.qmd
+          - Core/02-Regression-Analysis.qmd
 
       - section: "Prerequisites"
         contents:
