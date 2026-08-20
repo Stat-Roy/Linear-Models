@@ -596,6 +596,188 @@
     ]
   },
   {
+    "objectID": "Core/02-Regression-Analysis.html",
+    "href": "Core/02-Regression-Analysis.html",
+    "title": "Regression Analysis",
+    "section": "",
+    "text": "Regression analysis is one of the most important branches if statistical analysis. It is concerned with the study of relationship between a response variable and one or more explanatory variable. The main objective is to describe the average behavior of the response variable in terms of the explanatory variables and to make predictions where appropriate\ne.g. The yield of a crop may depend upon the amount of fertilizers used, the amount of rainfall and the temperature. Similarly the sales of a product may depend upon price, income, expenditure on advertisement and other economic variable\nIf only there is one explanatory variable the analysis is called Simple Regression Analysis. If there are two or more explanatory variables it is called Multiple Regression Analysis."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#the-simple-linear-regression-model",
+    "href": "Core/02-Regression-Analysis.html#the-simple-linear-regression-model",
+    "title": "Regression Analysis",
+    "section": "1.1 The Simple Linear Regression Model",
+    "text": "1.1 The Simple Linear Regression Model\nSimple linear regression describes the relationship between a response variable and a single explanatory variable.\nLet \\(Y_i\\) denote the response associated with observation \\(i\\), and let \\(x_i\\) denote the corresponding value of the explanatory variable.\nThe simple linear regression model is\n\\[\n\\boxed{\nY_i\n=\n\\beta_0+\\beta_1x_i+\\varepsilon_i,\n\\qquad i=1,\\ldots,n.\n}\n\\]\nHere:\n\n\\(Y_i\\) is the i’th response variable.\n\\(x_i\\) is the corresponding explanatory variable.\n\\(\\beta_0\\) is the intercept.\n\\(\\beta_1\\) is the slope.\n\\(\\varepsilon_i\\) is the random error.\n\nThe systematic part of the model is\n\\[\n\\beta_0+\\beta_1x_i,\n\\]\nwhile the random component is\n\\[\n\\varepsilon_i.\n\\]\nThus,\n\\[\nY_i\n=\n\\underbrace{\\beta_0+\\beta_1x_i}_{\\text{systematic component}}\n+\n\\underbrace{\\varepsilon_i}_{\\text{random component}}.\n\\]"
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#interpretation-of-the-parameters",
+    "href": "Core/02-Regression-Analysis.html#interpretation-of-the-parameters",
+    "title": "Regression Analysis",
+    "section": "1.2 Interpretation of the Parameters",
+    "text": "1.2 Interpretation of the Parameters\nThe parameters \\(\\beta_0\\) and \\(\\beta_1\\) describe the population regression relationship.\n\n1.2.1 The Intercept\nThe intercept \\(\\beta_0\\) is the expected value of the response when the explanatory variable is zero.\nSince\n\\[\nE(Y_i\\mid x_i)\n=\n\\beta_0+\\beta_1x_i,\n\\]\nsetting \\(x_i=0\\) gives\n\\[\nE(Y_i\\mid x_i=0)\n=\n\\beta_0.\n\\]\nTherefore,\n\\[\n\\boxed{\n\\beta_0\n=\nE(Y\\mid X=0)\n}\n\\]\nwhen \\(x=0\\) is meaningful within the context of the problem.\nThe mathematical interpretation is straightforward, but the practical interpretation requires some care. If \\(x=0\\) is outside the range of the observed data, the intercept may have little direct scientific meaning even though it remains an important part of the model.\n\n\n1.2.2 The Slope\nThe slope \\(\\beta_1\\) describes the change in the expected response associated with a one-unit increase in the explanatory variable.\nFor two values \\(x\\) and \\(x+1\\),\n\\[\nE(Y\\mid X=x+1)\n-\nE(Y\\mid X=x)\n=\n\\beta_1.\n\\]\nThus,\n\\[\n\\boxed{\n\\beta_1\n=\n\\text{change in expected }Y\n\\text{ for a one-unit increase in }X.\n}\n\\]\nMore generally, if \\(x\\) increases by \\(\\Delta x\\), then the expected response changes by\n\\[\n\\beta_1\\Delta x.\n\\]\nThe sign of \\(\\beta_1\\) determines the direction of the relationship:\n\n\\(\\beta_1&gt;0\\): the expected response increases as \\(x\\) increases.\n\\(\\beta_1&lt;0\\): the expected response decreases as \\(x\\) increases.\n\\(\\beta_1=0\\): there is no linear change in the expected response."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#conditional-mean-function",
+    "href": "Core/02-Regression-Analysis.html#conditional-mean-function",
+    "title": "Regression Analysis",
+    "section": "1.3 Conditional Mean Function",
+    "text": "1.3 Conditional Mean Function\nTaking conditional expectations of the model gives\n\\[\nE(Y_i\\mid x_i)\n=\nE(\\beta_0+\\beta_1x_i+\\varepsilon_i\\mid x_i).\n\\]\nSince \\(\\beta_0\\) and \\(\\beta_1x_i\\) are non-random once \\(x_i\\) is given,\n\\[\nE(Y_i\\mid x_i)\n=\n\\beta_0+\\beta_1x_i\n+\nE(\\varepsilon_i\\mid x_i).\n\\]\nUnder the usual regression assumption\n\\[\nE(\\varepsilon_i\\mid x_i)=0,\n\\]\nwe obtain\n\\[\n\\boxed{\nE(Y_i\\mid x_i)\n=\n\\beta_0+\\beta_1x_i.\n}\n\\]\nThis equation defines the population regression line.\nIt represents the mean response at each value of the explanatory variable.\nThe individual observations need not lie exactly on this line because of the random errors \\(\\varepsilon_i\\)."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#the-error-term",
+    "href": "Core/02-Regression-Analysis.html#the-error-term",
+    "title": "Regression Analysis",
+    "section": "1.4 The Error Term",
+    "text": "1.4 The Error Term\nThe error term represents variation in the response that is not explained by the systematic linear relationship with \\(x_i\\).\nThe model can therefore be viewed as\n\\[\nY_i\n=\nE(Y_i\\mid x_i)\n+\n\\varepsilon_i.\n\\]\nHence,\n\\[\n\\boxed{\n\\varepsilon_i\n=\nY_i-E(Y_i\\mid x_i).\n}\n\\]\nUnder the regression assumptions,\n\\[\nE(\\varepsilon_i\\mid x_i)=0.\n\\]\nIf we additionally assume constant variance,\n\\[\n\\operatorname{Var}(\\varepsilon_i\\mid x_i)\n=\n\\sigma^2.\n\\]\nThe errors therefore have mean zero and a common variance.\nFor the classical simple linear regression model, the errors are also assumed to be mutually uncorrelated:\n\\[\n\\operatorname{Cov}(\\varepsilon_i,\\varepsilon_j)=0,\n\\qquad i\\neq j.\n\\]\nIf normality is assumed, then\n\\[\n\\varepsilon_i\n\\sim\nN(0,\\sigma^2).\n\\]\nThe normality assumption is stronger than what is required for the Gauss-Markov theorem, but it becomes useful for exact finite-sample inference."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#matrix-representation",
+    "href": "Core/02-Regression-Analysis.html#matrix-representation",
+    "title": "Regression Analysis",
+    "section": "1.5 Matrix Representation",
+    "text": "1.5 Matrix Representation\nThe simple linear regression model is a special case of the general linear model.\nWrite\n\\[\n\\mathbf{Y}\n=\n\\begin{pmatrix}\nY_1\\\\\nY_2\\\\\n\\vdots\\\\\nY_n\n\\end{pmatrix},\n\\qquad\n\\boldsymbol{\\beta}\n=\n\\begin{pmatrix}\n\\beta_0\\\\\n\\beta_1\n\\end{pmatrix}.\n\\]\nThe model matrix is\n\\[\n\\mathbf{X}\n=\n\\begin{pmatrix}\n1 & x_1\\\\\n1 & x_2\\\\\n\\vdots & \\vdots\\\\\n1 & x_n\n\\end{pmatrix}.\n\\]\nTherefore,\n\\[\n\\boxed{\n\\mathbf{Y}\n=\n\\mathbf{X}\\boldsymbol{\\beta}\n+\n\\boldsymbol{\\varepsilon}.\n}\n\\]\nExplicitly,\n\\[\n\\begin{pmatrix}\nY_1\\\\\nY_2\\\\\n\\vdots\\\\\nY_n\n\\end{pmatrix}\n=\n\\begin{pmatrix}\n1 & x_1\\\\\n1 & x_2\\\\\n\\vdots & \\vdots\\\\\n1 & x_n\n\\end{pmatrix}\n\\begin{pmatrix}\n\\beta_0\\\\\n\\beta_1\n\\end{pmatrix}\n+\n\\begin{pmatrix}\n\\varepsilon_1\\\\\n\\varepsilon_2\\\\\n\\vdots\\\\\n\\varepsilon_n\n\\end{pmatrix}.\n\\]\nThis representation allows all of the general linear model machinery to be applied directly to simple linear regression."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#the-least-squares-criterion",
+    "href": "Core/02-Regression-Analysis.html#the-least-squares-criterion",
+    "title": "Regression Analysis",
+    "section": "2.1 The Least Squares Criterion",
+    "text": "2.1 The Least Squares Criterion\nDefine\n\\[\nS(\\beta_0,\\beta_1)\n=\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\beta_0-\\beta_1x_i\n\\right)^2.\n\\]\nThe least squares estimators are the values that minimize this function:\n\\[\n\\boxed{\n(\\widehat{\\beta}_0,\\widehat{\\beta}_1)\n=\n\\underset{\\beta_0,\\beta_1}{\\operatorname{arg\\,min}}\n\\;\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\beta_0-\\beta_1x_i\n\\right)^2.\n}\n\\]\nThe residual sum of squares is therefore minimized by the fitted regression line."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#deriving-the-least-squares-estimators",
+    "href": "Core/02-Regression-Analysis.html#deriving-the-least-squares-estimators",
+    "title": "Regression Analysis",
+    "section": "2.2 Deriving the Least Squares Estimators",
+    "text": "2.2 Deriving the Least Squares Estimators\nWe begin with\n\\[\nS(\\beta_0,\\beta_1)\n=\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\beta_0-\\beta_1x_i\n\\right)^2.\n\\]\nTo find the minimum, differentiate with respect to \\(\\beta_0\\) and \\(\\beta_1\\).\nThe first partial derivative is\n\\[\n\\frac{\\partial S}{\\partial\\beta_0}\n=\n-2\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\beta_0-\\beta_1x_i\n\\right).\n\\]\nAt the minimum,\n\\[\n\\frac{\\partial S}{\\partial\\beta_0}=0.\n\\]\nTherefore,\n\\[\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i\n\\right)\n=\n0.\n\\]\nThus,\n\\[\n\\sum_{i=1}^{n}Y_i\n-\nn\\widehat{\\beta}_0\n-\n\\widehat{\\beta}_1\n\\sum_{i=1}^{n}x_i\n=\n0.\n\\]\nDividing by \\(n\\),\n\\[\n\\bar{Y}\n-\n\\widehat{\\beta}_0\n-\n\\widehat{\\beta}_1\\bar{x}\n=\n0.\n\\]\nHence,\n\\[\n\\boxed{\n\\widehat{\\beta}_0\n=\n\\bar{Y}\n-\n\\widehat{\\beta}_1\\bar{x}.\n}\n\\]\nThis is the first least squares equation."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#deriving-the-slope-estimator",
+    "href": "Core/02-Regression-Analysis.html#deriving-the-slope-estimator",
+    "title": "Regression Analysis",
+    "section": "2.3 Deriving the Slope Estimator",
+    "text": "2.3 Deriving the Slope Estimator\nNow differentiate with respect to \\(\\beta_1\\):\n\\[\n\\frac{\\partial S}{\\partial\\beta_1}\n=\n-2\n\\sum_{i=1}^{n}\nx_i\n\\left(\nY_i-\\beta_0-\\beta_1x_i\n\\right).\n\\]\nSetting this equal to zero gives\n\\[\n\\sum_{i=1}^{n}\nx_i\n\\left(\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i\n\\right)\n=\n0.\n\\]\nTherefore,\n\\[\n\\sum_{i=1}^{n}x_iY_i\n-\n\\widehat{\\beta}_0\n\\sum_{i=1}^{n}x_i\n-\n\\widehat{\\beta}_1\n\\sum_{i=1}^{n}x_i^2\n=\n0.\n\\]\nThese two equations,\n\\[\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i\n\\right)\n=\n0\n\\]\nand\n\\[\n\\sum_{i=1}^{n}\nx_i\n\\left(\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i\n\\right)\n=\n0,\n\\]\nare the normal equations for simple linear regression."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#the-slope-in-centered-form",
+    "href": "Core/02-Regression-Analysis.html#the-slope-in-centered-form",
+    "title": "Regression Analysis",
+    "section": "2.4 The Slope in Centered Form",
+    "text": "2.4 The Slope in Centered Form\nUsing\n\\[\n\\widehat{\\beta}_0\n=\n\\bar{Y}\n-\n\\widehat{\\beta}_1\\bar{x},\n\\]\nsubstitute into the second normal equation.\nAfter simplification,\n\\[\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})(Y_i-\\bar{Y})\n=\n\\widehat{\\beta}_1\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})^2.\n\\]\nTherefore,\n\\[\n\\boxed{\n\\widehat{\\beta}_1\n=\n\\frac{\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})(Y_i-\\bar{Y})\n}{\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})^2\n}.\n}\n\\]\nThe intercept estimator is then\n\\[\n\\boxed{\n\\widehat{\\beta}_0\n=\n\\bar{Y}\n-\n\\widehat{\\beta}_1\\bar{x}.\n}\n\\]\nThese are the standard least squares estimators for simple linear regression."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#interpretation-of-the-slope-estimator",
+    "href": "Core/02-Regression-Analysis.html#interpretation-of-the-slope-estimator",
+    "title": "Regression Analysis",
+    "section": "2.5 Interpretation of the Slope Estimator",
+    "text": "2.5 Interpretation of the Slope Estimator\nThe numerator\n\\[\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})(Y_i-\\bar{Y})\n\\]\nmeasures the joint variation between \\(x\\) and \\(Y\\).\nThe denominator\n\\[\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})^2\n\\]\nmeasures the variation in \\(x\\).\nTherefore,\n\\[\n\\widehat{\\beta}_1\n=\n\\frac{\\text{joint variation of }x\\text{ and }Y}\n{\\text{variation of }x}.\n\\]\nThe sign of \\(\\widehat{\\beta}_1\\) tells us the direction of the observed linear relationship.\nIf\n\\[\n\\widehat{\\beta}_1&gt;0,\n\\]\nthe fitted response increases with \\(x\\).\nIf\n\\[\n\\widehat{\\beta}_1&lt;0,\n\\]\nthe fitted response decreases with \\(x\\).\nIf\n\\[\n\\widehat{\\beta}_1=0,\n\\]\nthe fitted regression line is horizontal."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#centered-variables",
+    "href": "Core/02-Regression-Analysis.html#centered-variables",
+    "title": "Regression Analysis",
+    "section": "2.6 Centered Variables",
+    "text": "2.6 Centered Variables\nIt is often useful to define\n\\[\nx_i^c=x_i-\\bar{x}\n\\]\nand\n\\[\nY_i^c=Y_i-\\bar{Y}.\n\\]\nThen the slope estimator becomes\n\\[\n\\widehat{\\beta}_1\n=\n\\frac{\n\\sum_{i=1}^{n}\nx_i^cY_i^c\n}{\n\\sum_{i=1}^{n}\n(x_i^c)^2\n}.\n\\]\nThe denominator is sometimes written as\n\\[\nS_{xx}\n=\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})^2,\n\\]\nand the numerator as\n\\[\nS_{xy}\n=\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})(Y_i-\\bar{Y}).\n\\]\nThus,\n\\[\n\\boxed{\n\\widehat{\\beta}_1\n=\n\\frac{S_{xy}}{S_{xx}}.\n}\n\\]\nThis notation will be useful when deriving the properties of the regression estimators."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#the-regression-line-passes-through-the-sample-means",
+    "href": "Core/02-Regression-Analysis.html#the-regression-line-passes-through-the-sample-means",
+    "title": "Regression Analysis",
+    "section": "3.1 The Regression Line Passes Through the Sample Means",
+    "text": "3.1 The Regression Line Passes Through the Sample Means\nSet\n\\[\nx_i=\\bar{x}.\n\\]\nThen\n\\[\n\\widehat{Y}\n=\n\\bar{Y}\n+\n\\widehat{\\beta}_1(\\bar{x}-\\bar{x}).\n\\]\nTherefore,\n\\[\n\\widehat{Y}=\\bar{Y}.\n\\]\nHence, the fitted regression line passes through the point\n\\[\n\\boxed{\n(\\bar{x},\\bar{Y}).\n}\n\\]\nThis is one of the fundamental geometric properties of the least squares regression line."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#residuals",
+    "href": "Core/02-Regression-Analysis.html#residuals",
+    "title": "Regression Analysis",
+    "section": "3.2 Residuals",
+    "text": "3.2 Residuals\nThe residual for observation \\(i\\) is\n\\[\ne_i\n=\nY_i-\\widehat{Y}_i.\n\\]\nSubstituting the fitted line,\n\\[\ne_i\n=\nY_i\n-\n\\widehat{\\beta}_0\n-\n\\widehat{\\beta}_1x_i.\n\\]\nUsing the centered representation,\n\\[\ne_i\n=\nY_i\n-\n\\bar{Y}\n-\n\\widehat{\\beta}_1(x_i-\\bar{x}).\n\\]\nTherefore,\n\\[\n\\boxed{\ne_i\n=\n(Y_i-\\bar{Y})\n-\n\\widehat{\\beta}_1(x_i-\\bar{x}).\n}\n\\]\nThe residual represents the vertical difference between the observed response and the fitted regression line."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#residuals-sum-to-zero",
+    "href": "Core/02-Regression-Analysis.html#residuals-sum-to-zero",
+    "title": "Regression Analysis",
+    "section": "3.3 Residuals Sum to Zero",
+    "text": "3.3 Residuals Sum to Zero\nOne of the normal equations gives\n\\[\n\\sum_{i=1}^{n}\n\\left(\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i\n\\right)\n=\n0.\n\\]\nSince\n\\[\ne_i\n=\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i,\n\\]\nwe obtain\n\\[\n\\boxed{\n\\sum_{i=1}^{n}e_i=0.\n}\n\\]\nTherefore,\n\\[\n\\bar{e}=0.\n\\]\nThe residuals have sample mean zero.\nThis result depends on the model containing an intercept."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#residuals-are-orthogonal-to-the-predictor",
+    "href": "Core/02-Regression-Analysis.html#residuals-are-orthogonal-to-the-predictor",
+    "title": "Regression Analysis",
+    "section": "3.4 Residuals Are Orthogonal to the Predictor",
+    "text": "3.4 Residuals Are Orthogonal to the Predictor\nThe second normal equation gives\n\\[\n\\sum_{i=1}^{n}\nx_i\n\\left(\nY_i-\\widehat{\\beta}_0-\\widehat{\\beta}_1x_i\n\\right)\n=\n0.\n\\]\nTherefore,\n\\[\n\\boxed{\n\\sum_{i=1}^{n}x_ie_i=0.\n}\n\\]\nThus, the residual vector is orthogonal to the vector of predictor values.\nBecause\n\\[\n\\sum_{i=1}^{n}e_i=0,\n\\]\nwe also have\n\\[\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})e_i\n=\n0.\n\\]\nHence,\n\\[\n\\boxed{\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})e_i\n=\n0.\n}\n\\]\nThis is the scalar version of the general linear model result\n\\[\n\\mathbf{X}^{\\mathsf T}\\mathbf{e}\n=\n\\mathbf{0}.\n\\]"
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#residuals-and-fitted-values",
+    "href": "Core/02-Regression-Analysis.html#residuals-and-fitted-values",
+    "title": "Regression Analysis",
+    "section": "3.5 Residuals and Fitted Values",
+    "text": "3.5 Residuals and Fitted Values\nBecause\n\\[\n\\widehat{Y}_i\n=\n\\widehat{\\beta}_0\n+\n\\widehat{\\beta}_1x_i,\n\\]\nwe have\n\\[\n\\sum_{i=1}^{n}\n\\widehat{Y}_ie_i\n=\n\\widehat{\\beta}_0\n\\sum_{i=1}^{n}e_i\n+\n\\widehat{\\beta}_1\n\\sum_{i=1}^{n}x_ie_i.\n\\]\nBoth terms are zero.\nTherefore,\n\\[\n\\boxed{\n\\sum_{i=1}^{n}\n\\widehat{Y}_ie_i\n=\n0.\n}\n\\]\nThus, the fitted values and residuals are orthogonal.\nThis gives the decomposition\n\\[\nY_i\n=\n\\widehat{Y}_i+e_i\n\\]\nwith\n\\[\n\\sum_{i=1}^{n}\n\\widehat{Y}_ie_i\n=\n0.\n\\]"
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#total-sum-of-squares",
+    "href": "Core/02-Regression-Analysis.html#total-sum-of-squares",
+    "title": "Regression Analysis",
+    "section": "4.1 Total Sum of Squares",
+    "text": "4.1 Total Sum of Squares\nThe total variation in the observed response is measured by the total sum of squares:\n\\[\n\\boxed{\nSST\n=\n\\sum_{i=1}^{n}\n(Y_i-\\bar{Y})^2.\n}\n\\]\nThis measures how much the observations vary around their sample mean.\nIt represents the total amount of observed variation in the response."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#regression-sum-of-squares",
+    "href": "Core/02-Regression-Analysis.html#regression-sum-of-squares",
+    "title": "Regression Analysis",
+    "section": "4.2 Regression Sum of Squares",
+    "text": "4.2 Regression Sum of Squares\nThe variation explained by the fitted regression model is\n\\[\n\\boxed{\nSSR\n=\n\\sum_{i=1}^{n}\n(\\widehat{Y}_i-\\bar{Y})^2.\n}\n\\]\nThis is called the regression sum of squares.\nIt measures how much variation in the fitted values is explained by their relationship with the predictor."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#error-sum-of-squares",
+    "href": "Core/02-Regression-Analysis.html#error-sum-of-squares",
+    "title": "Regression Analysis",
+    "section": "4.3 Error Sum of Squares",
+    "text": "4.3 Error Sum of Squares\nThe unexplained variation is measured by the error sum of squares, also called the residual sum of squares:\n\\[\n\\boxed{\nSSE\n=\n\\sum_{i=1}^{n}\n(Y_i-\\widehat{Y}_i)^2\n=\n\\sum_{i=1}^{n}e_i^2.\n}\n\\]\nThis is precisely the quantity minimized by the least squares method."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#the-sum-of-squares-decomposition",
+    "href": "Core/02-Regression-Analysis.html#the-sum-of-squares-decomposition",
+    "title": "Regression Analysis",
+    "section": "4.4 The Sum-of-Squares Decomposition",
+    "text": "4.4 The Sum-of-Squares Decomposition\nCombining the three quantities gives\n\\[\n\\boxed{\nSST\n=\nSSR+SSE.\n}\n\\]\nEquivalently,\n\\[\n\\boxed{\n\\text{Total variation}\n=\n\\text{Explained variation}\n+\n\\text{Unexplained variation}.\n}\n\\]\nThis decomposition is one of the central ideas of regression analysis.\nIt provides the foundation for the coefficient of determination, analysis of variance, and tests of regression significance."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#interpretation-of-r2",
+    "href": "Core/02-Regression-Analysis.html#interpretation-of-r2",
+    "title": "Regression Analysis",
+    "section": "5.1 Interpretation of \\(R^2\\)",
+    "text": "5.1 Interpretation of \\(R^2\\)\nSuppose\n\\[\nR^2=0.80.\n\\]\nThen the fitted regression model accounts for \\(80\\%\\) of the observed variation in the response around its sample mean.\nThe remaining\n\\[\n20\\%\n\\]\nis represented by the residual variation.\nThus,\n\\[\n\\boxed{\nR^2\n=\n\\text{proportion of sample variation explained by the regression model}.\n}\n\\]\nThe interpretation should be made carefully.\nA large \\(R^2\\) indicates that the fitted model explains a large proportion of the observed variation, but it does not by itself establish causality or prove that the model is appropriate."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#range-of-r2",
+    "href": "Core/02-Regression-Analysis.html#range-of-r2",
+    "title": "Regression Analysis",
+    "section": "5.2 Range of \\(R^2\\)",
+    "text": "5.2 Range of \\(R^2\\)\nFor a simple linear regression model containing an intercept,\n\\[\n0\\leq R^2\\leq1.\n\\]\nIf\n\\[\nR^2=0,\n\\]\nthen\n\\[\nSSR=0,\n\\]\nso the fitted model explains none of the variation around the sample mean.\nIn simple linear regression this corresponds to\n\\[\n\\widehat{\\beta}_1=0.\n\\]\nIf\n\\[\nR^2=1,\n\\]\nthen\n\\[\nSSE=0,\n\\]\nmeaning every observation lies exactly on the fitted regression line.\nThus,\n\\[\n\\boxed{\nR^2=1\n\\iff\n\\text{perfect linear fit}\n}\n\\]\nfor the usual regression model with an intercept."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#relationship-between-r2-and-correlation",
+    "href": "Core/02-Regression-Analysis.html#relationship-between-r2-and-correlation",
+    "title": "Regression Analysis",
+    "section": "5.3 Relationship Between \\(R^2\\) and Correlation",
+    "text": "5.3 Relationship Between \\(R^2\\) and Correlation\nIn simple linear regression with an intercept, the sample correlation coefficient between \\(X\\) and \\(Y\\) is\n\\[\nr_{XY}\n=\n\\frac{\n\\sum_{i=1}^{n}\n(x_i-\\bar{x})(Y_i-\\bar{Y})\n}{\n\\sqrt{\n\\sum_{i=1}^{n}(x_i-\\bar{x})^2\n\\sum_{i=1}^{n}(Y_i-\\bar{Y})^2\n}\n}.\n\\]\nFor simple linear regression,\n\\[\n\\boxed{\nR^2=r_{XY}^2.\n}\n\\]\nTherefore,\n\\[\n\\sqrt{R^2}=|r_{XY}|.\n\\]\nThe sign of the relationship is determined by the slope:\n\\[\n\\operatorname{sign}(\\widehat{\\beta}_1)\n=\n\\operatorname{sign}(r_{XY}).\n\\]\nThus, \\(R^2\\) measures the strength of the linear relationship but does not retain its direction.\nFor example, a strong positive relationship and a strong negative relationship can have exactly the same value of \\(R^2\\)."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#a-useful-expression-for-r2",
+    "href": "Core/02-Regression-Analysis.html#a-useful-expression-for-r2",
+    "title": "Regression Analysis",
+    "section": "5.4 A Useful Expression for \\(R^2\\)",
+    "text": "5.4 A Useful Expression for \\(R^2\\)\nRecall that\n\\[\n\\widehat{\\beta}_1\n=\n\\frac{S_{xy}}{S_{xx}}.\n\\]\nThe regression sum of squares can be written as\n\\[\nSSR\n=\n\\widehat{\\beta}_1^2S_{xx}.\n\\]\nSince\n\\[\n\\widehat{\\beta}_1\n=\n\\frac{S_{xy}}{S_{xx}},\n\\]\nwe obtain\n\\[\nSSR\n=\n\\frac{S_{xy}^2}{S_{xx}}.\n\\]\nTherefore,\n\\[\nR^2\n=\n\\frac{S_{xy}^2}{S_{xx}S_{yy}},\n\\]\nwhere\n\\[\nS_{yy}\n=\n\\sum_{i=1}^{n}\n(Y_i-\\bar{Y})^2.\n\\]\nThis is precisely the square of the sample correlation coefficient."
+  },
+  {
+    "objectID": "Core/02-Regression-Analysis.html#mean-squares",
+    "href": "Core/02-Regression-Analysis.html#mean-squares",
+    "title": "Regression Analysis",
+    "section": "6.1 Mean Squares",
+    "text": "6.1 Mean Squares\nDividing the sums of squares by their respective degrees of freedom gives mean squares.\nThe regression mean square is\n\\[\n\\boxed{\nMSR\n=\n\\frac{SSR}{1}\n=\nSSR.\n}\n\\]\nThe residual mean square is\n\\[\n\\boxed{\nMSE\n=\n\\frac{SSE}{n-2}.\n}\n\\]\nUnder the standard model,\n\\[\nE(MSE)=\\sigma^2.\n\\]\nThus, \\(MSE\\) provides an unbiased estimate of the error variance.\nThe mean square quantities become particularly important when constructing the \\(F\\)-statistic for testing the significance of the regression."
+  },
+  {
     "objectID": "Intro/syllabus.html",
     "href": "Intro/syllabus.html",
     "title": "1 Syllabus",
