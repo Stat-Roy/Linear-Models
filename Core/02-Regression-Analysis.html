@@ -298,43 +298,39 @@ window.Quarto = {
   <li><a href="#conditional-mean-function" id="toc-conditional-mean-function" class="nav-link" data-scroll-target="#conditional-mean-function"><span class="header-section-number">1.3</span> Conditional Mean Function</a></li>
   <li><a href="#the-error-term" id="toc-the-error-term" class="nav-link" data-scroll-target="#the-error-term"><span class="header-section-number">1.4</span> The Error Term</a></li>
   <li><a href="#matrix-representation" id="toc-matrix-representation" class="nav-link" data-scroll-target="#matrix-representation"><span class="header-section-number">1.5</span> Matrix Representation</a></li>
-  </ul></li>
-  <li><a href="#least-squares-estimation" id="toc-least-squares-estimation" class="nav-link" data-scroll-target="#least-squares-estimation"><span class="header-section-number">2</span> Least Squares Estimation</a>
+  <li><a href="#least-squares-estimation" id="toc-least-squares-estimation" class="nav-link" data-scroll-target="#least-squares-estimation"><span class="header-section-number">1.6</span> Least Squares Estimation</a>
   <ul class="collapse">
-  <li><a href="#the-least-squares-criterion" id="toc-the-least-squares-criterion" class="nav-link" data-scroll-target="#the-least-squares-criterion"><span class="header-section-number">2.1</span> The Least Squares Criterion</a></li>
-  <li><a href="#deriving-the-least-squares-estimators" id="toc-deriving-the-least-squares-estimators" class="nav-link" data-scroll-target="#deriving-the-least-squares-estimators"><span class="header-section-number">2.2</span> Deriving the Least Squares Estimators</a></li>
-  <li><a href="#deriving-the-slope-estimator" id="toc-deriving-the-slope-estimator" class="nav-link" data-scroll-target="#deriving-the-slope-estimator"><span class="header-section-number">2.3</span> Deriving the Slope Estimator</a></li>
-  <li><a href="#the-slope-in-centered-form" id="toc-the-slope-in-centered-form" class="nav-link" data-scroll-target="#the-slope-in-centered-form"><span class="header-section-number">2.4</span> The Slope in Centered Form</a></li>
-  <li><a href="#interpretation-of-the-slope-estimator" id="toc-interpretation-of-the-slope-estimator" class="nav-link" data-scroll-target="#interpretation-of-the-slope-estimator"><span class="header-section-number">2.5</span> Interpretation of the Slope Estimator</a></li>
-  <li><a href="#centered-variables" id="toc-centered-variables" class="nav-link" data-scroll-target="#centered-variables"><span class="header-section-number">2.6</span> Centered Variables</a></li>
+  <li><a href="#deriving-the-least-squares-estimators" id="toc-deriving-the-least-squares-estimators" class="nav-link" data-scroll-target="#deriving-the-least-squares-estimators"><span class="header-section-number">1.6.1</span> Deriving the Least Squares Estimators</a></li>
+  <li><a href="#the-slope-in-centered-form" id="toc-the-slope-in-centered-form" class="nav-link" data-scroll-target="#the-slope-in-centered-form"><span class="header-section-number">1.6.2</span> The Slope in Centered Form</a></li>
+  <li><a href="#interpretation-of-the-slope-estimator" id="toc-interpretation-of-the-slope-estimator" class="nav-link" data-scroll-target="#interpretation-of-the-slope-estimator"><span class="header-section-number">1.6.3</span> Interpretation of the Slope Estimator</a></li>
   </ul></li>
-  <li><a href="#properties-of-the-fitted-regression-line" id="toc-properties-of-the-fitted-regression-line" class="nav-link" data-scroll-target="#properties-of-the-fitted-regression-line"><span class="header-section-number">3</span> Properties of the Fitted Regression Line</a>
+  <li><a href="#properties-of-the-fitted-regression-line" id="toc-properties-of-the-fitted-regression-line" class="nav-link" data-scroll-target="#properties-of-the-fitted-regression-line"><span class="header-section-number">1.7</span> Properties of the Fitted Regression Line</a>
   <ul class="collapse">
-  <li><a href="#the-regression-line-passes-through-the-sample-means" id="toc-the-regression-line-passes-through-the-sample-means" class="nav-link" data-scroll-target="#the-regression-line-passes-through-the-sample-means"><span class="header-section-number">3.1</span> The Regression Line Passes Through the Sample Means</a></li>
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">3.2</span> Residuals</a></li>
-  <li><a href="#residuals-sum-to-zero" id="toc-residuals-sum-to-zero" class="nav-link" data-scroll-target="#residuals-sum-to-zero"><span class="header-section-number">3.3</span> Residuals Sum to Zero</a></li>
-  <li><a href="#residuals-are-orthogonal-to-the-predictor" id="toc-residuals-are-orthogonal-to-the-predictor" class="nav-link" data-scroll-target="#residuals-are-orthogonal-to-the-predictor"><span class="header-section-number">3.4</span> Residuals Are Orthogonal to the Predictor</a></li>
-  <li><a href="#residuals-and-fitted-values" id="toc-residuals-and-fitted-values" class="nav-link" data-scroll-target="#residuals-and-fitted-values"><span class="header-section-number">3.5</span> Residuals and Fitted Values</a></li>
+  <li><a href="#the-regression-line-passes-through-the-sample-means" id="toc-the-regression-line-passes-through-the-sample-means" class="nav-link" data-scroll-target="#the-regression-line-passes-through-the-sample-means"><span class="header-section-number">1.7.1</span> The Regression Line Passes Through the Sample Means</a></li>
+  <li><a href="#sum-of-the-residuals-is-zero" id="toc-sum-of-the-residuals-is-zero" class="nav-link" data-scroll-target="#sum-of-the-residuals-is-zero"><span class="header-section-number">1.7.2</span> Sum of the Residuals is Zero</a></li>
+  <li><a href="#residuals-are-orthogonal-to-the-predictor-x" id="toc-residuals-are-orthogonal-to-the-predictor-x" class="nav-link" data-scroll-target="#residuals-are-orthogonal-to-the-predictor-x"><span class="header-section-number">1.7.3</span> Residuals Are Orthogonal to the Predictor (X)</a></li>
+  <li><a href="#residuals-and-fitted-values" id="toc-residuals-and-fitted-values" class="nav-link" data-scroll-target="#residuals-and-fitted-values"><span class="header-section-number">1.7.4</span> Residuals and Fitted Values</a></li>
   </ul></li>
-  <li><a href="#sums-of-squares" id="toc-sums-of-squares" class="nav-link" data-scroll-target="#sums-of-squares"><span class="header-section-number">4</span> Sums of Squares</a>
+  <li><a href="#sums-of-squares" id="toc-sums-of-squares" class="nav-link" data-scroll-target="#sums-of-squares"><span class="header-section-number">1.8</span> Sums of Squares</a>
   <ul class="collapse">
-  <li><a href="#total-sum-of-squares" id="toc-total-sum-of-squares" class="nav-link" data-scroll-target="#total-sum-of-squares"><span class="header-section-number">4.1</span> Total Sum of Squares</a></li>
-  <li><a href="#regression-sum-of-squares" id="toc-regression-sum-of-squares" class="nav-link" data-scroll-target="#regression-sum-of-squares"><span class="header-section-number">4.2</span> Regression Sum of Squares</a></li>
-  <li><a href="#error-sum-of-squares" id="toc-error-sum-of-squares" class="nav-link" data-scroll-target="#error-sum-of-squares"><span class="header-section-number">4.3</span> Error Sum of Squares</a></li>
-  <li><a href="#the-sum-of-squares-decomposition" id="toc-the-sum-of-squares-decomposition" class="nav-link" data-scroll-target="#the-sum-of-squares-decomposition"><span class="header-section-number">4.4</span> The Sum-of-Squares Decomposition</a></li>
+  <li><a href="#total-sum-of-squares" id="toc-total-sum-of-squares" class="nav-link" data-scroll-target="#total-sum-of-squares"><span class="header-section-number">1.8.1</span> Total Sum of Squares</a></li>
+  <li><a href="#regression-sum-of-squares" id="toc-regression-sum-of-squares" class="nav-link" data-scroll-target="#regression-sum-of-squares"><span class="header-section-number">1.8.2</span> Regression Sum of Squares</a></li>
+  <li><a href="#error-sum-of-squares" id="toc-error-sum-of-squares" class="nav-link" data-scroll-target="#error-sum-of-squares"><span class="header-section-number">1.8.3</span> Error Sum of Squares</a></li>
+  <li><a href="#the-sum-of-squares-decomposition" id="toc-the-sum-of-squares-decomposition" class="nav-link" data-scroll-target="#the-sum-of-squares-decomposition"><span class="header-section-number">1.8.4</span> The Sum-of-Squares Decomposition</a></li>
   </ul></li>
-  <li><a href="#coefficient-of-determination" id="toc-coefficient-of-determination" class="nav-link" data-scroll-target="#coefficient-of-determination"><span class="header-section-number">5</span> Coefficient of Determination</a>
+  <li><a href="#coefficient-of-determination" id="toc-coefficient-of-determination" class="nav-link" data-scroll-target="#coefficient-of-determination"><span class="header-section-number">1.9</span> Coefficient of Determination</a>
   <ul class="collapse">
-  <li><a href="#interpretation-of-r2" id="toc-interpretation-of-r2" class="nav-link" data-scroll-target="#interpretation-of-r2"><span class="header-section-number">5.1</span> Interpretation of <span class="math inline">\(R^2\)</span></a></li>
-  <li><a href="#range-of-r2" id="toc-range-of-r2" class="nav-link" data-scroll-target="#range-of-r2"><span class="header-section-number">5.2</span> Range of <span class="math inline">\(R^2\)</span></a></li>
-  <li><a href="#relationship-between-r2-and-correlation" id="toc-relationship-between-r2-and-correlation" class="nav-link" data-scroll-target="#relationship-between-r2-and-correlation"><span class="header-section-number">5.3</span> Relationship Between <span class="math inline">\(R^2\)</span> and Correlation</a></li>
-  <li><a href="#a-useful-expression-for-r2" id="toc-a-useful-expression-for-r2" class="nav-link" data-scroll-target="#a-useful-expression-for-r2"><span class="header-section-number">5.4</span> A Useful Expression for <span class="math inline">\(R^2\)</span></a></li>
+  <li><a href="#interpretation-of-r2" id="toc-interpretation-of-r2" class="nav-link" data-scroll-target="#interpretation-of-r2"><span class="header-section-number">1.9.1</span> Interpretation of <span class="math inline">\(R^2\)</span></a></li>
+  <li><a href="#range-of-r2" id="toc-range-of-r2" class="nav-link" data-scroll-target="#range-of-r2"><span class="header-section-number">1.9.2</span> Range of <span class="math inline">\(R^2\)</span></a></li>
+  <li><a href="#relationship-between-r2-and-correlation" id="toc-relationship-between-r2-and-correlation" class="nav-link" data-scroll-target="#relationship-between-r2-and-correlation"><span class="header-section-number">1.9.3</span> Relationship Between <span class="math inline">\(R^2\)</span> and Correlation</a></li>
+  <li><a href="#a-useful-expression-for-r2" id="toc-a-useful-expression-for-r2" class="nav-link" data-scroll-target="#a-useful-expression-for-r2"><span class="header-section-number">1.9.4</span> A Useful Expression for <span class="math inline">\(R^2\)</span></a></li>
   </ul></li>
-  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">6</span> Degrees of Freedom</a>
+  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">1.10</span> Degrees of Freedom</a>
   <ul class="collapse">
-  <li><a href="#mean-squares" id="toc-mean-squares" class="nav-link" data-scroll-target="#mean-squares"><span class="header-section-number">6.1</span> Mean Squares</a></li>
+  <li><a href="#mean-squares" id="toc-mean-squares" class="nav-link" data-scroll-target="#mean-squares"><span class="header-section-number">1.10.1</span> Mean Squares</a></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">7</span> Summary</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2</span> Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -397,7 +393,7 @@ Y_i
 \]</span></p>
 <p>Here:</p>
 <ul>
-<li><span class="math inline">\(Y_i\)</span> is the i’th response variable.</li>
+<li><span class="math inline">\(Y_i\)</span> is the <span class="math inline">\(i\)</span>’th response variable.</li>
 <li><span class="math inline">\(x_i\)</span> is the corresponding explanatory variable.</li>
 <li><span class="math inline">\(\beta_0\)</span> is the intercept.</li>
 <li><span class="math inline">\(\beta_1\)</span> is the slope.</li>
@@ -426,7 +422,7 @@ Y_i
 <p>The parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> describe the population regression relationship.</p>
 <section id="the-intercept" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="the-intercept"><span class="header-section-number">1.2.1</span> The Intercept</h3>
-<p>The intercept <span class="math inline">\(\beta_0\)</span> is the expected value of the response when the explanatory variable is zero.</p>
+<p>The intercept <span class="math inline">\(\beta_0\)</span> is the expected value of the response variable (Y) when the explanatory variable (X) is zero.</p>
 <p>Since</p>
 <p><span class="math display">\[
 E(Y_i\mid x_i)
@@ -452,12 +448,14 @@ E(Y\mid X=0)
 </section>
 <section id="the-slope" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="the-slope"><span class="header-section-number">1.2.2</span> The Slope</h3>
-<p>The slope <span class="math inline">\(\beta_1\)</span> describes the change in the expected response associated with a one-unit increase in the explanatory variable.</p>
+<p>The slope <span class="math inline">\(\beta_1\)</span> describes the change in the expected response variable (Y) associated with a one-unit increase in the explanatory variable (X).</p>
 <p>For two values <span class="math inline">\(x\)</span> and <span class="math inline">\(x+1\)</span>,</p>
 <p><span class="math display">\[
 E(Y\mid X=x+1)
 -
 E(Y\mid X=x)
+=
+[\beta_0 + \beta_1(x+1)] - [\beta_0 + \beta_1x]
 =
 \beta_1.
 \]</span></p>
@@ -476,8 +474,8 @@ E(Y\mid X=x)
 \]</span></p>
 <p>The sign of <span class="math inline">\(\beta_1\)</span> determines the direction of the relationship:</p>
 <ul>
-<li><span class="math inline">\(\beta_1&gt;0\)</span>: the expected response increases as <span class="math inline">\(x\)</span> increases.</li>
-<li><span class="math inline">\(\beta_1&lt;0\)</span>: the expected response decreases as <span class="math inline">\(x\)</span> increases.</li>
+<li><span class="math inline">\(\beta_1&gt;0\)</span>: the expected response increases as <span class="math inline">\(x\)</span> increases. [ Positive slope]</li>
+<li><span class="math inline">\(\beta_1&lt;0\)</span>: the expected response decreases as <span class="math inline">\(x\)</span> increases. [ Negative slope]</li>
 <li><span class="math inline">\(\beta_1=0\)</span>: there is no linear change in the expected response.</li>
 </ul>
 <hr>
@@ -511,53 +509,35 @@ E(Y_i\mid x_i)
 \beta_0+\beta_1x_i.
 }
 \]</span></p>
-<p>This equation defines the <strong>population regression line</strong>.</p>
-<p>It represents the mean response at each value of the explanatory variable.</p>
+<p>This equation defines the <strong>population regression line</strong>. It represents the mean response at each value of the explanatory variable.</p>
 <p>The individual observations need not lie exactly on this line because of the random errors <span class="math inline">\(\varepsilon_i\)</span>.</p>
 <hr>
 </section>
 <section id="the-error-term" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="the-error-term"><span class="header-section-number">1.4</span> The Error Term</h2>
 <p>The error term represents variation in the response that is not explained by the systematic linear relationship with <span class="math inline">\(x_i\)</span>.</p>
-<p>The model can therefore be viewed as</p>
+<p>The standard assumptions are,</p>
 <p><span class="math display">\[
-Y_i
-=
-E(Y_i\mid x_i)
-+
-\varepsilon_i.
-\]</span></p>
-<p>Hence,</p>
-<p><span class="math display">\[
-\boxed{
-\varepsilon_i
-=
-Y_i-E(Y_i\mid x_i).
-}
-\]</span></p>
-<p>Under the regression assumptions,</p>
-<p><span class="math display">\[
-E(\varepsilon_i\mid x_i)=0.
-\]</span></p>
-<p>If we additionally assume constant variance,</p>
-<p><span class="math display">\[
-\operatorname{Var}(\varepsilon_i\mid x_i)
-=
-\sigma^2.
+E(\varepsilon_i) = 0,\\
+\operatorname{Var}(\varepsilon_i) = \sigma^2.
 \]</span></p>
 <p>The errors therefore have mean zero and a common variance.</p>
 <p>For the classical simple linear regression model, the errors are also assumed to be mutually uncorrelated:</p>
 <p><span class="math display">\[
 \operatorname{Cov}(\varepsilon_i,\varepsilon_j)=0,
-\qquad i\neq j.
+\qquad \forall i\neq j.
 \]</span></p>
-<p>If normality is assumed, then</p>
+<p>Additionally if normality is assumed, then</p>
 <p><span class="math display">\[
 \varepsilon_i
-\sim
+\overset{\mathrm{i.i.d}}{\sim}
 N(0,\sigma^2).
 \]</span></p>
 <p>The normality assumption is stronger than what is required for the Gauss-Markov theorem, but it becomes useful for exact finite-sample inference.</p>
+<p>Consequently</p>
+<p><span class="math display">\[
+(Y_i \mid X_i = x_i) \sim N(\beta_0 + \beta_1x_i,\;\; \sigma^2)
+\]</span></p>
 <hr>
 </section>
 <section id="matrix-representation" class="level2" data-number="1.5">
@@ -632,18 +612,13 @@ Y_n
 <p>This representation allows all of the general linear model machinery to be applied directly to simple linear regression.</p>
 <hr>
 </section>
-</section>
-<section id="least-squares-estimation" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Least Squares Estimation</h1>
-<p>The population parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are unknown.</p>
-<p>We therefore need to estimate them from the observed data.</p>
-<p>Let</p>
-<p><span class="math display">\[
-\widehat{\beta}_0
-\]</span></p>
-<p>and</p>
-<p><span class="math display">\[
-\widehat{\beta}_1
+<section id="least-squares-estimation" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="least-squares-estimation"><span class="header-section-number">1.6</span> Least Squares Estimation</h2>
+<p>Consider the linear regression model <span class="math display">\[
+Y_i = \beta_0 + \beta_1x_i + \varepsilon_i
+\]</span> The population parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are unknown. We therefore need to estimate them from the observed data. Let <span class="math display">\[
+\widehat{\beta}_0 = b_0 \qquad\text{and} \qquad
+\widehat{\beta}_1 = b_1
 \]</span></p>
 <p>denote the estimators of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
 <p>The fitted regression line is then</p>
@@ -651,34 +626,21 @@ Y_n
 \boxed{
 \widehat{Y}_i
 =
-\widehat{\beta}_0
+b_0
 +
-\widehat{\beta}_1x_i.
+b_1x_i.
 }
 \]</span></p>
 <p>The difference between the observed response and the fitted response is the residual:</p>
 <p><span class="math display">\[
-e_i
-=
-Y_i-\widehat{Y}_i.
+\begin{align*}
+  e_i =&amp; Y_i-\widehat{Y}_i.\\
+  =&amp; Y_i - b_0 - b_1x_i.
+\end{align*}
 \]</span></p>
-<p>Therefore,</p>
+<p>The least squares method chooses <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> to minimize the total squared residuals.</p>
 <p><span class="math display">\[
-e_i
-=
-Y_i
--
-\widehat{\beta}_0
--
-\widehat{\beta}_1x_i.
-\]</span></p>
-<p>The least squares method chooses <span class="math inline">\(\widehat{\beta}_0\)</span> and <span class="math inline">\(\widehat{\beta}_1\)</span> to minimize the total squared residuals.</p>
-<hr>
-<section id="the-least-squares-criterion" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="the-least-squares-criterion"><span class="header-section-number">2.1</span> The Least Squares Criterion</h2>
-<p>Define</p>
-<p><span class="math display">\[
-S(\beta_0,\beta_1)
+Q(\beta_0,\beta_1)
 =
 \sum_{i=1}^{n}
 \left(
@@ -688,7 +650,7 @@ Y_i-\beta_0-\beta_1x_i
 <p>The least squares estimators are the values that minimize this function:</p>
 <p><span class="math display">\[
 \boxed{
-(\widehat{\beta}_0,\widehat{\beta}_1)
+(b_0,b_1)
 =
 \underset{\beta_0,\beta_1}{\operatorname{arg\,min}}
 \;
@@ -700,12 +662,11 @@ Y_i-\beta_0-\beta_1x_i
 \]</span></p>
 <p>The residual sum of squares is therefore minimized by the fitted regression line.</p>
 <hr>
-</section>
-<section id="deriving-the-least-squares-estimators" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="deriving-the-least-squares-estimators"><span class="header-section-number">2.2</span> Deriving the Least Squares Estimators</h2>
+<section id="deriving-the-least-squares-estimators" class="level3" data-number="1.6.1">
+<h3 data-number="1.6.1" class="anchored" data-anchor-id="deriving-the-least-squares-estimators"><span class="header-section-number">1.6.1</span> Deriving the Least Squares Estimators</h3>
 <p>We begin with</p>
 <p><span class="math display">\[
-S(\beta_0,\beta_1)
+Q(\beta_0,\beta_1)
 =
 \sum_{i=1}^{n}
 \left(
@@ -715,7 +676,7 @@ Y_i-\beta_0-\beta_1x_i
 <p>To find the minimum, differentiate with respect to <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>.</p>
 <p>The first partial derivative is</p>
 <p><span class="math display">\[
-\frac{\partial S}{\partial\beta_0}
+\frac{\partial Q}{\partial\beta_0}
 =
 -2
 \sum_{i=1}^{n}
@@ -725,56 +686,40 @@ Y_i-\beta_0-\beta_1x_i
 \]</span></p>
 <p>At the minimum,</p>
 <p><span class="math display">\[
-\frac{\partial S}{\partial\beta_0}=0.
+\frac{\partial Q}{\partial\beta_0}=0.
 \]</span></p>
 <p>Therefore,</p>
-<p><span class="math display">\[
-\sum_{i=1}^{n}
-\left(
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
-\right)
-=
-0.
-\]</span></p>
-<p>Thus,</p>
-<p><span class="math display">\[
-\sum_{i=1}^{n}Y_i
--
-n\widehat{\beta}_0
--
-\widehat{\beta}_1
-\sum_{i=1}^{n}x_i
-=
-0.
-\]</span></p>
+<p>$$ <span class="math display">\[\begin{align*}
+
+\sum_{i=1}^{n}\left(Y_i-b_0-b_1x_i\right) &amp;= 0.\\
+\sum_{i=1}^{n}Y_i - nb_0 - b_1 \sum_{i=1}^{n}x_i &amp;= 0.\\
+n{b_0} + b_1\sum_{i = 1}^{n}x_i &amp;= \sum_{i = 1}^{n}Y_i
+
+\end{align*}\]</span> $$</p>
 <p>Dividing by <span class="math inline">\(n\)</span>,</p>
 <p><span class="math display">\[
 \bar{Y}
 -
-\widehat{\beta}_0
+b_0
 -
-\widehat{\beta}_1\bar{x}
+b_1\bar{x}
 =
 0.
 \]</span></p>
 <p>Hence,</p>
 <p><span class="math display">\[
 \boxed{
-\widehat{\beta}_0
+b_0
 =
 \bar{Y}
 -
-\widehat{\beta}_1\bar{x}.
+b_1\bar{x}.
 }
 \]</span></p>
 <p>This is the first least squares equation.</p>
-<hr>
-</section>
-<section id="deriving-the-slope-estimator" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="deriving-the-slope-estimator"><span class="header-section-number">2.3</span> Deriving the Slope Estimator</h2>
 <p>Now differentiate with respect to <span class="math inline">\(\beta_1\)</span>:</p>
 <p><span class="math display">\[
-\frac{\partial S}{\partial\beta_1}
+\frac{\partial Q}{\partial\beta_1}
 =
 -2
 \sum_{i=1}^{n}
@@ -788,7 +733,7 @@ Y_i-\beta_0-\beta_1x_i
 \sum_{i=1}^{n}
 x_i
 \left(
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
+Y_i-b_0-b_1x_i
 \right)
 =
 0.
@@ -797,10 +742,10 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 <p><span class="math display">\[
 \sum_{i=1}^{n}x_iY_i
 -
-\widehat{\beta}_0
+b_0
 \sum_{i=1}^{n}x_i
 -
-\widehat{\beta}_1
+b_1
 \sum_{i=1}^{n}x_i^2
 =
 0.
@@ -809,7 +754,7 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 <p><span class="math display">\[
 \sum_{i=1}^{n}
 \left(
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
+Y_i-b_0-b_1x_i
 \right)
 =
 0
@@ -819,7 +764,7 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 \sum_{i=1}^{n}
 x_i
 \left(
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
+Y_i-b_0-b_1x_i
 \right)
 =
 0,
@@ -827,15 +772,15 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 <p>are the <strong>normal equations</strong> for simple linear regression.</p>
 <hr>
 </section>
-<section id="the-slope-in-centered-form" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="the-slope-in-centered-form"><span class="header-section-number">2.4</span> The Slope in Centered Form</h2>
+<section id="the-slope-in-centered-form" class="level3" data-number="1.6.2">
+<h3 data-number="1.6.2" class="anchored" data-anchor-id="the-slope-in-centered-form"><span class="header-section-number">1.6.2</span> The Slope in Centered Form</h3>
 <p>Using</p>
 <p><span class="math display">\[
-\widehat{\beta}_0
+b_0
 =
 \bar{Y}
 -
-\widehat{\beta}_1\bar{x},
+b_1\bar{x},
 \]</span></p>
 <p>substitute into the second normal equation.</p>
 <p>After simplification,</p>
@@ -843,14 +788,14 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 \sum_{i=1}^{n}
 (x_i-\bar{x})(Y_i-\bar{Y})
 =
-\widehat{\beta}_1
+b_1
 \sum_{i=1}^{n}
 (x_i-\bar{x})^2.
 \]</span></p>
 <p>Therefore,</p>
 <p><span class="math display">\[
 \boxed{
-\widehat{\beta}_1
+b_1
 =
 \frac{
 \sum_{i=1}^{n}
@@ -858,24 +803,26 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 }{
 \sum_{i=1}^{n}
 (x_i-\bar{x})^2
-}.
+}
+=
+\dfrac{S_{xy}}{S_{xx}}
 }
 \]</span></p>
 <p>The intercept estimator is then</p>
 <p><span class="math display">\[
 \boxed{
-\widehat{\beta}_0
+b_0
 =
 \bar{Y}
 -
-\widehat{\beta}_1\bar{x}.
+b_1\bar{x}.
 }
 \]</span></p>
 <p>These are the standard least squares estimators for simple linear regression.</p>
 <hr>
 </section>
-<section id="interpretation-of-the-slope-estimator" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="interpretation-of-the-slope-estimator"><span class="header-section-number">2.5</span> Interpretation of the Slope Estimator</h2>
+<section id="interpretation-of-the-slope-estimator" class="level3" data-number="1.6.3">
+<h3 data-number="1.6.3" class="anchored" data-anchor-id="interpretation-of-the-slope-estimator"><span class="header-section-number">1.6.3</span> Interpretation of the Slope Estimator</h3>
 <p>The numerator</p>
 <p><span class="math display">\[
 \sum_{i=1}^{n}
@@ -890,94 +837,35 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 <p>measures the variation in <span class="math inline">\(x\)</span>.</p>
 <p>Therefore,</p>
 <p><span class="math display">\[
-\widehat{\beta}_1
+b_1
 =
 \frac{\text{joint variation of }x\text{ and }Y}
 {\text{variation of }x}.
 \]</span></p>
-<p>The sign of <span class="math inline">\(\widehat{\beta}_1\)</span> tells us the direction of the observed linear relationship.</p>
-<p>If</p>
-<p><span class="math display">\[
-\widehat{\beta}_1&gt;0,
-\]</span></p>
-<p>the fitted response increases with <span class="math inline">\(x\)</span>.</p>
-<p>If</p>
-<p><span class="math display">\[
-\widehat{\beta}_1&lt;0,
-\]</span></p>
-<p>the fitted response decreases with <span class="math inline">\(x\)</span>.</p>
-<p>If</p>
-<p><span class="math display">\[
-\widehat{\beta}_1=0,
-\]</span></p>
-<p>the fitted regression line is horizontal.</p>
-<hr>
-</section>
-<section id="centered-variables" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="centered-variables"><span class="header-section-number">2.6</span> Centered Variables</h2>
-<p>It is often useful to define</p>
-<p><span class="math display">\[
-x_i^c=x_i-\bar{x}
-\]</span></p>
-<p>and</p>
-<p><span class="math display">\[
-Y_i^c=Y_i-\bar{Y}.
-\]</span></p>
-<p>Then the slope estimator becomes</p>
-<p><span class="math display">\[
-\widehat{\beta}_1
-=
-\frac{
-\sum_{i=1}^{n}
-x_i^cY_i^c
-}{
-\sum_{i=1}^{n}
-(x_i^c)^2
-}.
-\]</span></p>
-<p>The denominator is sometimes written as</p>
-<p><span class="math display">\[
-S_{xx}
-=
-\sum_{i=1}^{n}
-(x_i-\bar{x})^2,
-\]</span></p>
-<p>and the numerator as</p>
-<p><span class="math display">\[
-S_{xy}
-=
-\sum_{i=1}^{n}
-(x_i-\bar{x})(Y_i-\bar{Y}).
-\]</span></p>
-<p>Thus,</p>
-<p><span class="math display">\[
-\boxed{
-\widehat{\beta}_1
-=
-\frac{S_{xy}}{S_{xx}}.
-}
-\]</span></p>
-<p>This notation will be useful when deriving the properties of the regression estimators.</p>
+<p>The sign of <span class="math inline">\(b_1\)</span> tells us the direction of the observed linear relationship.</p>
+<p>If <span class="math inline">\(b_1&gt;0,\)</span> the fitted response increases with <span class="math inline">\(x\)</span>.</p>
+<p>If <span class="math inline">\(b_1&lt;0,\)</span> the fitted response decreases with <span class="math inline">\(x\)</span>.</p>
+<p>If <span class="math inline">\(b_1=0,\)</span> the fitted regression line is horizontal.</p>
 <hr>
 </section>
 </section>
-<section id="properties-of-the-fitted-regression-line" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Properties of the Fitted Regression Line</h1>
+<section id="properties-of-the-fitted-regression-line" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="properties-of-the-fitted-regression-line"><span class="header-section-number">1.7</span> Properties of the Fitted Regression Line</h2>
 <p>The fitted regression line is</p>
 <p><span class="math display">\[
 \widehat{Y}_i
 =
-\widehat{\beta}_0
+b_0
 +
-\widehat{\beta}_1x_i.
+b_1x_i.
 \]</span></p>
 <p>Using</p>
 <p><span class="math display">\[
-\widehat{\beta}_0
+b_0
 =
 \bar{Y}
 -
-\widehat{\beta}_1\bar{x},
+b_1\bar{x},
 \]</span></p>
 <p>we can rewrite it as</p>
 <p><span class="math display">\[
@@ -985,7 +873,7 @@ S_{xy}
 =
 \bar{Y}
 +
-\widehat{\beta}_1(x_i-\bar{x}).
+b_1(x_i-\bar{x}).
 \]</span></p>
 <p>Therefore,</p>
 <p><span class="math display">\[
@@ -994,13 +882,13 @@ S_{xy}
 =
 \bar{Y}
 +
-\widehat{\beta}_1(x_i-\bar{x}).
+b_1(x_i-\bar{x}).
 }
 \]</span></p>
 <p>This form makes several important properties immediately visible.</p>
 <hr>
-<section id="the-regression-line-passes-through-the-sample-means" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="the-regression-line-passes-through-the-sample-means"><span class="header-section-number">3.1</span> The Regression Line Passes Through the Sample Means</h2>
+<section id="the-regression-line-passes-through-the-sample-means" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="the-regression-line-passes-through-the-sample-means"><span class="header-section-number">1.7.1</span> The Regression Line Passes Through the Sample Means</h3>
 <p>Set</p>
 <p><span class="math display">\[
 x_i=\bar{x}.
@@ -1011,7 +899,7 @@ x_i=\bar{x}.
 =
 \bar{Y}
 +
-\widehat{\beta}_1(\bar{x}-\bar{x}).
+b_1(\bar{x}-\bar{x}).
 \]</span></p>
 <p>Therefore,</p>
 <p><span class="math display">\[
@@ -1026,8 +914,8 @@ x_i=\bar{x}.
 <p>This is one of the fundamental geometric properties of the least squares regression line.</p>
 <hr>
 </section>
-<section id="residuals" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="residuals"><span class="header-section-number">3.2</span> Residuals</h2>
+<section id="sum-of-the-residuals-is-zero" class="level3" data-number="1.7.2">
+<h3 data-number="1.7.2" class="anchored" data-anchor-id="sum-of-the-residuals-is-zero"><span class="header-section-number">1.7.2</span> Sum of the Residuals is Zero</h3>
 <p>The residual for observation <span class="math inline">\(i\)</span> is</p>
 <p><span class="math display">\[
 e_i
@@ -1040,40 +928,15 @@ e_i
 =
 Y_i
 -
-\widehat{\beta}_0
+b_0
 -
-\widehat{\beta}_1x_i.
+b_1x_i.
 \]</span></p>
-<p>Using the centered representation,</p>
-<p><span class="math display">\[
-e_i
-=
-Y_i
--
-\bar{Y}
--
-\widehat{\beta}_1(x_i-\bar{x}).
-\]</span></p>
-<p>Therefore,</p>
-<p><span class="math display">\[
-\boxed{
-e_i
-=
-(Y_i-\bar{Y})
--
-\widehat{\beta}_1(x_i-\bar{x}).
-}
-\]</span></p>
-<p>The residual represents the vertical difference between the observed response and the fitted regression line.</p>
-<hr>
-</section>
-<section id="residuals-sum-to-zero" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="residuals-sum-to-zero"><span class="header-section-number">3.3</span> Residuals Sum to Zero</h2>
 <p>One of the normal equations gives</p>
 <p><span class="math display">\[
 \sum_{i=1}^{n}
 \left(
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
+Y_i-b_0-b_1x_i
 \right)
 =
 0.
@@ -1082,7 +945,7 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 <p><span class="math display">\[
 e_i
 =
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i,
+Y_i-b_0-b_1x_i,
 \]</span></p>
 <p>we obtain</p>
 <p><span class="math display">\[
@@ -1098,14 +961,14 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i,
 <p>This result depends on the model containing an intercept.</p>
 <hr>
 </section>
-<section id="residuals-are-orthogonal-to-the-predictor" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="residuals-are-orthogonal-to-the-predictor"><span class="header-section-number">3.4</span> Residuals Are Orthogonal to the Predictor</h2>
+<section id="residuals-are-orthogonal-to-the-predictor-x" class="level3" data-number="1.7.3">
+<h3 data-number="1.7.3" class="anchored" data-anchor-id="residuals-are-orthogonal-to-the-predictor-x"><span class="header-section-number">1.7.3</span> Residuals Are Orthogonal to the Predictor (X)</h3>
 <p>The second normal equation gives</p>
 <p><span class="math display">\[
 \sum_{i=1}^{n}
 x_i
 \left(
-Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
+Y_i-b_0-b_1x_i
 \right)
 =
 0.
@@ -1145,25 +1008,25 @@ Y_i-\widehat{\beta}_0-\widehat{\beta}_1x_i
 \]</span></p>
 <hr>
 </section>
-<section id="residuals-and-fitted-values" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="residuals-and-fitted-values"><span class="header-section-number">3.5</span> Residuals and Fitted Values</h2>
+<section id="residuals-and-fitted-values" class="level3" data-number="1.7.4">
+<h3 data-number="1.7.4" class="anchored" data-anchor-id="residuals-and-fitted-values"><span class="header-section-number">1.7.4</span> Residuals and Fitted Values</h3>
 <p>Because</p>
 <p><span class="math display">\[
 \widehat{Y}_i
 =
-\widehat{\beta}_0
+b_0
 +
-\widehat{\beta}_1x_i,
+b_1x_i,
 \]</span></p>
 <p>we have</p>
 <p><span class="math display">\[
 \sum_{i=1}^{n}
 \widehat{Y}_ie_i
 =
-\widehat{\beta}_0
+b_0
 \sum_{i=1}^{n}e_i
 +
-\widehat{\beta}_1
+b_1
 \sum_{i=1}^{n}x_ie_i.
 \]</span></p>
 <p>Both terms are zero.</p>
@@ -1193,8 +1056,8 @@ Y_i
 <hr>
 </section>
 </section>
-<section id="sums-of-squares" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Sums of Squares</h1>
+<section id="sums-of-squares" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="sums-of-squares"><span class="header-section-number">1.8</span> Sums of Squares</h2>
 <p>The total variation in the response can be decomposed into a part explained by the fitted regression line and a residual part.</p>
 <p>Start with</p>
 <p><span class="math display">\[
@@ -1256,8 +1119,8 @@ e_i^2.
 \]</span></p>
 <p>This is the fundamental <strong>sum-of-squares decomposition</strong>.</p>
 <hr>
-<section id="total-sum-of-squares" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="total-sum-of-squares"><span class="header-section-number">4.1</span> Total Sum of Squares</h2>
+<section id="total-sum-of-squares" class="level3" data-number="1.8.1">
+<h3 data-number="1.8.1" class="anchored" data-anchor-id="total-sum-of-squares"><span class="header-section-number">1.8.1</span> Total Sum of Squares</h3>
 <p>The total variation in the observed response is measured by the <strong>total sum of squares</strong>:</p>
 <p><span class="math display">\[
 \boxed{
@@ -1271,8 +1134,8 @@ SST
 <p>It represents the total amount of observed variation in the response.</p>
 <hr>
 </section>
-<section id="regression-sum-of-squares" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="regression-sum-of-squares"><span class="header-section-number">4.2</span> Regression Sum of Squares</h2>
+<section id="regression-sum-of-squares" class="level3" data-number="1.8.2">
+<h3 data-number="1.8.2" class="anchored" data-anchor-id="regression-sum-of-squares"><span class="header-section-number">1.8.2</span> Regression Sum of Squares</h3>
 <p>The variation explained by the fitted regression model is</p>
 <p><span class="math display">\[
 \boxed{
@@ -1286,8 +1149,8 @@ SSR
 <p>It measures how much variation in the fitted values is explained by their relationship with the predictor.</p>
 <hr>
 </section>
-<section id="error-sum-of-squares" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="error-sum-of-squares"><span class="header-section-number">4.3</span> Error Sum of Squares</h2>
+<section id="error-sum-of-squares" class="level3" data-number="1.8.3">
+<h3 data-number="1.8.3" class="anchored" data-anchor-id="error-sum-of-squares"><span class="header-section-number">1.8.3</span> Error Sum of Squares</h3>
 <p>The unexplained variation is measured by the <strong>error sum of squares</strong>, also called the residual sum of squares:</p>
 <p><span class="math display">\[
 \boxed{
@@ -1302,8 +1165,8 @@ SSE
 <p>This is precisely the quantity minimized by the least squares method.</p>
 <hr>
 </section>
-<section id="the-sum-of-squares-decomposition" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="the-sum-of-squares-decomposition"><span class="header-section-number">4.4</span> The Sum-of-Squares Decomposition</h2>
+<section id="the-sum-of-squares-decomposition" class="level3" data-number="1.8.4">
+<h3 data-number="1.8.4" class="anchored" data-anchor-id="the-sum-of-squares-decomposition"><span class="header-section-number">1.8.4</span> The Sum-of-Squares Decomposition</h3>
 <p>Combining the three quantities gives</p>
 <p><span class="math display">\[
 \boxed{
@@ -1327,8 +1190,8 @@ SSR+SSE.
 <hr>
 </section>
 </section>
-<section id="coefficient-of-determination" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Coefficient of Determination</h1>
+<section id="coefficient-of-determination" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="coefficient-of-determination"><span class="header-section-number">1.9</span> Coefficient of Determination</h2>
 <p>The coefficient of determination is denoted by</p>
 <p><span class="math display">\[
 R^2.
@@ -1356,8 +1219,8 @@ R^2
 \]</span></p>
 <p>Thus, <span class="math inline">\(R^2\)</span> compares the unexplained variation with the total variation.</p>
 <hr>
-<section id="interpretation-of-r2" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="interpretation-of-r2"><span class="header-section-number">5.1</span> Interpretation of <span class="math inline">\(R^2\)</span></h2>
+<section id="interpretation-of-r2" class="level3" data-number="1.9.1">
+<h3 data-number="1.9.1" class="anchored" data-anchor-id="interpretation-of-r2"><span class="header-section-number">1.9.1</span> Interpretation of <span class="math inline">\(R^2\)</span></h3>
 <p>Suppose</p>
 <p><span class="math display">\[
 R^2=0.80.
@@ -1380,8 +1243,8 @@ R^2
 <p>A large <span class="math inline">\(R^2\)</span> indicates that the fitted model explains a large proportion of the observed variation, but it does not by itself establish causality or prove that the model is appropriate.</p>
 <hr>
 </section>
-<section id="range-of-r2" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="range-of-r2"><span class="header-section-number">5.2</span> Range of <span class="math inline">\(R^2\)</span></h2>
+<section id="range-of-r2" class="level3" data-number="1.9.2">
+<h3 data-number="1.9.2" class="anchored" data-anchor-id="range-of-r2"><span class="header-section-number">1.9.2</span> Range of <span class="math inline">\(R^2\)</span></h3>
 <p>For a simple linear regression model containing an intercept,</p>
 <p><span class="math display">\[
 0\leq R^2\leq1.
@@ -1397,7 +1260,7 @@ SSR=0,
 <p>so the fitted model explains none of the variation around the sample mean.</p>
 <p>In simple linear regression this corresponds to</p>
 <p><span class="math display">\[
-\widehat{\beta}_1=0.
+b_1=0.
 \]</span></p>
 <p>If</p>
 <p><span class="math display">\[
@@ -1419,8 +1282,8 @@ R^2=1
 <p>for the usual regression model with an intercept.</p>
 <hr>
 </section>
-<section id="relationship-between-r2-and-correlation" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="relationship-between-r2-and-correlation"><span class="header-section-number">5.3</span> Relationship Between <span class="math inline">\(R^2\)</span> and Correlation</h2>
+<section id="relationship-between-r2-and-correlation" class="level3" data-number="1.9.3">
+<h3 data-number="1.9.3" class="anchored" data-anchor-id="relationship-between-r2-and-correlation"><span class="header-section-number">1.9.3</span> Relationship Between <span class="math inline">\(R^2\)</span> and Correlation</h3>
 <p>In simple linear regression with an intercept, the sample correlation coefficient between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is</p>
 <p><span class="math display">\[
 r_{XY}
@@ -1447,7 +1310,7 @@ R^2=r_{XY}^2.
 \]</span></p>
 <p>The sign of the relationship is determined by the slope:</p>
 <p><span class="math display">\[
-\operatorname{sign}(\widehat{\beta}_1)
+\operatorname{sign}(b_1)
 =
 \operatorname{sign}(r_{XY}).
 \]</span></p>
@@ -1455,11 +1318,11 @@ R^2=r_{XY}^2.
 <p>For example, a strong positive relationship and a strong negative relationship can have exactly the same value of <span class="math inline">\(R^2\)</span>.</p>
 <hr>
 </section>
-<section id="a-useful-expression-for-r2" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="a-useful-expression-for-r2"><span class="header-section-number">5.4</span> A Useful Expression for <span class="math inline">\(R^2\)</span></h2>
+<section id="a-useful-expression-for-r2" class="level3" data-number="1.9.4">
+<h3 data-number="1.9.4" class="anchored" data-anchor-id="a-useful-expression-for-r2"><span class="header-section-number">1.9.4</span> A Useful Expression for <span class="math inline">\(R^2\)</span></h3>
 <p>Recall that</p>
 <p><span class="math display">\[
-\widehat{\beta}_1
+b_1
 =
 \frac{S_{xy}}{S_{xx}}.
 \]</span></p>
@@ -1467,11 +1330,11 @@ R^2=r_{XY}^2.
 <p><span class="math display">\[
 SSR
 =
-\widehat{\beta}_1^2S_{xx}.
+b_1^2S_{xx}.
 \]</span></p>
 <p>Since</p>
 <p><span class="math display">\[
-\widehat{\beta}_1
+b_1
 =
 \frac{S_{xy}}{S_{xx}},
 \]</span></p>
@@ -1498,8 +1361,8 @@ S_{yy}
 <hr>
 </section>
 </section>
-<section id="degrees-of-freedom" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Degrees of Freedom</h1>
+<section id="degrees-of-freedom" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">1.10</span> Degrees of Freedom</h2>
 <p>The sums of squares are associated with different degrees of freedom.</p>
 <p>For simple linear regression with an intercept:</p>
 <table class="caption-top table">
@@ -1546,8 +1409,8 @@ Y_i-\bar{Y}
 <p>One degree of freedom is therefore lost in estimating the sample mean.</p>
 <p>The regression component uses one additional degree of freedom because there is one slope parameter being estimated beyond the intercept.</p>
 <hr>
-<section id="mean-squares" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="mean-squares"><span class="header-section-number">6.1</span> Mean Squares</h2>
+<section id="mean-squares" class="level3" data-number="1.10.1">
+<h3 data-number="1.10.1" class="anchored" data-anchor-id="mean-squares"><span class="header-section-number">1.10.1</span> Mean Squares</h3>
 <p>Dividing the sums of squares by their respective degrees of freedom gives mean squares.</p>
 <p>The regression mean square is</p>
 <p><span class="math display">\[
@@ -1576,8 +1439,9 @@ E(MSE)=\sigma^2.
 <hr>
 </section>
 </section>
-<section id="summary" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Summary</h1>
+</section>
+<section id="summary" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Summary</h1>
 <p>Simple linear regression models the relationship between a response and one explanatory variable:</p>
 <p><span class="math display">\[
 \boxed{
@@ -1593,7 +1457,7 @@ E(Y_i\mid x_i)=\beta_0+\beta_1x_i.
 <p>The least squares estimators are</p>
 <p><span class="math display">\[
 \boxed{
-\widehat{\beta}_1
+b_1
 =
 \frac{
 \sum_{i=1}^{n}
@@ -1607,11 +1471,11 @@ E(Y_i\mid x_i)=\beta_0+\beta_1x_i.
 <p>and</p>
 <p><span class="math display">\[
 \boxed{
-\widehat{\beta}_0
+b_0
 =
 \bar{Y}
 -
-\widehat{\beta}_1\bar{x}.
+b_1\bar{x}.
 }
 \]</span></p>
 <p>The fitted regression line is</p>
@@ -1619,9 +1483,9 @@ E(Y_i\mid x_i)=\beta_0+\beta_1x_i.
 \boxed{
 \widehat{Y}_i
 =
-\widehat{\beta}_0
+b_0
 +
-\widehat{\beta}_1x_i.
+b_1x_i.
 }
 \]</span></p>
 <p>It passes through</p>
