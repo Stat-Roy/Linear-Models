@@ -784,40 +784,6 @@ $$
 
 Thus, the residual vector is orthogonal to the vector of predictor values.
 
-Because
-
-$$
-\sum_{i=1}^{n}e_i=0,
-$$
-
-we also have
-
-$$
-\sum_{i=1}^{n}
-(x_i-\bar{x})e_i
-=
-0.
-$$
-
-Hence,
-
-$$
-\boxed{
-\sum_{i=1}^{n}
-(x_i-\bar{x})e_i
-=
-0.
-}
-$$
-
-This is the scalar version of the general linear model result
-
-$$
-\mathbf{X}^{\mathsf T}\mathbf{e}
-=
-\mathbf{0}.
-$$
-
 ---
 
 ### Residuals and Fitted Values
@@ -875,6 +841,76 @@ $$
 \widehat{Y}_ie_i
 =
 0.
+$$
+
+---
+
+## Alternative expression for $b_0$ and $b_1$
+
+The slope estimator can be expressed a,
+
+$$
+b_1 = \dfrac{n\sum x_iY_i - (\sum x_i)(\sum Y_i)}{n\sum x_i^2 - (\sum x_i )^2}
+$$
+This follows from,
+$$
+S_{xy} = \sum x_iY_i - n\bar{x}\bar{y},\\
+S_{xx} = \sum x_i^2 - n\bar{x}^2,
+$$
+Multiplying numerator and denominator by n gives the result.
+
+Similarly,
+$$
+b_0 = \dfrac{\sum Y_i - b_1\sum x_i}{n}
+$$
+
+---
+
+## Sampling Properties of the least square estimators
+
+We derive the expectation and variance of $b_0$ and $b_1$
+$$
+Y_i = \beta_0 + \beta_1 x_i + e_i
+$$
+We have,
+$$
+b_1 = \dfrac{\sum (x_i - \bar{x})(Y_i - \bar{Y})}{S_{xx}}
+$$
+Since,
+$$
+Y_i - \bar{Y} = \beta_1(x_i-\bar{x}) + (e_i - \bar{e})
+$$
+We get,
+$$
+b_1 = \dfrac{\sum(x_i - \bar{x})\left[\beta_1(x_i - \bar{x}) + (e_i - \bar{e}) \right]}{S_{xx}}
+$$
+Therefore,
+$$
+b_1 = \beta_1 + \dfrac{\sum(x_i - \bar{x})e_i}{S_{xx}} \qquad \text{since} \sum(x_i - \bar{x}) = 0
+$$
+Thus,
+$$
+b_1 - \beta = \dfrac{\sum(x_i - \bar{x})e_i}{S_{xx}}
+$$
+Now,
+$$
+\begin{align*}
+E(b_1) =&\; \beta_1 + \dfrac{\sum(x_i - \bar{x})E(e_i)}{S_{xx}}\\
+=&\; \beta_1 \qquad \qquad \qquad \qquad \qquad \text{since}\; E(e_i) = 0
+\end{align*}
+$$
+Thus $b_1$ is an unbiased estimator of $\beta_1$
+
+$$
+\operatorname{Var}(b_1) = \dfrac{1}{S_{xx}^2}\operatorname{Var}\left(\sum(x_i - \bar{x})e_i\right).
+$$
+Since the errors are uncorrelated,
+$$
+\operatorname{Var}\left(\sum(x_i - \bar{x})e_i\right) = \sum(x_i - \bar{x})^2\sigma^2 = \sigma^2\cdot S_{xx}
+$$
+so,
+$$
+\operatorname{Var}(b_1) = \dfrac{\sigma^2}{S_{xx}}
 $$
 
 ---
