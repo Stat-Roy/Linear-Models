@@ -2204,13 +2204,15 @@ E(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) = \mathbf{a}^{\mathsf T}\b
 E(\mathbf{p}^{\mathsf T}\mathbf{y}) &amp;= \mathbf{a}^{\mathsf T}\boldsymbol{\beta}\\
 \implies\mathbf{p}^{\mathsf T}\mathbf{x}&amp;= \mathbf{a}^{\mathsf T}
 \end{align*}
-\]</span> Now, $$ <span class="math display">\[\begin{align*}
+\]</span></p>
+<p>Now,</p>
+<p>$$ <span class="math display">\[\begin{align*}
 \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y}) &amp;= \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}} + \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) \\
 &amp;= \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) + \operatorname{Var}(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) + 2\operatorname{Cov}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}},\; \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}})
 
-\end{align*}\]</span> <span class="math display">\[
-Here,
-\]</span> <span class="math display">\[\begin{align*}
+\end{align*}\]</span> $$</p>
+<p>Here,</p>
+<p>$$ <span class="math display">\[\begin{align*}
 &amp;\operatorname{Cov}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}},\; \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}})\\
 =&amp;\; \operatorname{Cov}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
 \mathbf{X}^{\mathsf T}\mathbf{y},\; \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
@@ -2223,14 +2225,15 @@ Here,
 =&amp;\; \sigma^2\left[\mathbf{a}^{\mathsf T} (\mathbf{X}^{\mathsf T} \mathbf{X})^{-} \mathbf{a} - \mathbf{a}^{\mathsf T} (\mathbf{X}^{\mathsf T} \mathbf{X})^{-} \mathbf{a} \right]\\
 =&amp;\; 0
 
-\end{align*}\]</span> <span class="math display">\[
-Thus we have,
-\]</span> <span class="math display">\[\begin{align*}
+\end{align*}\]</span> $$</p>
+<p>Thus we have,</p>
+<p>$$ <span class="math display">\[\begin{align*}
 \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y})
 &amp;= \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) + \operatorname{Var}(\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}})\\
 &amp;\ge \operatorname{Var}(\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}})
 
-\end{align*}\]</span> $$ Hence <span class="math inline">\(\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}}\)</span> is the BLUE of <span class="math inline">\(\mathbf{a}^{\mathsf T} \boldsymbol{\beta}\)</span></p>
+\end{align*}\]</span> $$</p>
+<p>Hence <span class="math inline">\(\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}}\)</span> is the BLUE of <span class="math inline">\(\mathbf{a}^{\mathsf T} \boldsymbol{\beta}\)</span></p>
 <p>This is the <strong>Gauss-Markov theorem</strong>.</p>
 <hr>
 </section>
