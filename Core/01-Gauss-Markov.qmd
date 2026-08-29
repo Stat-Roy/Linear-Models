@@ -3,6 +3,39 @@ title: "Gauss-Markov Set-up"
 subtitle: "The Linear Model, Estimation, and the Gauss-Markov Framework"
 ---
 
+# Introduction
+
+**Linear Statistical Models**  are essential in statistics as it provides theoretical knowledge on various topics such as *Regression, Analysis of Variance, Analysis of Covariance, Growth curve modeling, Multivariate linear models * etc.
+
+**Example** : A mathematical model,
+$$
+y = \beta_0 + \beta_1x_1+\beta_2x_2
+$$
+Where $y,x_1,x_2$ are weight, height and protein intake respectively.
+A statistical model,
+$$
+y = \beta_0 + \beta_1x_1+\beta_2x_2 + \varepsilon
+$$
+Here a particular value of $x_1, x_2$ not always gives same $y$ value due to $\varepsilon$. Here $\varepsilon$ is a random variable so as $y$. Also $\beta_0, \beta_1, \beta_2$ are the parameters of the model.
+
+If we have $n$ data points, the model can be written as,
+$$
+y_i = \beta_0 + \beta_1x_{1i}+\beta_2x_{2i} + \varepsilon_i \qquad; i = 1(1)n
+$$
+In general a statistical model can be written as,
+$$
+y = f(\beta_0,\;\beta_1,\;\cdots,\;\beta_p,\;x_1,\;x_2,\;\cdots,\;x_p) + \varepsilon
+$$
+Where $y$ is the dependent variable and $x_1,x_2, \cdots, x_p$ are independent variables. $\beta_0,\;\beta_1,\;\cdots,\;\beta_p$ are the parameters of the model. $f$ is a mathematical function or relation. $\varepsilon$ is a random variable known as **Random Error** due to those factors not included in this relation.
+
+For Linear Statistical Models we assume $f$ is a linear function on parameters. The errors are usually uncorrelated and follows Normal Distribution with mean $0$ and constant variance $\sigma^2$. i.e.
+
+$$
+\varepsilon_i \stackrel{\text{iid}}{\sim} N(0,\;\sigma^2)\qquad\;;\;i = 1(1)n
+$$
+
+---
+
 # Gauss-Markov Set-up
 
 ::: {.callout-note}
@@ -50,63 +83,6 @@ These questions form the theoretical basis for ordinary least squares and much o
 
 ---
 
-## Why Study Linear Models?
-
-Linear models are important because a surprisingly large collection of statistical methods can be expressed within a single mathematical framework.
-
-Simple linear regression, multiple regression, analysis of variance, and analysis of covariance can all be represented using the general linear model
-
-$$
-\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}.
-$$
-
-The apparent differences between these methods often arise from differences in the structure of the model matrix $\mathbf{X}$, the interpretation of the parameters in $\boldsymbol{\beta}$, and the assumptions made about the errors.
-
-This is one of the central ideas of the subject:
-
-> Different statistical models can be treated using the same underlying linear model machinery.
-
-For example, the simple regression model
-
-$$
-Y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
-$$
-
-can be written in matrix form as
-
-$$
-\begin{pmatrix}
-Y_1\\
-Y_2\\
-\vdots\\
-Y_n
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 & x_1\\
-1 & x_2\\
-\vdots & \vdots\\
-1 & x_n
-\end{pmatrix}
-\begin{pmatrix}
-\beta_0\\
-\beta_1
-\end{pmatrix}
-+
-\begin{pmatrix}
-\varepsilon_1\\
-\varepsilon_2\\
-\vdots\\
-\varepsilon_n
-\end{pmatrix}.
-$$
-
-The same structure extends naturally to multiple regression and to many experimental designs used in analysis of variance.
-
-The matrix formulation therefore gives us a common language for a broad range of statistical models.
-
----
-
 ## The General Linear Model
 
 Suppose we observe $n$ responses
@@ -122,7 +98,6 @@ $$
 $$
 
 The dimensions of the objects are important.
-
 Suppose there are $n$ observations and $p$ unknown parameters. Then
 
 $$
@@ -142,7 +117,6 @@ $$
 $$
 
 therefore produces an $n\times 1$ vector, matching the dimension of $\mathbf{Y}$.
-
 The model can also be written observation by observation:
 
 $$
@@ -151,7 +125,6 @@ Y_i = \sum_{j=1}^{p} x_{ij}\beta_j + \varepsilon_i,
 $$
 
 Here, $x_{ij}$ denotes the element of the model matrix in row $i$ and column $j$.
-
 This representation makes the meaning of "linear" particularly clear. The model is linear in the unknown parameters $\beta_1,\ldots,\beta_p$.
 
 ---
@@ -188,11 +161,7 @@ y_n
 \end{pmatrix}.
 $$
 
-It is useful to distinguish between the random variable $\mathbf{Y}$ and its observed value $\mathbf{y}$.
-
-Before the data are observed, $\mathbf{Y}$ is random.
-
-After the data are observed, $\mathbf{y}$ is the particular realization that we have obtained.
+It is useful to distinguish between the random variable $\mathbf{Y}$ and its observed value $\mathbf{y}$. Before the data are observed, $\mathbf{Y}$ is random. After the data are observed, $\mathbf{y}$ is the particular realization that we have obtained.
 
 ---
 
@@ -211,9 +180,7 @@ $$
 \end{pmatrix}.
 $$
 
-These parameters describe the systematic component of the model.
-
-Depending on the model, they may represent quantities such as:
+These parameters describe the systematic component of the model. Depending on the model, they may represent quantities such as:
 
 - an intercept,
 - regression coefficients,
@@ -243,11 +210,7 @@ $$
 
 is called the **model matrix** or **design matrix**.
 
-Its rows correspond to observations, while its columns correspond to parameters.
-
-The model matrix determines how the parameters enter the model.
-
-For example, consider simple linear regression:
+Its rows correspond to observations, while its columns correspond to parameters. The model matrix determines how the parameters enter the model. For example, consider simple linear regression:
 
 $$
 Y_i = \beta_0+\beta_1x_i+\varepsilon_i.
@@ -461,19 +424,7 @@ This distinction will become important later when we discuss inference and model
 
 ## Mean and Variance of the Response
 
-Since
-
-$$
-\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon},
-$$
-
-and
-
-$$
-E(\boldsymbol{\varepsilon})=\mathbf{0},
-$$
-
-we have
+we have already found
 
 $$
 E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta}.
@@ -505,7 +456,11 @@ $$
 }
 $$
 
-These two equations describe the mean structure and covariance structure of the observations.
+If Normality is assumed then,
+
+$$
+\mathbf{Y} \sim N_n(\mathbf{X}\boldsymbol{\beta}\;,\;\sigma^2\mathbf{I}_n)
+$$
 
 ---
 
@@ -579,11 +534,7 @@ Thus, linearity concerns the **parameters**, not necessarily the explanatory var
 
 ## Linear Parametric Functions
 
-The goal of estimation is not always to estimate the individual parameters $\beta_1,\ldots,\beta_p$.
-
-Often, the quantity of interest is a linear combination of the parameters.
-
-A general linear parametric function has the form
+The goal of estimation is not always to estimate the individual parameters $\beta_1,\ldots,\beta_p$.Often, the quantity of interest is a linear combination of the parameters. A general linear parametric function has the form
 
 $$
 \lambda
@@ -591,9 +542,7 @@ $$
 \mathbf{a}^{\mathsf T}\boldsymbol{\beta},
 $$
 
-where $\mathbf{a}$ is a known vector of constants.
-
-For example, if
+where $\mathbf{a}$ is a known vector of constants. For example, if
 
 $$
 \boldsymbol{\beta}
@@ -627,17 +576,13 @@ $$
 
 Such quantities are called **linear parametric functions**.
 
-Estimability asks whether a particular linear parametric function can be estimated from the available observations under the model.
-
-This question becomes especially important when the model matrix does not have full column rank.
+Estimability asks whether a particular linear parametric function can be estimated from the available observations under the model. This question becomes especially important when the model matrix does not have full column rank.
 
 ---
 
 ## Linear Estimators
 
-An estimator is a function of the observed data used to estimate an unknown quantity.
-
-In the Gauss-Markov framework, we are particularly interested in **linear estimators**.
+An estimator is a function of the observed data used to estimate an unknown quantity. In the Gauss-Markov framework, we are particularly interested in **linear estimators**.
 
 A general linear estimator of a scalar quantity can be written as
 
@@ -647,9 +592,7 @@ $$
 \mathbf{c}^{\mathsf T}\mathbf{Y},
 $$
 
-where $\mathbf{c}$ is a vector of known constants.
-
-Equivalently,
+where $\mathbf{c}$ is a vector of known constants. Equivalently,
 
 $$
 \widehat{\lambda}
@@ -671,27 +614,13 @@ $$
 \lambda=\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
 $$
 
-A linear estimator
-
-$$
-\widehat{\lambda}
-=
-\mathbf{c}^{\mathsf T}\mathbf{Y}
-$$
-
-is **unbiased** if
+A linear estimator $\widehat{\lambda} = \mathbf{c}^{\mathsf T}\mathbf{Y}$ is **unbiased** if
 
 $$
 E(\widehat{\lambda})=\lambda.
 $$
 
-Using
-
-$$
-E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta},
-$$
-
-we obtain
+Using $E(\mathbf{Y})=\mathbf{X}\boldsymbol{\beta},$ we obtain
 
 $$
 E(\widehat{\lambda})
@@ -703,13 +632,7 @@ E(\mathbf{c}^{\mathsf T}\mathbf{Y})
 \mathbf{c}^{\mathsf T}\mathbf{X}\boldsymbol{\beta}.
 $$
 
-For this to equal
-
-$$
-\mathbf{a}^{\mathsf T}\boldsymbol{\beta}
-$$
-
-for every possible $\boldsymbol{\beta}$, we require
+For this to equal $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$ for every possible $\boldsymbol{\beta}$, we require
 
 $$
 \mathbf{c}^{\mathsf T}\mathbf{X}
@@ -731,21 +654,13 @@ This condition provides the bridge between **estimability** and **linear estimat
 
 ---
 
-## Why Variance Matters
+## Variance of the unbiased estimator
 
 Unbiasedness alone is not enough to choose an estimator.
 
 Suppose several unbiased estimators of the same quantity are available. We would generally prefer an estimator that has smaller variance because it tends to fluctuate less from sample to sample.
 
-For the linear estimator
-
-$$
-\widehat{\lambda}
-=
-\mathbf{c}^{\mathsf T}\mathbf{Y},
-$$
-
-its variance is
+For the linear estimator $\widehat{\lambda} = \mathbf{c}^{\mathsf T}\mathbf{Y},$ its variance is
 
 $$
 \operatorname{Var}(\widehat{\lambda})
@@ -753,30 +668,20 @@ $$
 \operatorname{Var}(\mathbf{c}^{\mathsf T}\mathbf{Y}).
 $$
 
-Since
+Since $\operatorname{Var}(\mathbf{Y}) = \sigma^2\mathbf{I}_n,$ we obtain
 
 $$
-\operatorname{Var}(\mathbf{Y})
-=
-\sigma^2\mathbf{I}_n,
-$$
-
-we obtain
-
-$$
+\begin{align*}
 \operatorname{Var}(\widehat{\lambda})
-=
+&=
 \mathbf{c}^{\mathsf T}
 \operatorname{Var}(\mathbf{Y})
-\mathbf{c}.
-$$
+\mathbf{c}.\\
 
-Hence,
-
-$$
-\operatorname{Var}(\widehat{\lambda})
-=
+\implies \operatorname{Var}(\widehat{\lambda})
+&=
 \sigma^2\mathbf{c}^{\mathsf T}\mathbf{c}.
+\end{align*}
 $$
 
 Therefore,
@@ -938,17 +843,7 @@ $$
 \mathbf{a}.
 $$
 
-When this condition holds, the quantity
-
-$$
-\mathbf{c}^{\mathsf T}\mathbf{Y}
-$$
-
-is a linear unbiased estimator of
-
-$$
-\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.
-$$
+When this condition holds, the quantity $\mathbf{c}^{\mathsf T}\mathbf{Y}$ is a linear unbiased estimator of $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}.$
 
 Therefore,
 
@@ -970,70 +865,6 @@ $$
 $$
 
 is the row space of $\mathbf{X}$, we can also state that a linear parametric function is estimable precisely when its coefficient vector belongs to the row space of $\mathbf{X}$.
-
----
-
-## Why Estimability Matters
-
-It is tempting to assume that every individual parameter in $\boldsymbol{\beta}$ can automatically be estimated.
-
-That is not always true.
-
-Suppose
-
-$$
-\mathbf{X}
-=
-\begin{pmatrix}
-1 & 1\\
-1 & 1\\
-1 & 1
-\end{pmatrix}.
-$$
-
-The two columns of $\mathbf{X}$ are identical.
-
-The model
-
-$$
-\mathbf{Y}
-=
-\mathbf{X}
-\begin{pmatrix}
-\beta_1\\
-\beta_2
-\end{pmatrix}
-+
-\boldsymbol{\varepsilon}
-$$
-
-therefore becomes
-
-$$
-Y_i
-=
-\beta_1+\beta_2+\varepsilon_i.
-$$
-
-The data contain information about
-
-$$
-\beta_1+\beta_2,
-$$
-
-but there is no way to distinguish $\beta_1$ from $\beta_2$ individually.
-
-Thus,
-
-$$
-\beta_1+\beta_2
-$$
-
-is estimable, while $\beta_1$ and $\beta_2$ individually are not uniquely determined by the model.
-
-This illustrates an important principle:
-
-> The data determine certain combinations of parameters, rather than necessarily determining every parameter separately.
 
 ---
 
@@ -2332,11 +2163,9 @@ In the previous section, we obtained the least squares estimator
 $$
 \widehat{\boldsymbol{\beta}}
 =
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
 \mathbf{X}^{\mathsf T}\mathbf{Y},
 $$
-
-under the assumption that $\mathbf{X}$ has full column rank.
 
 We also established that
 
@@ -2352,7 +2181,7 @@ $$
 \operatorname{Var}(\widehat{\boldsymbol{\beta}})
 =
 \sigma^2
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}.
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}.
 $$
 
 Thus, the least squares estimator is unbiased.
@@ -2369,68 +2198,25 @@ The Gauss-Markov theorem answers this question.
 
 ## The Gauss-Markov Theorem
 
-Suppose the linear model
+For any estimable linear parametric function $ \mathbf{a}^{\mathsf T}\boldsymbol{\beta},$ the least squares estimator $ \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}$ is the best linear unbiased estimator or **BLUE** of that function.
+
+Suppose the linear model $\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$ satisfies
 
 $$
-\mathbf{Y}
-=
-\mathbf{X}\boldsymbol{\beta}
-+
-\boldsymbol{\varepsilon}
+E(\boldsymbol{\varepsilon})=\mathbf{0}\\
+\operatorname{Var}(\boldsymbol{\varepsilon}) = \sigma^2\mathbf{I}_n.
 $$
-
-satisfies
-
-$$
-E(\boldsymbol{\varepsilon})=\mathbf{0}
-$$
-
-and
-
-$$
-\operatorname{Var}(\boldsymbol{\varepsilon})
-=
-\sigma^2\mathbf{I}_n.
-$$
-
-Assume also that $\mathbf{X}$ has full column rank.
 
 Then the ordinary least squares estimator
 
 $$
 \widehat{\boldsymbol{\beta}}
 =
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
 \mathbf{X}^{\mathsf T}\mathbf{Y}
 $$
 
 is the **Best Linear Unbiased Estimator**, or **BLUE**, of $\boldsymbol{\beta}$.
-
-More generally, for any estimable linear parametric function
-
-$$
-\mathbf{a}^{\mathsf T}\boldsymbol{\beta},
-$$
-
-the least squares estimator
-
-$$
-\mathbf{a}^{\mathsf T}
-\widehat{\boldsymbol{\beta}}
-$$
-
-is the best linear unbiased estimator of that function.
-
-Thus,
-
-$$
-\boxed{
-\widehat{\boldsymbol{\beta}}
-\text{ is BLUE}
-}
-$$
-
-under the Gauss-Markov assumptions.
 
 ---
 
@@ -2445,11 +2231,7 @@ The acronym **BLUE** stands for:
 
 Each word has a precise meaning.
 
-### Linear
-
-The estimator is linear in the observations.
-
-The least squares estimator can be written as
+The estimator is **linear** in the observations. The least squares estimator can be written as
 
 $$
 \widehat{\boldsymbol{\beta}}
@@ -2462,13 +2244,11 @@ where
 $$
 \mathbf{A}
 =
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
+(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
 \mathbf{X}^{\mathsf T}.
 $$
 
 Thus, each component of $\widehat{\boldsymbol{\beta}}$ is a linear combination of the observations.
-
-### Unbiased
 
 The estimator satisfies
 
@@ -2478,13 +2258,91 @@ E(\widehat{\boldsymbol{\beta}})
 \boldsymbol{\beta}.
 $$
 
-Thus, on average, the estimator equals the true parameter vector.
-
-### Best
+Thus, on average, the estimator equals the true parameter vector. That is it is unbiased.
 
 Among all linear unbiased estimators, the least squares estimator has the smallest variance.
 
-The word "best" therefore refers to **minimum variance**, not to some vague notion of being generally superior.
+The word "**best**" therefore refers to **minimum variance**, not to some vague notion of being generally superior.
+
+---
+
+## Proof of the Gauss-Markov Theorem
+
+First we show that ,
+$$
+E(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) = \mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+We have,
+$$
+\begin{align*}
+\widehat{\boldsymbol{\beta}} &= (\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
+\mathbf{X}^{\mathsf T}\mathbf{Y}.\\
+E(\widehat{\boldsymbol{\beta}}) &= (\mathbf{X}^{\mathsf T}\mathbf{X})^{-} \mathbf{X}^{\mathsf T}E(\mathbf{Y}).\\
+&= (\mathbf{X}^{\mathsf T}\mathbf{X})^{-}\mathbf{X}^{\mathsf T}\mathbf{X}{\boldsymbol{\beta}}.\\
+E(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) &= \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}\mathbf{X}^{\mathsf T}\mathbf{X}{\boldsymbol{\beta}}.\\
+&= \mathbf{a}^{\mathsf T}\mathbf{H}{\boldsymbol{\beta}}.\\
+\end{align*}
+$$
+since $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$ is estimable so 
+$$
+\mathbf{a}^{\mathsf T} = \mathbf{a}^{\mathsf T}\mathbf{H}
+$$
+Therefore,
+$$
+E(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) = \mathbf{a}^{\mathsf T}\boldsymbol{\beta}
+$$
+Thus $\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}$ is an unbiased estimator of $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$
+
+Now consider any other linear unbiased estimator $\mathbf{p}^{\mathsf T}\mathbf{y}$ of $\mathbf{a}^{\mathsf T}\boldsymbol{\beta}$.
+
+We have to show,
+$$
+\operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y}) \ge \operatorname{Var}(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}})
+$$
+As $\mathbf{p}^{\mathsf T}\mathbf{y}$ is unbiased it implies,
+$$
+\begin{align*}
+E(\mathbf{p}^{\mathsf T}\mathbf{y}) &= \mathbf{a}^{\mathsf T}\boldsymbol{\beta}\\
+\implies\mathbf{p}^{\mathsf T}\mathbf{x}&= \mathbf{a}^{\mathsf T} 
+\end{align*}
+$$
+Now,
+$$
+\begin{align*}
+\operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y}) &= \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}} + \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) \\
+&= \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) + \operatorname{Var}(\mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) + 2\operatorname{Cov}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}},\; \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}})
+
+\end{align*}
+$$
+Here,
+$$
+\begin{align*}
+&\operatorname{Cov}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}},\; \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}})\\
+=&\; \operatorname{Cov}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
+\mathbf{X}^{\mathsf T}\mathbf{y},\; \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
+\mathbf{X}^{\mathsf T}\mathbf{y})\\
+=&\; (\mathbf{p}^{\mathsf T} - \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
+\mathbf{X}^{\mathsf T})\cdot\operatorname{Var}(\mathbf{y})\cdot( \mathbf{X}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}\mathbf{a})\\
+=&\; (\mathbf{p}^{\mathsf T} - \mathbf{a}^{\mathsf T}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}
+\mathbf{X}^{\mathsf T})\cdot\mathbf{I}_n\sigma^2 \cdot ( \mathbf{X}(\mathbf{X}^{\mathsf T}\mathbf{X})^{-}\mathbf{a})\\
+=&\; \sigma^2\left[\mathbf{p}^{\mathsf T} \mathbf{X} (\mathbf{X}^{\mathsf T} \mathbf{X})^{-} \mathbf{a} - \mathbf{a}^{\mathsf T} (\mathbf{X}^{\mathsf T}\mathbf{X})^{-} \mathbf{X}^{\mathsf T}\mathbf{X} (\mathbf{X}^{\mathsf T}\mathbf{X})^{-} \mathbf{a} \right] \\
+=&\; \sigma^2\left[\mathbf{a}^{\mathsf T} (\mathbf{X}^{\mathsf T} \mathbf{X})^{-} \mathbf{a} - \mathbf{a}^{\mathsf T} (\mathbf{X}^{\mathsf T} \mathbf{X})^{-} \mathbf{a} \right]\\
+=&\; 0
+
+\end{align*}
+$$
+Thus we have,
+$$
+\begin{align*}
+\operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y})
+&= \operatorname{Var}(\mathbf{p}^{\mathsf T}\mathbf{y} - \mathbf{a}^{\mathsf T}\widehat{\boldsymbol{\beta}}) + \operatorname{Var}(\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}})\\
+&\ge \operatorname{Var}(\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}})
+
+\end{align*}
+$$
+Hence $\mathbf{a}^{\mathsf T} \widehat{\boldsymbol{\beta}}$ is the BLUE of $\mathbf{a}^{\mathsf T} \boldsymbol{\beta}$
+
+This is the **Gauss-Markov theorem**.
 
 ---
 
@@ -2601,261 +2459,6 @@ $$
 $$
 
 The goal is therefore to show that the covariance matrix of any linear unbiased estimator is at least as large as the covariance matrix of the least squares estimator in the positive semidefinite sense.
-
----
-
-## Proof of the Gauss-Markov Theorem
-
-Let
-
-$$
-\mathbf{A}_0
-=
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
-\mathbf{X}^{\mathsf T}
-$$
-
-be the matrix defining the least squares estimator.
-
-Then
-
-$$
-\widehat{\boldsymbol{\beta}}
-=
-\mathbf{A}_0\mathbf{Y}.
-$$
-
-Consider any other linear unbiased estimator
-
-$$
-\widetilde{\boldsymbol{\beta}}
-=
-\mathbf{A}\mathbf{Y}
-$$
-
-such that
-
-$$
-\mathbf{A}\mathbf{X}
-=
-\mathbf{I}_p.
-$$
-
-Define
-
-$$
-\mathbf{D}
-=
-\mathbf{A}-\mathbf{A}_0.
-$$
-
-Then
-
-$$
-\mathbf{A}
-=
-\mathbf{A}_0+\mathbf{D}.
-$$
-
-Since both $\mathbf{A}$ and $\mathbf{A}_0$ satisfy the unbiasedness condition,
-
-$$
-\mathbf{A}\mathbf{X}
-=
-\mathbf{I}_p
-$$
-
-and
-
-$$
-\mathbf{A}_0\mathbf{X}
-=
-\mathbf{I}_p.
-$$
-
-Subtracting,
-
-$$
-(\mathbf{A}-\mathbf{A}_0)\mathbf{X}
-=
-\mathbf{0}.
-$$
-
-Hence,
-
-$$
-\boxed{
-\mathbf{D}\mathbf{X}
-=
-\mathbf{0}
-}
-$$
-
-Now consider the covariance matrix of $\widetilde{\boldsymbol{\beta}}$:
-
-$$
-\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
-=
-\sigma^2\mathbf{A}\mathbf{A}^{\mathsf T}.
-$$
-
-Substitute
-
-$$
-\mathbf{A}
-=
-\mathbf{A}_0+\mathbf{D}.
-$$
-
-Then
-
-$$
-\mathbf{A}\mathbf{A}^{\mathsf T}
-=
-(\mathbf{A}_0+\mathbf{D})
-(\mathbf{A}_0+\mathbf{D})^{\mathsf T}.
-$$
-
-Expanding,
-
-$$
-\mathbf{A}\mathbf{A}^{\mathsf T}
-=
-\mathbf{A}_0\mathbf{A}_0^{\mathsf T}
-+
-\mathbf{A}_0\mathbf{D}^{\mathsf T}
-+
-\mathbf{D}\mathbf{A}_0^{\mathsf T}
-+
-\mathbf{D}\mathbf{D}^{\mathsf T}.
-$$
-
-We now examine the cross terms.
-
-Since
-
-$$
-\mathbf{A}_0
-=
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
-\mathbf{X}^{\mathsf T},
-$$
-
-we have
-
-$$
-\mathbf{A}_0\mathbf{D}^{\mathsf T}
-=
-(\mathbf{X}^{\mathsf T}\mathbf{X})^{-1}
-\mathbf{X}^{\mathsf T}
-\mathbf{D}^{\mathsf T}.
-$$
-
-But
-
-$$
-\mathbf{D}\mathbf{X}
-=
-\mathbf{0},
-$$
-
-so
-
-$$
-\mathbf{X}^{\mathsf T}\mathbf{D}^{\mathsf T}
-=
-\mathbf{0}.
-$$
-
-Therefore,
-
-$$
-\mathbf{A}_0\mathbf{D}^{\mathsf T}
-=
-\mathbf{0}.
-$$
-
-Similarly,
-
-$$
-\mathbf{D}\mathbf{A}_0^{\mathsf T}
-=
-\mathbf{0}.
-$$
-
-Hence,
-
-$$
-\mathbf{A}\mathbf{A}^{\mathsf T}
-=
-\mathbf{A}_0\mathbf{A}_0^{\mathsf T}
-+
-\mathbf{D}\mathbf{D}^{\mathsf T}.
-$$
-
-Multiplying by $\sigma^2$ gives
-
-$$
-\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
-=
-\operatorname{Var}(\widehat{\boldsymbol{\beta}})
-+
-\sigma^2\mathbf{D}\mathbf{D}^{\mathsf T}.
-$$
-
-Therefore,
-
-$$
-\boxed{
-\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
--
-\operatorname{Var}(\widehat{\boldsymbol{\beta}})
-=
-\sigma^2\mathbf{D}\mathbf{D}^{\mathsf T}
-}
-$$
-
-The matrix
-
-$$
-\mathbf{D}\mathbf{D}^{\mathsf T}
-$$
-
-is positive semidefinite because, for any vector $\mathbf{v}$,
-
-$$
-\mathbf{v}^{\mathsf T}
-\mathbf{D}\mathbf{D}^{\mathsf T}
-\mathbf{v}
-=
-\left\|
-\mathbf{D}^{\mathsf T}\mathbf{v}
-\right\|^2
-\geq 0.
-$$
-
-Therefore,
-
-$$
-\operatorname{Var}(\widetilde{\boldsymbol{\beta}})
-\geq
-\operatorname{Var}(\widehat{\boldsymbol{\beta}})
-$$
-
-in the positive semidefinite ordering.
-
-Hence the least squares estimator has no larger variance than any other linear unbiased estimator.
-
-Therefore,
-
-$$
-\boxed{
-\widehat{\boldsymbol{\beta}}
-\text{ is BLUE.}
-}
-$$
-
-This is the **Gauss-Markov theorem**.
 
 ---
 
